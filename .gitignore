@@ -179,8 +179,3 @@ data/**/*.csv
 data/**/*.txt
 data/**/*.arff
 data/**/*.npz
-
-# Allow processed splits
-!data/splits/
-!data/splits/*.npz
-!data/splits/*.npy
