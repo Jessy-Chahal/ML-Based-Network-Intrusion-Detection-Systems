@@ -24,7 +24,7 @@ Bwd PSH Flags, Bwd URG Flags,
 Fwd Avg Bytes/Bulk, Fwd Avg Packets/Bulk, Fwd Avg Bulk Rate,
 Bwd Avg Bytes/Bulk, Bwd Avg Packets/Bulk, Bwd Avg Bulk Rate
 
-### ✅ Mutable features (safe to perturb independently)
+### Mutable features (safe to perturb independently)
 
 - Flow Duration — clip to [0, inf] (raw data has min=-13, CICFlowMeter bug)
 - Total Fwd Packets
@@ -46,7 +46,7 @@ Bwd Avg Bytes/Bulk, Bwd Avg Packets/Bulk, Bwd Avg Bulk Rate
 - Active Mean / Std / Max / Min
 - Idle Mean / Std / Max / Min
 
-### ❌ Immutable features (derived — mutating independently violates physics)
+### Immutable features (derived — mutating independently violates physics)
 
 | Feature                    | Why                                   | Constraint                                        |
 | -------------------------- | ------------------------------------- | ------------------------------------------------- |
@@ -61,7 +61,7 @@ Bwd Avg Bytes/Bulk, Bwd Avg Packets/Bulk, Bwd Avg Bulk Rate
 | Down/Up Ratio              | Derived                               | = bwd_bytes / fwd_bytes                           |
 | Subflow Fwd/Bwd Bytes/Pkts | Derived (subsets of main flow)        | ≤ corresponding main flow value                   |
 
-### ⚠️ Conditionally mutable (protocol hard constraints)
+### Conditionally mutable (protocol hard constraints)
 
 | Feature           | Constraint                                                         |
 | ----------------- | ------------------------------------------------------------------ |
@@ -86,7 +86,7 @@ Bwd Avg Bytes/Bulk, Bwd Avg Packets/Bulk, Bwd Avg Bulk Rate
 
 num_outbound_cmds — confirmed constant, absent from .npz arrays (39 → 38 features)
 
-### ✅ Mutable features
+### Mutable features
 
 duration, src_bytes, dst_bytes, count, srv_count,
 serror_rate, srv_serror_rate, rerror_rate, srv_rerror_rate,
@@ -99,12 +99,12 @@ hot, num_failed_logins, num_compromised, root_shell, su_attempted,
 num_root, num_file_creations, num_shells, num_access_files,
 land, wrong_fragment, urgent
 
-### ❌ Immutable features
+### Immutable features
 
 - protocol_type, service, flag — categorical; changing breaks attack semantics
 - is_host_login, is_guest_login, logged_in — binary semantic flags
 
-### ⚠️ Class imbalance warning — CRITICAL
+### Class imbalance warning — CRITICAL
 
 R2L = 0.79%, U2R = 0.04% of total data.
 A model can score >99% accuracy while never predicting either class.
@@ -123,7 +123,7 @@ Bwd PSH Flags, Fwd URG Flags, Bwd URG Flags, URG Flag Count,
 CWR Flag Count, ECE Flag Count,
 Fwd Bytes/Bulk Avg, Fwd Packet/Bulk Avg, Fwd Bulk Rate Avg
 
-### ✅ Mutable features
+### Mutable features
 
 dur, sbytes, dbytes, Spkts, Dpkts,
 sttl*, dttl*, sloss, dloss,
@@ -139,14 +139,14 @@ is_ftp_login, ct_ftp_cmd, ct_flw_http_mthd
 \*sttl/dttl are OS-level TTL values — mutable for feature-space attacks
 but physically unrealistic to change (document this limitation)
 
-### ❌ Immutable features
+### Immutable features
 
 - proto, state, service — categorical protocol identifiers
 - is_sm_ips_ports — binary semantic flag (same src/dst IP:port)
 - stcpb, dtcpb — TCP base sequence numbers (OS fingerprint)
 - Sload, Dload — bits/sec (derived from sbytes/dbytes + dur)
 
-### ⚠️ Class imbalance warning
+### Class imbalance warning
 
 Normal is 80%. Worms (0.05%), Fuzzers (0.09%), Analysis (0.10%) too sparse.
 → Use class_weight='balanced'. Report per-class F1.
