@@ -708,257 +708,109 @@
     ]
   },
   "mlp": {
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-    "accuracy": 0.8116552223578977,
+    "accuracy": 0.835336748124772,
     "per_class": {
       "BENIGN": {
-        "precision": 0.9996495031911512,
-        "recall": 0.7799740517438755,
-        "f1": 0.8762534876160604
+        "precision": 0.9995200232906731,
+        "recall": 0.8078843267445114,
+        "f1": 0.8935427881072925
       },
       "Bot": {
-        "precision": 0.011531308121512708,
-        "recall": 0.9522184300341296,
-        "f1": 0.022786671022541654
+        "precision": 0.012458616483707963,
+        "recall": 0.9761092150170648,
+        "f1": 0.024603208740160868
       },
       "DDoS": {
-        "precision": 0.6624883133072474,
-        "recall": 0.9963545464014165,
-        "f1": 0.7958237141490402
+        "precision": 0.6520628215173917,
+        "recall": 0.996771169669826,
+        "f1": 0.7883843064565956
       },
       "DoS GoldenEye": {
-        "precision": 0.3907181747472129,
-        "recall": 0.9766688269604666,
-        "f1": 0.5581481481481482
+        "precision": 0.27689206523730986,
+        "recall": 0.9792611795204148,
+        "f1": 0.4317142857142857
       },
       "DoS Hulk": {
-        "precision": 0.8572429497284989,
-        "recall": 0.9438037567015081,
-        "f1": 0.8984432368923484
+        "precision": 0.8958012185274903,
+        "recall": 0.9413738573687661,
+        "f1": 0.9180223045530627
       },
       "DoS Slowhttptest": {
-        "precision": 0.35461689587426326,
-        "recall": 0.9209183673469388,
-        "f1": 0.5120567375886524
+        "precision": 0.5056403450564034,
+        "recall": 0.9719387755102041,
+        "f1": 0.6652116979484941
       },
       "DoS slowloris": {
-        "precision": 0.2480252764612954,
-        "recall": 0.9727385377942999,
-        "f1": 0.39526686807653577
+        "precision": 0.22905525846702318,
+        "recall": 0.9553903345724907,
+        "f1": 0.36951833213515456
       },
       "FTP-Patator": {
-        "precision": 0.15642857142857142,
+        "precision": 0.48211337369290036,
         "recall": 0.9842696629213483,
-        "f1": 0.2699537750385208
+        "f1": 0.6472109346139638
       },
       "Heartbleed": {
-        "precision": 0.005847953216374269,
+        "precision": 0.0038910505836575876,
         "recall": 1.0,
-        "f1": 0.011627906976744186
+        "f1": 0.007751937984496124
       },
       "Infiltration": {
-        "precision": 0.0010253781081773904,
+        "precision": 0.0019646365422396855,
         "recall": 0.6666666666666666,
-        "f1": 0.002047606859482979
+        "f1": 0.0039177277179236044
       },
       "PortScan": {
-        "precision": 0.7125553599060882,
-        "recall": 0.9802539822359245,
-        "f1": 0.825237918675071
+        "precision": 0.6871485740337369,
+        "recall": 0.9957424943110915,
+        "f1": 0.8131519002517684
       },
       "SSH-Patator": {
-        "precision": 0.04905308910276312,
-        "recall": 0.9813664596273292,
-        "f1": 0.09343583678296866
+        "precision": 0.1103202846975089,
+        "recall": 0.9627329192546584,
+        "f1": 0.1979565772669221
       },
       "Web Attack \u2013 Brute Force": {
-        "precision": 0.08204518430439953,
-        "recall": 0.9366515837104072,
-        "f1": 0.15087463556851313
+        "precision": 0.08415032679738563,
+        "recall": 0.9321266968325792,
+        "f1": 0.15436493068565005
       },
       "Web Attack \u2013 Sql Injection": {
-        "precision": 0.0006531678641410843,
+        "precision": 0.00031665611146295124,
         "recall": 0.3333333333333333,
-        "f1": 0.001303780964797914
+        "f1": 0.0006327111673521037
       },
       "Web Attack \u2013 XSS": {
         "precision": 0.0,
         "recall": 0.0,
         "f1": 0.0
-========
-    "accuracy": 0.8476770431923543,
-    "per_class": {
-      "BENIGN": {
-        "precision": 0.9991548291048943,
-        "recall": 0.8195260627337251,
-        "f1": 0.9004695951139746
-      },
-      "Bot": {
-        "precision": 0.02517890272992314,
-        "recall": 0.9726962457337884,
-        "f1": 0.04908715122287289
-      },
-      "DDoS": {
-        "precision": 0.8246045088150351,
-        "recall": 0.9962503905843141,
-        "f1": 0.902337209028089
-      },
-      "DoS GoldenEye": {
-        "precision": 0.4,
-        "recall": 0.9682436811406351,
-        "f1": 0.566123531640773
-      },
-      "DoS Hulk": {
-        "precision": 0.7926348228043143,
-        "recall": 0.9920546148802407,
-        "f1": 0.881203213594395
-      },
-      "DoS Slowhttptest": {
-        "precision": 0.3549905838041431,
-        "recall": 0.9617346938775511,
-        "f1": 0.5185694635488308
-      },
-      "DoS slowloris": {
-        "precision": 0.31092436974789917,
-        "recall": 0.9628252788104089,
-        "f1": 0.47005444646098005
-      },
-      "FTP-Patator": {
-        "precision": 0.16220704927108323,
-        "recall": 0.9876404494382023,
-        "f1": 0.2786495482643842
-      },
-      "Heartbleed": {
-        "precision": 0.25,
-        "recall": 0.5,
-        "f1": 0.3333333333333333
-      },
-      "Infiltration": {
-        "precision": 0.0008806693086745927,
-        "recall": 0.6666666666666666,
-        "f1": 0.001759014951627089
-      },
-      "PortScan": {
-        "precision": 0.7256239510584159,
-        "recall": 0.9838508404903472,
-        "f1": 0.8352340001246339
-      },
-      "SSH-Patator": {
-        "precision": 0.3300751879699248,
-        "recall": 0.9089026915113871,
-        "f1": 0.48428019856591287
-      },
-      "Web Attack \u2013 Brute Force": {
-        "precision": 0.002255639097744361,
-        "recall": 0.09502262443438914,
-        "f1": 0.004406672961913755
-      },
-      "Web Attack \u2013 Sql Injection": {
-        "precision": 0.0003971405877680699,
-        "recall": 0.3333333333333333,
-        "f1": 0.0007933359777865926
-      },
-      "Web Attack \u2013 XSS": {
-        "precision": 0.02715837621497999,
-        "recall": 0.9693877551020408,
-        "f1": 0.052836484983314794
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
       }
     },
     "confusion_matrix": [
       [
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        245280,
-        23676,
-        8385,
-        2320,
-        4023,
-        1293,
-        2315,
-        4720,
-        318,
-        3897,
-        5383,
-        9123,
-        2203,
-        1526,
-        10
+        254057,
+        22659,
+        8804,
+        3873,
+        2821,
+        716,
+        2540,
+        939,
+        512,
+        2032,
+        6172,
+        3736,
+        2100,
+        3150,
+        361
       ],
       [
-        3,
-        279,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        11,
-        0,
-        0,
-        0
-      ],
-      [
-        13,
-        2,
-        19132,
-        3,
-        52,
-========
-        257718,
-        11028,
-        4049,
-        2194,
-        6669,
-        1346,
-        1697,
-        4538,
-        3,
-        4498,
-        5064,
-        891,
-        9162,
-        2497,
-        3118
-      ],
-      [
-        8,
-        285,
-        0,
-        0,
-        0,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        0,
-        0,
-        14,
-        1507,
-        0,
         7,
+        286,
         0,
         0,
-========
-        11,
         0,
-        19130,
-        24,
-        36,
-        1,
+        0,
         0,
         0,
         0,
@@ -970,154 +822,98 @@
         0
       ],
       [
-        3,
+        16,
+        0,
+        19140,
+        40,
+        6,
         0,
         0,
-        1494,
-        13,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        2,
+        0,
+        2,
+        1511,
+        12,
         1,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        0,
+        0,
+        0,
         0,
         0,
         0,
         12,
-        0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
         3,
         0
       ],
       [
-        54,
-        7,
-        1330,
-        21,
-        24470,
-        0,
-        22,
-========
-        0,
-        10,
+        59,
         6,
-        4
-      ],
-      [
-        79,
-        5,
+        1386,
+        21,
+        24407,
         11,
-        10,
-        25721,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        14,
         0,
         0,
         0,
         0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        22,
-        1,
         0,
-        0
-      ],
-      [
-        3,
-        0,
-        0,
-        0,
-        0,
-        722,
-        27,
-        0,
-        22,
-        0,
-        0,
-        2,
-        8,
-        0,
-========
         23,
         0,
-        0,
-        0,
-        0,
-        78
+        0
       ],
       [
+        1,
+        0,
+        1,
         3,
         0,
+        762,
+        15,
         0,
         0,
         0,
-        754,
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      [
+        18,
+        0,
+        1,
+        0,
+        0,
         14,
+        771,
+        0,
+        0,
         0,
         0,
         1,
-        0,
-        0,
-        11,
-        0,
-        1
-      ],
-      [
         2,
-        0,
-        0,
-        1,
-        1,
-        22,
-        777,
-        0,
-        0,
-        1,
-        0,
-        0,
-        1,
-        1,
-        1
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        2,
-        0,
-        7,
-        879,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
-        0
-      ],
-      [
-        1,
-        0,
-        1,
-        1,
-        0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        12,
-        785,
-        0,
-        0,
-        0,
-        0,
-        2,
-        5,
         0,
         0
       ],
       [
         0,
-        2,
+        0,
         2,
         0,
         0,
-        1,
-        7,
+        2,
+        8,
         876,
         0,
         0,
@@ -1128,14 +924,11 @@
         0
       ],
       [
-========
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
         0,
         0,
         0,
         0,
         0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
         0,
         0,
         0,
@@ -1151,29 +944,12 @@
         0,
         0,
         1,
-========
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
         1,
         0,
         0,
         0,
         0,
         0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-========
-        0
-      ],
-      [
-        0,
-        0,
-        1,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
         4,
         0,
         0,
@@ -1182,100 +958,55 @@
         0
       ],
       [
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        12,
-        229,
-        12,
-        2,
-        0,
+        15,
         1,
-        8,
-        1,
-        0,
-        0,
-        13354,
-        0,
-        4,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        1,
-        3,
-        0,
-        0,
-        4,
-        474,
-        0,
-        0,
-========
-        110,
-        0,
-        8,
-        11,
+        14,
         6,
         0,
-        2,
-        0,
-        0,
-        0,
-        13403,
-        0,
-        77,
-        0,
-        6
-      ],
-      [
-        0,
         1,
-        0,
-        0,
-        1,
-        0,
-        2,
-        2,
-        0,
-        3,
-        4,
-        439,
-        25,
-        6,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
-        0
-      ],
-      [
+        16,
         0,
         0,
         0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        1,
-========
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        13565,
         0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        13,
-        207,
-        0,
-        0
-========
-        0,
-        0,
-        21,
         5,
-        195
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        0,
+        0
+      ],
+      [
+        2,
+        3,
+        1,
+        0,
+        0,
+        0,
+        2,
+        2,
+        0,
+        0,
+        4,
+        465,
+        4,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        206,
+        4,
+        0
       ],
       [
         0,
@@ -1289,24 +1020,17 @@
         0,
         0,
         0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-========
-        0,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
         2,
         0,
         1,
         0
       ],
       [
+        1,
         0,
+        1,
+        1,
         0,
-        1,
-        1,
-        0
-      ],
-      [
-        1,
         0,
         0,
         0,
@@ -1315,21 +1039,8 @@
         0,
         0,
         95,
-        1,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
+        0,
         0
-========
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        95
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
       ]
     ],
     "confusion_matrix_labels": [
@@ -1351,57 +1062,32 @@
     ]
   },
   "majority_voting": {
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-    "accuracy": 0.9985436918864344,
+    "accuracy": 0.9985410488590051,
     "per_class": {
       "BENIGN": {
-        "precision": 0.9996913157903111,
-        "recall": 0.9989442621282658,
-        "f1": 0.9993176493417464
+        "precision": 0.9996976756027394,
+        "recall": 0.99893472232822,
+        "f1": 0.9993160533414771
       },
       "Bot": {
-        "precision": 0.6784037558685446,
-        "recall": 0.9863481228668942,
-        "f1": 0.803894297635605
-========
-    "accuracy": 0.9986150536270265,
-    "per_class": {
-      "BENIGN": {
-        "precision": 0.9998981368594957,
-        "recall": 0.9988647637945509,
-        "f1": 0.9993811831968171
-      },
-      "Bot": {
-        "precision": 0.674364896073903,
-        "recall": 0.9965870307167235,
-        "f1": 0.8044077134986226
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        "precision": 0.6736111111111112,
+        "recall": 0.9931740614334471,
+        "f1": 0.8027586206896552
       },
       "DDoS": {
-        "precision": 0.9998437662743465,
+        "precision": 0.999895838758398,
         "recall": 0.9998437662743465,
-        "f1": 0.9998437662743465
+        "f1": 0.999869801838398
       },
       "DoS GoldenEye": {
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        "precision": 0.9954604409857328,
-        "recall": 0.9948152948801037,
-        "f1": 0.9951377633711507
+        "precision": 0.9948186528497409,
+        "recall": 0.9954633830200907,
+        "f1": 0.9951409135082604
       },
       "DoS Hulk": {
-        "precision": 0.9982242810268288,
-        "recall": 0.9973772515138658,
-        "f1": 0.9978005865102639
-========
-        "precision": 0.9948119325551232,
-        "recall": 0.9941672067401166,
-        "f1": 0.9944894651539709
-      },
-      "DoS Hulk": {
-        "precision": 0.9974218870247806,
-        "recall": 0.9997685810159294,
-        "f1": 0.9985938553404604
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        "precision": 0.998224075360976,
+        "recall": 0.9972615420218305,
+        "f1": 0.997742576549808
       },
       "DoS Slowhttptest": {
         "precision": 0.9860050890585241,
@@ -1429,26 +1115,19 @@
         "f1": 0.8
       },
       "PortScan": {
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        "precision": 0.9896734782924879,
-        "recall": 0.9989723262130221,
-        "f1": 0.9943011616862717
-========
-        "precision": 0.9896749800043627,
-        "recall": 0.999119136754019,
-        "f1": 0.9943746347165401
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        "precision": 0.9896764812795347,
+        "recall": 0.9992659472950158,
+        "f1": 0.9944480970121996
       },
       "SSH-Patator": {
         "precision": 1.0,
-        "recall": 0.9958592132505176,
-        "f1": 0.9979253112033195
+        "recall": 0.9937888198757764,
+        "f1": 0.9968847352024922
       },
       "Web Attack \u2013 Brute Force": {
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        "precision": 0.7201492537313433,
-        "recall": 0.8733031674208145,
-        "f1": 0.7893660531697342
+        "precision": 0.7218045112781954,
+        "recall": 0.8687782805429864,
+        "f1": 0.7885010266940452
       },
       "Web Attack \u2013 Sql Injection": {
         "precision": 1.0,
@@ -1459,38 +1138,15 @@
         "precision": 0.46296296296296297,
         "recall": 0.25510204081632654,
         "f1": 0.32894736842105265
-========
-        "precision": 0.7801047120418848,
-        "recall": 0.6742081447963801,
-        "f1": 0.7233009708737864
-      },
-      "Web Attack \u2013 Sql Injection": {
-        "precision": 0.3333333333333333,
-        "recall": 0.3333333333333333,
-        "f1": 0.3333333333333333
-      },
-      "Web Attack \u2013 XSS": {
-        "precision": 0.4296875,
-        "recall": 0.5612244897959183,
-        "f1": 0.48672566371681414
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
       }
     },
     "confusion_matrix": [
       [
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        314140,
-        137,
-        3,
-        1,
-        38,
-========
-        314115,
+        314137,
         141,
         2,
         2,
-        59,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        38,
         8,
         1,
         0,
@@ -1498,22 +1154,13 @@
         0,
         142,
         0,
-        2,
-        0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        0
-      ],
-      [
-        4,
-        289,
-========
-        2,
-        0
-      ],
-      [
         1,
-        292,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        0,
+        0
+      ],
+      [
+        2,
+        291,
         0,
         0,
         0,
@@ -1546,10 +1193,10 @@
         0
       ],
       [
-        4,
+        2,
         0,
         0,
-        1534,
+        1536,
         4,
         1,
         0,
@@ -1563,19 +1210,11 @@
         0
       ],
       [
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        62,
+        65,
         0,
         0,
         6,
-        25859,
-========
-        0,
-        0,
-        0,
-        6,
-        25921,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        25856,
         0,
         0,
         0,
@@ -1600,27 +1239,18 @@
         0,
         0,
         0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
         1,
-========
-        775,
-        2,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
         0,
         0
       ],
       [
-        3,
+        2,
         0,
         0,
         0,
         0,
         2,
         802,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-========
-        0,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
         0,
         0,
         0,
@@ -1682,11 +1312,7 @@
         0
       ],
       [
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        8,
-========
-        5,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        4,
         0,
         0,
         0,
@@ -1696,18 +1322,14 @@
         0,
         0,
         0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-        13609,
-========
-        13611,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        13613,
         0,
         1,
         0,
         2
       ],
       [
-        1,
+        3,
         0,
         0,
         0,
@@ -1718,29 +1340,25 @@
         0,
         0,
         0,
-        481,
+        480,
         0,
         0,
         0
       ],
       [
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
-========
-        149,
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
+        2,
         0,
         0,
         0,
         0,
         0,
         0,
-        193,
+        0,
+        0,
+        0,
+        0,
+        0,
+        192,
         0,
         27
       ],
@@ -1774,15 +1392,9 @@
         0,
         0,
         0,
-<<<<<<<< HEAD:results/shad_baseline_metrics_cicids2017.json
         69,
         0,
         25
-========
-        40,
-        0,
-        55
->>>>>>>> 642e7e252a126bc971f0cdc8e33965f7d9e401af:results/alyssa_baseline_metrics_cicids2017.json
       ]
     ],
     "confusion_matrix_labels": [
