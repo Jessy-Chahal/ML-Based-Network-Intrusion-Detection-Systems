@@ -21,8 +21,6 @@ EDA notebooks are in `notebooks/`. Processed splits are in `data/splits/`
 
 **Negative values:** `Flow Duration` has a minimum of -13, which is physically impossible. This is a known CICFlowMeter artifact affecting very few rows and is retained as-is.
 
-**Encoding:** The CSVs need to be read with `encoding='latin-1'`. Using UTF-8 causes the em dash in Web Attack label names to render as `?`.
-
 ### Constant Features
 
 The following 8 features are always 0 and are dropped in `preprocess.py`:
