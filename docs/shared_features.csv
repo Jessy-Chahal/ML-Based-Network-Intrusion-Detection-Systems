@@ -1,0 +1,82 @@
+canonical_name,cicids2017_name,nslkdd_name,unswnb15_name,dtype,is_shared,interdependencies,mutable_for_attack,notes
+flow_duration,Flow Duration,duration,dur,float,True,"flow_bytes_s,flow_pkts_s,fwd_iat_total,bwd_iat_total",True,Min=-13 in CICIDS2017 (CICFlowMeter bug) — clip to 0 in attack design
+fwd_bytes,Total Length of Fwd Packets,src_bytes,sbytes,float,True,"flow_bytes_s,avg_packet_size,avg_fwd_seg_size",True,
+bwd_bytes,Total Length of Bwd Packets,dst_bytes,dbytes,float,True,"flow_bytes_s,avg_packet_size,avg_bwd_seg_size",True,
+fwd_packets,Total Fwd Packets,,Spkts,int,False,"flow_pkts_s,avg_packet_size,fwd_pkts_s,fwd_header_len",True,No direct NSL-KDD equivalent
+bwd_packets,Total Backward Packets,,Dpkts,int,False,"flow_pkts_s,avg_packet_size,bwd_pkts_s",True,No direct NSL-KDD equivalent
+flow_bytes_s,Flow Bytes/s,,Sload,float,False,"fwd_bytes,bwd_bytes,flow_duration",False,DERIVED — 1509 Inf values in CICIDS2017 from zero-duration flows. Never perturb directly.
+flow_pkts_s,Flow Packets/s,,,float,False,"fwd_packets,bwd_packets,flow_duration",False,DERIVED — 2867 Inf values in CICIDS2017. Never perturb directly.
+flow_iat_mean,Flow IAT Mean,,Sintpkt,float,False,,True,UNSW uses src inter-packet time — approximate match
+flow_iat_std,Flow IAT Std,,,float,False,flow_iat_mean,True,CICIDS2017 only
+flow_iat_max,Flow IAT Max,,,float,False,"flow_iat_mean,flow_iat_std",True,CICIDS2017 only
+flow_iat_min,Flow IAT Min,,,float,False,"flow_iat_mean,flow_iat_std",True,CICIDS2017 only
+fwd_iat_total,Fwd IAT Total,,,float,False,"flow_duration,fwd_packets",True,CICIDS2017 only — approx equal to flow_duration when bwd traffic is minimal
+fwd_iat_mean,Fwd IAT Mean,,,float,False,"fwd_iat_total,fwd_packets",True,CICIDS2017 only
+fwd_iat_std,Fwd IAT Std,,,float,False,fwd_iat_mean,True,CICIDS2017 only
+fwd_iat_max,Fwd IAT Max,,,float,False,"fwd_iat_mean,fwd_iat_std",True,CICIDS2017 only
+fwd_iat_min,Fwd IAT Min,,,float,False,"fwd_iat_mean,fwd_iat_std",True,CICIDS2017 only
+bwd_iat_total,Bwd IAT Total,,,float,False,"flow_duration,bwd_packets",True,CICIDS2017 only
+bwd_iat_mean,Bwd IAT Mean,,,float,False,"bwd_iat_total,bwd_packets",True,CICIDS2017 only
+bwd_iat_std,Bwd IAT Std,,,float,False,bwd_iat_mean,True,CICIDS2017 only
+bwd_iat_max,Bwd IAT Max,,,float,False,"bwd_iat_mean,bwd_iat_std",True,CICIDS2017 only
+bwd_iat_min,Bwd IAT Min,,,float,False,"bwd_iat_mean,bwd_iat_std",True,CICIDS2017 only
+fwd_pkt_len_max,Fwd Packet Length Max,,,float,False,,True,CICIDS2017 only
+fwd_pkt_len_min,Fwd Packet Length Min,,,float,False,,True,CICIDS2017 only
+fwd_pkt_len_mean,Fwd Packet Length Mean,,,float,False,,True,CICIDS2017 only
+fwd_pkt_len_std,Fwd Packet Length Std,,Sjit,float,False,fwd_pkt_len_mean,True,UNSW uses jitter as approximate equivalent
+bwd_pkt_len_max,Bwd Packet Length Max,,,float,False,,True,CICIDS2017 only
+bwd_pkt_len_min,Bwd Packet Length Min,,,float,False,,True,CICIDS2017 only
+bwd_pkt_len_mean,Bwd Packet Length Mean,,,float,False,,True,CICIDS2017 only
+bwd_pkt_len_std,Bwd Packet Length Std,,Djit,float,False,bwd_pkt_len_mean,True,UNSW uses jitter as approximate equivalent
+pkt_len_min,Min Packet Length,,,float,False,,True,CICIDS2017 only
+pkt_len_max,Max Packet Length,,,float,False,,True,CICIDS2017 only
+pkt_len_mean,Packet Length Mean,,,float,False,,True,CICIDS2017 only
+pkt_len_std,Packet Length Std,,,float,False,pkt_len_mean,True,CICIDS2017 only
+pkt_len_var,Packet Length Variance,,,float,False,pkt_len_std,False,DERIVED — equals pkt_len_std². Never perturb directly.
+avg_packet_size,Average Packet Size,,smeansz,float,False,"fwd_bytes,bwd_bytes,fwd_packets,bwd_packets",False,DERIVED — never perturb directly
+avg_fwd_seg_size,Avg Fwd Segment Size,,,float,False,"fwd_bytes,fwd_packets",False,DERIVED
+avg_bwd_seg_size,Avg Bwd Segment Size,,,float,False,"bwd_bytes,bwd_packets",False,DERIVED
+fwd_header_len,Fwd Header Length,,,int,False,fwd_packets,True,Bounds: 20×fwd_packets ≤ value ≤ 60×fwd_packets (TCP header options)
+bwd_header_len,Bwd Header Length,,,int,False,bwd_packets,True,Same bounds as fwd_header_len
+fwd_pkts_s,Fwd Packets/s,,,float,False,"fwd_packets,flow_duration",False,DERIVED
+bwd_pkts_s,Bwd Packets/s,,,float,False,"bwd_packets,flow_duration",False,DERIVED
+down_up_ratio,Down/Up Ratio,,,float,False,"fwd_bytes,bwd_bytes",False,DERIVED — bwd_bytes/fwd_bytes
+fwd_psh_flags,Fwd PSH Flags,,,int,False,,True,CICIDS2017 only — confirmed non-constant
+psh_flag_count,PSH Flag Count,,,int,False,,True,Only valid when payload > 0
+fin_flag_count,FIN Flag Count,,,int,False,rst_flag_count,True,Mutually exclusive with RST in same flow
+syn_flag_count,SYN Flag Count,,synack,int,False,ack_flag_count,True,Typically 1 per flow; >1 indicates SYN flood
+rst_flag_count,RST Flag Count,,,int,False,fin_flag_count,True,Mutually exclusive with FIN in same flow
+ack_flag_count,ACK Flag Count,,,int,False,syn_flag_count,False,Must be ≥ SYN count in established connections — conditionally immutable
+urg_flag_count,URG Flag Count,,,int,False,,False,Confirmed constant=0 in both CICIDS2017 and UNSW-NB15 — dropped
+cwe_flag_count,CWE Flag Count,,,int,False,,False,Confirmed constant=0 in UNSW-NB15 — dropped
+ece_flag_count,ECE Flag Count,,,int,False,,False,Confirmed constant=0 in UNSW-NB15 — dropped
+init_win_fwd,Init_Win_bytes_forward,,,int,False,,True,Valid range: 0–65535 (TCP window size)
+init_win_bwd,Init_Win_bytes_backward,,,int,False,,True,Valid range: 0–65535 (TCP window size)
+act_data_pkt_fwd,act_data_pkt_fwd,,,int,False,fwd_packets,True,Cannot exceed fwd_packets
+min_seg_size_fwd,min_seg_size_forward,,,int,False,,True,Minimum: 20 bytes (bare TCP header)
+active_mean,Active Mean,,,float,False,,True,CICIDS2017 only
+active_std,Active Std,,,float,False,active_mean,True,CICIDS2017 only
+active_max,Active Max,,,float,False,"active_mean,active_std",True,CICIDS2017 only
+active_min,Active Min,,,float,False,"active_mean,active_std",True,CICIDS2017 only
+idle_mean,Idle Mean,,,float,False,,True,CICIDS2017 only
+idle_std,Idle Std,,,float,False,idle_mean,True,CICIDS2017 only
+idle_max,Idle Max,,,float,False,"idle_mean,idle_std",True,CICIDS2017 only
+idle_min,Idle Min,,,float,False,"idle_mean,idle_std",True,CICIDS2017 only
+subflow_fwd_pkts,Subflow Fwd Packets,,,int,False,fwd_packets,False,DERIVED — subset of main flow
+subflow_fwd_bytes,Subflow Fwd Bytes,,,int,False,fwd_bytes,False,DERIVED — subset of main flow
+subflow_bwd_pkts,Subflow Bwd Packets,,,int,False,bwd_packets,False,DERIVED — subset of main flow
+subflow_bwd_bytes,Subflow Bwd Bytes,,,int,False,bwd_bytes,False,DERIVED — subset of main flow
+duration,,,duration (nslkdd),float,False,,True,NSL-KDD only — maps to flow_duration
+src_bytes,,,src_bytes (nslkdd),float,False,,True,NSL-KDD only — maps to fwd_bytes
+dst_bytes,,,dst_bytes (nslkdd),float,False,,True,NSL-KDD only — maps to bwd_bytes
+protocol_type,,protocol_type,proto,str,False,,False,Categorical — changing breaks protocol semantics
+service,,service,service,str,False,,False,Categorical — immutable
+flag,,flag,,str,False,,False,NSL-KDD categorical TCP flag field — immutable
+serror_rate,,serror_rate,,float,False,"syn_flag_count,rst_flag_count",False,DERIVED in NSL-KDD — connection-level stat
+same_srv_rate,,same_srv_rate,,float,False,,False,NSL-KDD connection-level aggregate — not directly mutable
+count,,count,,int,False,,False,NSL-KDD connections to same host in 2s window — aggregate
+sttl,,,sttl,int,False,,False,UNSW-NB15 source TTL — OS fingerprint
+dttl,,,dttl,int,False,,False,UNSW-NB15 destination TTL — OS fingerprint
+stcpb,,,stcpb,int,False,,False,TCP base sequence number — OS fingerprint
+dtcpb,,,dtcpb,int,False,,False,TCP base sequence number — OS fingerprint
+label,Label,label,Label,str,True,,False,Unified per-dataset taxonomy

@@ -4,14 +4,15 @@ channels:
   - defaults
 dependencies:
   - python=3.10
-  - scikit-learn=1.3.*
-  - xgboost=2.0.*
-  - pandas=2.1.*
-  - numpy=1.25.*
-  - matplotlib=3.7.*
-  - seaborn=0.12.*
+  - numpy>=2.0 # Fixes the numpy._core error
+  - scikit-learn>=1.5 # Upgraded to support NumPy 2.x
+  - pandas>=2.2 # Upgraded for compatibility
+  - xgboost>=2.0
+  - matplotlib>=3.7
+  - seaborn>=0.12
   - jupyter
   - pytest
   - pip
+  - pytest-cov
   - pip:
-    - tensorflow==2.13.*
+      - tensorflow>=2.16 # Upgraded because TF 2.13 crashes on NumPy 2.x
