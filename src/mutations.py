@@ -22,6 +22,8 @@ from src.constraints import (
 SECONDS_TO_MICROSECONDS = 1_000_000.0
 MILLISECONDS_TO_MICROSECONDS = 1000.0
 IP_HEADER_LENGTH_BYTES = 20
+MAX_TCP_HEADER_BYTES = 60
+DEFAULT_TCP_OPTION_BYTES = 12
 
 class Direction(str, Enum):
     FORWARD = "fwd"
@@ -221,6 +223,105 @@ def split_packets(sample: np.ndarray, number_of_fragments: int) -> np.ndarray:
     flow[Features.FWD_HEADER_LEN] *= number_of_fragments
 
     _update_packet_sizes(flow, minimum_value=new_average, maximum_value=new_average)
+    return _recalculate_rates(flow)
+
+
+@register(
+    description="Protocol exploitation: split one forward payload packet into N fragments.",
+    validator=_tcp_validator,
+    parameters={"n_fragments": int}
+)
+def fragment_payload(sample: np.ndarray, n_fragments: int) -> np.ndarray:
+    """
+    Increase packet_count and reduce average packet size while preserving total bytes.
+    """
+    if n_fragments < 2:
+        raise ValueError("n_fragments must be >= 2")
+
+    flow = _copy(sample)
+    fwd_pkts_before = flow[Features.TOT_FWD_PKTS]
+    if fwd_pkts_before < 1:
+        raise ValueError("Cannot fragment payload when TOT_FWD_PKTS < 1")
+
+    additional_packets = float(n_fragments - 1)
+    flow[Features.TOT_FWD_PKTS] = fwd_pkts_before + additional_packets
+    flow[Features.SUBFLOW_FWD_PKTS] = max(flow[Features.SUBFLOW_FWD_PKTS], fwd_pkts_before) + additional_packets
+
+    # Fragmentation keeps payload bytes unchanged but adds one base header per added packet.
+    flow[Features.FWD_HEADER_LEN] += additional_packets * IP_HEADER_LENGTH_BYTES
+
+    previous_average = _safe_divide(flow[Features.TOT_LEN_FWD_PKTS], fwd_pkts_before)
+    fragment_size = _safe_divide(previous_average, float(n_fragments))
+
+    flow[Features.FWD_PKT_LEN_MEAN] = _safe_divide(flow[Features.TOT_LEN_FWD_PKTS], flow[Features.TOT_FWD_PKTS])
+    flow[Features.FWD_SEG_SIZE_AVG] = flow[Features.FWD_PKT_LEN_MEAN]
+    flow[Features.FWD_PKT_LEN_MIN] = min(flow[Features.FWD_PKT_LEN_MIN], fragment_size)
+    flow[Features.PKT_LEN_MIN] = min(flow[Features.PKT_LEN_MIN], fragment_size)
+
+    if fwd_pkts_before <= 1:
+        flow[Features.FWD_PKT_LEN_MAX] = fragment_size
+        flow[Features.FWD_PKT_LEN_STD] = 0.0
+        flow[Features.PKT_LEN_MAX] = fragment_size
+        flow[Features.PKT_LEN_STD] = 0.0
+
+    flow[Features.PKT_LEN_VAR] = flow[Features.PKT_LEN_STD] ** 2
+    _update_packet_sizes(flow, minimum_value=fragment_size)
+    return _recalculate_rates(flow)
+
+
+@register(
+    description="Protocol exploitation: add benign TCP options to inflate forward header length.",
+    validator=_tcp_validator,
+    parameters={"option_bytes_per_packet": int}
+)
+def add_tcp_options(sample: np.ndarray, option_bytes_per_packet: int = DEFAULT_TCP_OPTION_BYTES) -> np.ndarray:
+    """
+    Inflate fwd_header_length (e.g., NOP/window scaling options) without changing payload bytes.
+    """
+    if option_bytes_per_packet < 0:
+        raise ValueError("option_bytes_per_packet must be >= 0")
+
+    flow = _copy(sample)
+    fwd_packets = flow[Features.TOT_FWD_PKTS]
+    if fwd_packets <= 0:
+        raise ValueError("Cannot add TCP options when TOT_FWD_PKTS <= 0")
+
+    avg_header = _safe_divide(flow[Features.FWD_HEADER_LEN], fwd_packets)
+    new_avg_header = min(MAX_TCP_HEADER_BYTES, avg_header + float(option_bytes_per_packet))
+    new_avg_header = max(new_avg_header, float(IP_HEADER_LENGTH_BYTES))
+    flow[Features.FWD_HEADER_LEN] = new_avg_header * fwd_packets
+
+    return _recalculate_rates(flow)
+
+
+@register(
+    description="Protocol exploitation: shift ACK timing toward a target mean IAT profile.",
+    validator=_timing_validator,
+    parameters={"target_iat_ms": float}
+)
+def shift_ack_timing(sample: np.ndarray, target_iat_ms: float) -> np.ndarray:
+    """
+    Shift inter-arrival timing so FLOW_IAT_MEAN moves toward target_iat_ms.
+    """
+    if target_iat_ms <= 0:
+        raise ValueError("target_iat_ms must be > 0")
+
+    current_iat_ms = _safe_divide(float(sample[Features.FLOW_IAT_MEAN]), MILLISECONDS_TO_MICROSECONDS)
+    delta_ms = target_iat_ms - current_iat_ms
+
+    # Reuse existing timing mutation path for consistency.
+    flow = delay_packets(sample, delta_milliseconds=delta_ms, direction=Direction.BOTH)
+
+    # Keep timing statistics centered at target profile when possible.
+    total_packets = flow[Features.TOT_FWD_PKTS] + flow[Features.TOT_BWD_PKTS]
+    target_iat_us = target_iat_ms * MILLISECONDS_TO_MICROSECONDS
+    old_mean = max(float(sample[Features.FLOW_IAT_MEAN]), 1.0)
+    old_std = max(float(sample[Features.FLOW_IAT_STD]), 0.0)
+    std_ratio = np.clip(old_std / old_mean, 0.05, 0.50)
+    target_std_us = target_iat_us * std_ratio
+    target_duration_us = target_iat_us * max(total_packets - 1, 1)
+    _set_timing(flow, target_iat_us, target_std_us, target_duration_us)
+
     return _recalculate_rates(flow)
 
 
