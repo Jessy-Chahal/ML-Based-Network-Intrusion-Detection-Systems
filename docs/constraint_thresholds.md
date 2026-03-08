@@ -52,5 +52,5 @@ MAX_AVG_PKT_BYTES = 1500 # avg packet size ceiling — standard Ethernet MTU
 # Attacker Capability
 
 ```
-No numeric thresholds. Type 4 is enforced entirely through code review and the MutationRegistry. There is nothing to express as a constant.
+No numeric thresholds. Type 4 is enforced entirely through code review and the MutationRegistry. There is nothing to express as constant.
 ```
