@@ -20,7 +20,6 @@ from abc import ABC, abstractmethod
 from typing import List
 import numpy as np
 
-
 ###
 # Feature index constants for CICIDS2017 (71 features after preprocessing)
 # These must match the column order produced by src/preprocess.py exactly
