@@ -6,8 +6,10 @@ categories (Feature Obfuscation, Behavioral Mimicry, Protocol Exploitation)
 must pass validation against these constraints before being used in evasion
 evaluation or adversarial training.
 
-Constraints are enforced programmatically via `src/constraints.py`. This
-document is the human-readable specification that the code implements.
+Constraints are enforced programmatically via `src/constraints.py`. Numeric
+threshold values for all constraints are defined in
+`docs/constraint_thresholds.md`. This document is the human-readable
+specification that the code implements.
 
 ---
 
@@ -24,18 +26,24 @@ satisfy DNS protocol structure constraints.
 **Rules:**
 
 - TCP flag combinations must be valid. Certain combinations cannot co-occur
-  in a single packet (e.g., SYN+FIN, RST+SYN).
+  in a single packet (e.g., SYN+FIN). SYN+RST is not enforced at the flow
+  level — see `docs/constraint_thresholds.md` for rationale.
 - Header lengths must be consistent with the protocol. A TCP header cannot
-  be shorter than 20 bytes. A flow's `fwd_header_length` must be a positive
-  multiple of the reported packet count.
+  be shorter than `MIN_TCP_HEADER`. A flow's `fwd_header_length` must be a
+  positive multiple of the reported packet count.
 - Packet counts must be positive integers. `total_fwd_packets` and
   `total_bwd_packets` cannot be set to zero for a non-empty flow, and
   cannot be made non-integer.
 - Byte counts must be consistent with packet counts. `total_length_fwd_pkts`
   divided by `total_fwd_packets` must yield a plausible average packet size
-  (between 20 bytes and 65535 bytes).
-- Flow duration must be non-negative. Timing features derived from duration
-  (e.g., `flow_bytes_per_sec`) must be consistent with the modified duration.
+  (between `MIN_PKT_BYTES` and `MAX_PKT_BYTES`).
+- Flow duration must be non-negative (`FLOW_DURATION_MIN`). Timing features
+  derived from duration (e.g., `flow_bytes_per_sec`) must be consistent with
+  the modified duration.
+- DNS flows must additionally satisfy: destination port equals `DNS_PORT`,
+  average payload size does not exceed `MAX_DNS_PAYLOAD_BYTES`, flow duration
+  does not exceed `MAX_DNS_DURATION_US`, and forward packet count does not
+  exceed `MAX_DNS_FWD_PKTS`.
 
 **Example violation:** An attack sets `total_fwd_packets = 0` while
 `total_length_fwd_pkts = 5000`. This implies 5000 bytes were transferred
@@ -51,29 +59,32 @@ objective. A DoS attack that has been perturbed to evade detection but no
 longer generates enough traffic to cause a service disruption is not a valid
 adversarial example — it has defeated itself.
 
-**Scope:** Applies per attack category. Thresholds are defined in
-`docs/functional_preservation.md`.
+**Scope:** Applies per attack category. All threshold values are defined in
+`docs/constraint_thresholds.md`.
 
 **Rules:**
 
-- **DoS attacks:** The perturbed flow must retain at least 70% of the
-  original request rate (`flow_pkts_per_sec`). Reductions beyond this
-  threshold likely mean the attack can no longer saturate the target.
+- **DoS attacks:** The perturbed flow must retain at least
+  `DOS_PKT_RATE_MIN_RATIO` of the original `flow_pkts_per_sec`. Reductions
+  beyond this threshold likely mean the attack can no longer saturate the
+  target.
 - **Port scans:** At least 80% of the originally targeted ports must still
-  be probed. Diluting a scan so aggressively that fewer than 80% of ports
-  are covered reduces its reconnaissance value below practical utility.
-- **C2/Botnet flows:** The total flow duration cannot increase by more than
-  2x the original. A C2 beacon that takes twice as long to complete may
-  miss its callback window and break the attacker's session.
-- **Brute force attacks:** Credential attempt rate must remain at least 60%
-  of the original. Slower-than-threshold brute force may not complete within
-  a session window.
+  be probed. Because CICFlowMeter does not expose per-port probe counts,
+  `PORTSCAN_PKT_RATE_MIN_RATIO` is used as a packet rate proxy for port
+  coverage.
+- **C2/Botnet flows:** The total flow duration cannot increase beyond
+  `C2_DURATION_MAX_RATIO` of the original. For Bot flows specifically,
+  `flow_iat_mean` cannot increase beyond `C2_IAT_MEAN_MAX_RATIO` of the
+  original — beaconing depends on regular inter-arrival timing.
+- **Brute force attacks:** Credential attempt rate must remain at least
+  `BRUTEFORCE_PKT_RATE_MIN_RATIO` of the original. Slower-than-threshold
+  brute force may not complete within a session window.
 
 **Example violation:** A behavioral mimicry attack on a DoS flow spreads the
 traffic over a 10x longer window to mimic HTTPS keep-alive timing. The
-resulting `flow_pkts_per_sec` drops to 8% of the original. The evasion
-succeeds against the classifier, but the attack can no longer cause
-meaningful service disruption. This sample must be discarded.
+resulting `flow_pkts_per_sec` drops below `DOS_PKT_RATE_MIN_RATIO` of the
+original. The evasion succeeds against the classifier, but the attack can no
+longer cause meaningful service disruption. This sample must be discarded.
 
 ---
 
@@ -86,31 +97,32 @@ that survive in a realistic deployment environment, not just against a
 trained classifier.
 
 **Scope:** Applies to all flows. Evaluated against the CICIDS2017 benign
-traffic distribution.
+traffic distribution. All threshold values are defined in
+`docs/constraint_thresholds.md`.
 
 **Rules:**
 
 - Inter-arrival times (IAT) must remain within plausible bounds.
-  `flow_iat_mean` must not exceed 60 seconds for any flow type. Flows with
-  mean IAT above 60 seconds would be timed out and closed by most stateful
-  firewalls.
+  `flow_iat_mean` must not exceed `MAX_IAT_MEAN_S`. Flows above this ceiling
+  would be timed out and closed by most stateful firewalls.
 - Packet rates must be plausible. `flow_pkts_per_sec` must not exceed
-  1,000,000 (1M pps), which is the practical upper bound for a single flow
+  `MAX_FLOW_PKTS_S`, which is the practical upper bound for a single flow
   on commodity hardware.
 - Byte-to-packet ratios must be realistic. Average packet size
-  (`total_length_fwd_pkts / total_fwd_packets`) must fall between 20 and
-  1500 bytes. Values outside this range indicate header-only flows (below 20) or jumbo frames (above 1500) that would be anomalous on standard
-  Ethernet.
+  (`total_length_fwd_pkts / total_fwd_packets`) must fall between
+  `MIN_AVG_PKT_BYTES` and `MAX_AVG_PKT_BYTES`. Values outside this range
+  indicate header-only flows or jumbo frames that would be anomalous on
+  standard Ethernet.
 - Flag distributions must be plausible. A flow cannot have more PSH flags
   than packets, more ACK flags than packets, or URG/ECE/CWR flags set at a
   rate inconsistent with normal application behavior.
 
 **Example violation:** An obfuscation attack injects 10,000 decoy packets
 with a 0.001ms average inter-arrival time to dilute a port scan's feature
-vector. The resulting `flow_pkts_per_sec` is 10,000,000 — far above the
-physical limit of a single host NIC. Any rate-based anomaly detector or
-firewall with traffic shaping would immediately flag this. The perturbation
-fails the behavioral plausibility constraint.
+vector. The resulting `flow_pkts_per_sec` exceeds `MAX_FLOW_PKTS_S` — far
+above the physical limit of a single host NIC. Any rate-based anomaly
+detector or firewall with traffic shaping would immediately flag this. The
+perturbation fails the behavioral plausibility constraint.
 
 ---
 
@@ -124,7 +136,8 @@ gradients, and cannot observe how the model classifies specific samples.
 
 **Scope:** Applies to the perturbation generation process, not the output
 sample. This is a constraint on the attack algorithm, not on the features of
-the resulting flow.
+the resulting flow. There are no numeric thresholds — enforcement is via
+code review and the `MutationRegistry`.
 
 **Rules:**
 
