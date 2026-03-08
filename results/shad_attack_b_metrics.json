@@ -1,0 +1,83 @@
+{
+  "attack": "Attack B - Behavioral Mimicry",
+  "dataset": "cicids2017",
+  "generated_at_utc": "2026-03-08T04:08:13.361360+00:00",
+  "parameters": {
+    "profile": "computed",
+    "max_delay_ms": 500.0,
+    "max_duration_ratio": 2.0,
+    "max_attack_samples": 100,
+    "seed": 42
+  },
+  "profile_summary": {
+    "flow_iat_mean_us": 16031.6669921875,
+    "flow_iat_std_us": 219.20310974121094,
+    "pkt_len_mean_bytes": 66.5
+  },
+  "n_attack_samples_evaluated": 100,
+  "n_attack_samples_total_in_test": 63882,
+  "metrics": {
+    "mimic_timing": {
+      "constraint_satisfaction_rate": 0.5,
+      "n_constraint_pass": 50,
+      "n_samples": 100,
+      "models": {
+        "random_forest": {
+          "model": "random_forest",
+          "n_originally_detected": 98,
+          "n_originally_detected_and_valid": 50,
+          "n_evaded": 3,
+          "esr": 0.030612244897959183,
+          "esr_on_valid": 0.06
+        },
+        "xgboost": {
+          "model": "xgboost",
+          "n_originally_detected": 100,
+          "n_originally_detected_and_valid": 50,
+          "n_evaded": 2,
+          "esr": 0.02,
+          "esr_on_valid": 0.04
+        },
+        "mlp": {
+          "model": "mlp",
+          "n_originally_detected": 100,
+          "n_originally_detected_and_valid": 50,
+          "n_evaded": 0,
+          "esr": 0.0,
+          "esr_on_valid": 0.0
+        }
+      }
+    },
+    "mimic_packet_size": {
+      "constraint_satisfaction_rate": 1.0,
+      "n_constraint_pass": 100,
+      "n_samples": 100,
+      "models": {
+        "random_forest": {
+          "model": "random_forest",
+          "n_originally_detected": 98,
+          "n_originally_detected_and_valid": 98,
+          "n_evaded": 30,
+          "esr": 0.30612244897959184,
+          "esr_on_valid": 0.30612244897959184
+        },
+        "xgboost": {
+          "model": "xgboost",
+          "n_originally_detected": 100,
+          "n_originally_detected_and_valid": 100,
+          "n_evaded": 4,
+          "esr": 0.04,
+          "esr_on_valid": 0.04
+        },
+        "mlp": {
+          "model": "mlp",
+          "n_originally_detected": 100,
+          "n_originally_detected_and_valid": 100,
+          "n_evaded": 100,
+          "esr": 1.0,
+          "esr_on_valid": 1.0
+        }
+      }
+    }
+  }
+}
