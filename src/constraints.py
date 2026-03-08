@@ -221,7 +221,7 @@ class TCPConstraintValidator(ConstraintValidator):
     """
 
     MIN_PKT_BYTES  = 20      # Min IP header size (bytes)
-    MAX_PKT_BYTES  = 1500    # Standard Ethernet MTU (bytes)
+    MAX_PKT_BYTES  = 65535   # Max IP payload (bytes)
     MIN_TCP_HEADER = 20      # Min TCP header size (bytes)
 
     def validate(self, original: np.ndarray, perturbed: np.ndarray) -> bool:
@@ -268,6 +268,16 @@ class TCPConstraintValidator(ConstraintValidator):
                     f"MTU {self.MAX_PKT_BYTES} bytes "
                     f"(tot_len={fwd_len:.1f}, pkts={fwd_pkts:.1f})"
                 )
+        
+        # SYN+FIN cannot co-occur
+        # The only per-packet flag combination reliably enforceable at the flow level 
+        # (unlike SYN+RST, which can legitimately appear across separate packets in a single flow)
+        if p[f.SYN_FLAG_CNT] > 0 and p[f.FIN_FLAG_CNT] > 0:
+            violations.append(
+                f"syn_flag_cnt={p[f.SYN_FLAG_CNT]:.0f} and "
+                f"fin_flag_cnt={p[f.FIN_FLAG_CNT]:.0f} are both non-zero — "
+                f"SYN+FIN cannot co-occur in any TCP flow"
+            )
 
         # Each flag count is a flow-level total (number of packets in that direction that had the flag set) 
         # A flag count greater than the total packet count is impossible since each packet sets a flag at most once
@@ -412,23 +422,22 @@ class FunctionalConstraintValidator(ConstraintValidator):
     Validates that a perturbed attack flow retains sufficient attack functionality. 
     Perturbations that reduce attack effectiveness below a threshold are discarded (they have defeated the attack itself).
 
+    Packet rate is recomputed from TOT_FWD_PKTS, TOT_BWD_PKTS, and FLOW_DURATION rather than read from the stored FLOW_PKTS_S field.
+    FLOW_PKTS_S is a derived feature written by CICFlowMeter and will not reflect mutations to the base packet count or duration fields.
+
     Packet rate ratio is used as a flow-level proxy for attack effectiveness.
     For port scans, this approximates port coverage (the more precise metric defined in constraint_spec.md) 
     since CICIDS2017 does not expose per-port probe counts in the aggregated feature vector. 
     For C2 flows, duration expansion is used instead since callback timing is the critical constraint.
 
-    Thresholds are defined per attack class. 
-    The attack_class parameter selects which thresholds apply at instantiation time.
+    Thresholds are defined per attack class. The attack_class parameter selects which thresholds apply at instantiation time.
 
     See docs/constraint_spec.md — Constraint Type 2: Functional Preservation.
     """
 
     THRESHOLDS = {
-        # Min fraction of original flow_pkts_s that must be retained
         "dos":        {"pkt_rate_min_ratio": 0.70},
-        # Packet rate used as proxy for port coverage; see class docstring
         "portscan":   {"pkt_rate_min_ratio": 0.60},
-        # C2 beaconing is constrained by callback window, not throughput
         "c2":         {"duration_max_ratio": 2.0},
         "bruteforce": {"pkt_rate_min_ratio": 0.60},
         "default":    {"pkt_rate_min_ratio": 0.50},
@@ -445,6 +454,17 @@ class FunctionalConstraintValidator(ConstraintValidator):
             self.attack_class, self.THRESHOLDS["default"]
         )
 
+    def _compute_pkt_rate(self, sample: np.ndarray) -> float:
+        """
+        Compute packets per second from the mutable base features.
+        FLOW_DURATION is stored in microseconds in CICIDS2017.
+        Returns inf if duration is zero to avoid division by zero.
+        """
+        f = CICIDSFeatures
+        total_pkts = sample[f.TOT_FWD_PKTS] + sample[f.TOT_BWD_PKTS]
+        duration_sec = sample[f.FLOW_DURATION] / 1e6
+        return total_pkts / duration_sec if duration_sec > 0 else float('inf')
+
     def validate(self, original: np.ndarray, perturbed: np.ndarray) -> bool:
         return len(self.describe_violations(original, perturbed)) == 0
 
@@ -460,19 +480,18 @@ class FunctionalConstraintValidator(ConstraintValidator):
 
         if "pkt_rate_min_ratio" in self.thresholds:
             threshold = self.thresholds["pkt_rate_min_ratio"]
-            orig_rate = o[f.FLOW_PKTS_S]
-            pert_rate = p[f.FLOW_PKTS_S]
-            if orig_rate > 0:
+            orig_rate = self._compute_pkt_rate(o)
+            pert_rate = self._compute_pkt_rate(p)
+            if orig_rate > 0 and orig_rate != float('inf'):
                 ratio = pert_rate / orig_rate
                 if ratio < threshold:
                     violations.append(
-                        f"flow_pkts_s degraded to {ratio*100:.1f}% of original "
+                        f"packet rate (recomputed) degraded to {ratio*100:.1f}% of original "
                         f"({pert_rate:.2f} vs {orig_rate:.2f} pkts/s) — "
                         f"functional preservation threshold for "
                         f"'{self.attack_class}' is {threshold*100:.0f}%"
                     )
 
-        # Duration expansion applies to C2 flows where the attack must complete within a callback window
         if "duration_max_ratio" in self.thresholds:
             threshold = self.thresholds["duration_max_ratio"]
             orig_dur = o[f.FLOW_DURATION]
