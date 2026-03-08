@@ -32,73 +32,73 @@ class CICIDSFeatures:
     Column indices for CICIDS2017 feature vectors (post-preprocessing).
     Source of truth is the column order output by src/preprocess.py.
     """
-    DEST_PORT               = 0
-    FLOW_DURATION           = 1
-    TOT_FWD_PKTS            = 2
-    TOT_BWD_PKTS            = 3
-    TOT_LEN_FWD_PKTS        = 4
-    TOT_LEN_BWD_PKTS        = 5
-    FWD_PKT_LEN_MAX         = 6
-    FWD_PKT_LEN_MIN         = 7
-    FWD_PKT_LEN_MEAN        = 8
-    FWD_PKT_LEN_STD         = 9
-    BWD_PKT_LEN_MAX         = 10
-    BWD_PKT_LEN_MIN         = 11
-    BWD_PKT_LEN_MEAN        = 12
-    BWD_PKT_LEN_STD         = 13
-    FLOW_BYTS_S             = 14
-    FLOW_PKTS_S             = 15
-    FLOW_IAT_MEAN           = 16
-    FLOW_IAT_STD            = 17
-    FLOW_IAT_MAX            = 18
-    FLOW_IAT_MIN            = 19
-    FWD_IAT_TOT             = 20
-    FWD_IAT_MEAN            = 21
-    FWD_IAT_STD             = 22
-    FWD_IAT_MAX             = 23
-    FWD_IAT_MIN             = 24
-    BWD_IAT_TOT             = 25
-    BWD_IAT_MEAN            = 26
-    BWD_IAT_STD             = 27
-    BWD_IAT_MAX             = 28
-    BWD_IAT_MIN             = 29
-    FWD_PSH_FLAGS           = 30
-    FWD_URG_FLAGS           = 31
-    FWD_HEADER_LEN          = 32
-    BWD_HEADER_LEN          = 33
-    FWD_PKTS_S              = 34
-    BWD_PKTS_S              = 35
-    PKT_LEN_MIN             = 36
-    PKT_LEN_MAX             = 37
-    PKT_LEN_MEAN            = 38
-    PKT_LEN_STD             = 39
-    PKT_LEN_VAR             = 40
-    FIN_FLAG_CNT            = 41
-    SYN_FLAG_CNT            = 42
-    RST_FLAG_CNT            = 43
-    PSH_FLAG_CNT            = 44
-    ACK_FLAG_CNT            = 45
-    URG_FLAG_CNT            = 46
-    DOWN_UP_RATIO           = 47
-    PKT_SIZE_AVG            = 48
-    FWD_SEG_SIZE_AVG        = 49
-    BWD_SEG_SIZE_AVG        = 50
-    SUBFLOW_FWD_PKTS        = 51
-    SUBFLOW_FWD_BYTS        = 52
-    SUBFLOW_BWD_PKTS        = 53
-    SUBFLOW_BWD_BYTS        = 54
-    INIT_WIN_BYTS_FWD       = 55
-    INIT_WIN_BYTS_BWD       = 56
-    ACT_DATA_PKT_FWD        = 57
-    MIN_SEG_SIZE_FWD        = 58
-    ACTIVE_MEAN             = 59
-    ACTIVE_STD              = 60
-    ACTIVE_MAX              = 61
-    ACTIVE_MIN              = 62
-    IDLE_MEAN               = 63
-    IDLE_STD                = 64
-    IDLE_MAX                = 65
-    IDLE_MIN                = 66
+    DEST_PORT = 0
+    FLOW_DURATION = 1
+    TOT_FWD_PKTS = 2
+    TOT_BWD_PKTS = 3
+    TOT_LEN_FWD_PKTS = 4
+    TOT_LEN_BWD_PKTS = 5
+    FWD_PKT_LEN_MAX = 6
+    FWD_PKT_LEN_MIN = 7
+    FWD_PKT_LEN_MEAN = 8
+    FWD_PKT_LEN_STD = 9
+    BWD_PKT_LEN_MAX = 10
+    BWD_PKT_LEN_MIN = 11
+    BWD_PKT_LEN_MEAN = 12
+    BWD_PKT_LEN_STD = 13
+    FLOW_BYTS_S = 14
+    FLOW_PKTS_S = 15
+    FLOW_IAT_MEAN = 16
+    FLOW_IAT_STD = 17
+    FLOW_IAT_MAX = 18
+    FLOW_IAT_MIN = 19
+    FWD_IAT_TOT = 20
+    FWD_IAT_MEAN = 21
+    FWD_IAT_STD = 22
+    FWD_IAT_MAX = 23
+    FWD_IAT_MIN = 24
+    BWD_IAT_TOT = 25
+    BWD_IAT_MEAN = 26
+    BWD_IAT_STD = 27
+    BWD_IAT_MAX = 28
+    BWD_IAT_MIN = 29
+    FWD_PSH_FLAGS = 30
+    FWD_URG_FLAGS = 31
+    FWD_HEADER_LEN = 32
+    BWD_HEADER_LEN = 33
+    FWD_PKTS_S = 34
+    BWD_PKTS_S = 35
+    PKT_LEN_MIN = 36
+    PKT_LEN_MAX = 37
+    PKT_LEN_MEAN = 38
+    PKT_LEN_STD = 39
+    PKT_LEN_VAR = 40
+    FIN_FLAG_CNT = 41
+    SYN_FLAG_CNT = 42
+    RST_FLAG_CNT = 43
+    PSH_FLAG_CNT = 44
+    ACK_FLAG_CNT = 45
+    URG_FLAG_CNT = 46
+    DOWN_UP_RATIO = 47
+    PKT_SIZE_AVG = 48
+    FWD_SEG_SIZE_AVG = 49
+    BWD_SEG_SIZE_AVG = 50
+    SUBFLOW_FWD_PKTS = 51
+    SUBFLOW_FWD_BYTS = 52
+    SUBFLOW_BWD_PKTS = 53
+    SUBFLOW_BWD_BYTS = 54
+    INIT_WIN_BYTS_FWD = 55
+    INIT_WIN_BYTS_BWD = 56
+    ACT_DATA_PKT_FWD = 57
+    MIN_SEG_SIZE_FWD = 58
+    ACTIVE_MEAN = 59
+    ACTIVE_STD = 60
+    ACTIVE_MAX = 61
+    ACTIVE_MIN = 62
+    IDLE_MEAN = 63
+    IDLE_STD = 64
+    IDLE_MAX = 65
+    IDLE_MIN = 66
     # Indices 67-70 are dataset-specific
     # Check preprocess.py output
 
@@ -220,8 +220,8 @@ class TCPConstraintValidator(ConstraintValidator):
     See docs/constraint_spec.md — Constraint Type 1: Protocol Validity.
     """
 
-    MIN_PKT_BYTES  = 20      # Min IP header size (bytes)
-    MAX_PKT_BYTES  = 65535   # Max IP payload (bytes)
+    MIN_PKT_BYTES = 20      # Min IP header size (bytes)
+    MAX_PKT_BYTES = 65535   # Max IP payload (bytes)
     MIN_TCP_HEADER = 20      # Min TCP header size (bytes)
 
     def validate(self, original: np.ndarray, perturbed: np.ndarray) -> bool:
@@ -353,10 +353,10 @@ class DNSConstraintValidator(ConstraintValidator):
     See docs/constraint_spec.md — Constraint Type 1: Protocol Validity.
     """
 
-    DNS_PORT              = 53
+    DNS_PORT = 53
     MAX_DNS_PAYLOAD_BYTES = 4096        # EDNS0 max for both query and response
-    MAX_DNS_DURATION_US   = 5_000_000   # 5 seconds — standard resolver timeout
-    MAX_DNS_FWD_PKTS      = 10          # More than ~10 query packets per flow is anomalous
+    MAX_DNS_DURATION_US = 5_000_000   # 5 seconds — standard resolver timeout
+    MAX_DNS_FWD_PKTS = 10          # More than ~10 query packets per flow is anomalous
 
     def validate(self, original: np.ndarray, perturbed: np.ndarray) -> bool:
         return len(self.describe_violations(original, perturbed)) == 0
@@ -520,8 +520,8 @@ class PlausibilityConstraintValidator(ConstraintValidator):
     See docs/constraint_spec.md — Constraint Type 3: Behavioral Plausibility.
     """
 
-    MAX_IAT_MEAN_US   = 60_000_000   # 60 seconds in microseconds (stateful firewall timeout)
-    MAX_FLOW_PKTS_S   = 1_000_000    # 1M pps — practical upper bound for a single flow on commodity hardware
+    MAX_IAT_MEAN_US = 60_000_000   # 60 seconds in microseconds (stateful firewall timeout)
+    MAX_FLOW_PKTS_S = 1_000_000    # 1M pps — practical upper bound for a single flow on commodity hardware
     MIN_AVG_PKT_BYTES = 20
     MAX_AVG_PKT_BYTES = 1500
 
