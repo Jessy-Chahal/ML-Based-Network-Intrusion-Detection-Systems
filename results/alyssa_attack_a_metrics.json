@@ -1,0 +1,95 @@
+{
+  "attack": "Attack A - Feature Obfuscation",
+  "dataset": "cicids2017",
+  "generated_at_utc": "2026-03-08T03:48:56.852679+00:00",
+  "parameters": {
+    "k": 5,
+    "cover_traffic_rate": 1.0,
+    "max_dos_samples": null,
+    "max_scan_samples": null,
+    "seed": 42
+  },
+  "n_benign_pool": 1467539,
+  "n_dos_samples_evaluated": 29063,
+  "n_scan_samples_evaluated": 13623,
+  "n_dos_samples_total_in_test": 29063,
+  "n_scan_samples_total_in_test": 13623,
+  "metrics": {
+    "inject_decoy_flows": {
+      "target_labels": "DoS*",
+      "constraint_satisfaction_rate": 0.8331,
+      "n_constraint_pass": 24212,
+      "n_samples": 29063,
+      "fp_score_summary": {
+        "n_scored": 29063,
+        "mean_pkt_rate_ratio": 4.0562,
+        "median_pkt_rate_ratio": 2.3691,
+        "frac_passing_threshold": 0.8345
+      },
+      "models": {
+        "random_forest": {
+          "model": "random_forest",
+          "n_originally_detected": 28959,
+          "n_originally_detected_and_valid": 24204,
+          "n_evaded": 24204,
+          "esr": 0.8358,
+          "esr_on_valid": 1.0
+        },
+        "xgboost": {
+          "model": "xgboost",
+          "n_originally_detected": 29062,
+          "n_originally_detected_and_valid": 24211,
+          "n_evaded": 24206,
+          "esr": 0.8329,
+          "esr_on_valid": 0.9998
+        },
+        "mlp": {
+          "model": "mlp",
+          "n_originally_detected": 28998,
+          "n_originally_detected_and_valid": 24201,
+          "n_evaded": 11515,
+          "esr": 0.3971,
+          "esr_on_valid": 0.4758
+        }
+      }
+    },
+    "dilute_scan_pattern": {
+      "target_labels": "PortScan",
+      "constraint_satisfaction_rate": 0.0,
+      "n_constraint_pass": 0,
+      "n_samples": 13623,
+      "fp_score_summary": {
+        "n_scored": 13623,
+        "mean_pkt_rate_ratio": 1.4757,
+        "median_pkt_rate_ratio": 1.5,
+        "frac_passing_threshold": 0.9833
+      },
+      "models": {
+        "random_forest": {
+          "model": "random_forest",
+          "n_originally_detected": 13485,
+          "n_originally_detected_and_valid": 0,
+          "n_evaded": 0,
+          "esr": 0.0,
+          "esr_on_valid": 0.0
+        },
+        "xgboost": {
+          "model": "xgboost",
+          "n_originally_detected": 13623,
+          "n_originally_detected_and_valid": 0,
+          "n_evaded": 0,
+          "esr": 0.0,
+          "esr_on_valid": 0.0
+        },
+        "mlp": {
+          "model": "mlp",
+          "n_originally_detected": 13537,
+          "n_originally_detected_and_valid": 0,
+          "n_evaded": 0,
+          "esr": 0.0,
+          "esr_on_valid": 0.0
+        }
+      }
+    }
+  }
+}
