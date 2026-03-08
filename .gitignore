@@ -179,3 +179,7 @@ data/**/*.csv
 data/**/*.txt
 data/**/*.arff
 data/**/*.npz
+models/
+
+# From MacOS
+.DS_STORE
