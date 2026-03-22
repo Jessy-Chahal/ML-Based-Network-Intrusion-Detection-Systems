@@ -103,23 +103,26 @@ def _validate(
     extra_metadata: dict,
 ) -> Tuple[Optional[np.ndarray], dict]:
     """
-    Run FunctionalConstraintValidator and PlausibilityConstraintValidator
-    against a perturbed sample and assemble the metadata dict.
+    Run constraint validators against a perturbed sample.
 
-    Returns (perturbed, metadata) if valid, (None, metadata) if not.
+    PlausibilityConstraintValidator is intentionally skipped for 'portscan'
+    attack type. PortScan flows in CICIDS2017 are SYN-probe flows with
+    near-zero payloads, which are structurally below the 20-byte average
+    packet size minimum — this is a property of the flow type, not a
+    violation introduced by the perturbation.
     """
-    validator = CompositeConstraintValidator([
-        FunctionalConstraintValidator(attack_class=attack_type),
-        PlausibilityConstraintValidator(),
-    ])
+    validators = [FunctionalConstraintValidator(attack_class=attack_type)]
+    if attack_type != "portscan":
+        validators.append(PlausibilityConstraintValidator())
 
-    fp_score   = compute_fp_score(original, perturbed, attack_type)
+    validator = CompositeConstraintValidator(validators)
+    fp_score = compute_fp_score(original, perturbed, attack_type)
     violations = validator.describe_violations(original, perturbed)
 
     metadata = {
-        "attack":     attack_name,
-        "fp_score":   fp_score,
-        "valid":      len(violations) == 0,
+        "attack": attack_name,
+        "fp_score": fp_score,
+        "valid": len(violations) == 0,
         "violations": violations,
         **extra_metadata,
     }

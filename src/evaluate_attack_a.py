@@ -121,19 +121,6 @@ def apply_inject_decoy_batch(
     k: int,
     rng: np.random.Generator,
 ) -> tuple[np.ndarray, np.ndarray, list[dict]]:
-    """
-    Apply inject_decoy_flows to every sample in X.
-
-    Returns:
-        mutated    — array of perturbed samples (invalid rows hold original)
-        valid      — boolean mask, True where mutation passed validation
-        fp_scores  — list of FP score dicts, one per sample
-    """
-    validator = CompositeConstraintValidator([
-        FunctionalConstraintValidator(attack_class="dos"),
-        PlausibilityConstraintValidator(),
-    ])
-
     mutated   = np.array(X, dtype=np.float64)
     valid     = np.zeros(len(X), dtype=bool)
     fp_scores = []
@@ -144,7 +131,7 @@ def apply_inject_decoy_batch(
                 sample, benign_pool, k=k, attack_type="dos", rng=rng
             )
             fp_scores.append(meta["fp_score"])
-            if perturbed is not None and validator.validate(sample, perturbed):
+            if perturbed is not None:
                 mutated[i] = perturbed
                 valid[i]   = True
         except Exception:
@@ -158,19 +145,6 @@ def apply_dilute_scan_batch(
     cover_traffic_rate: float,
     rng: np.random.Generator,
 ) -> tuple[np.ndarray, np.ndarray, list[dict]]:
-    """
-    Apply dilute_scan_pattern to every sample in X.
-
-    Returns:
-        mutated    — array of perturbed samples (invalid rows hold original)
-        valid      — boolean mask, True where mutation passed validation
-        fp_scores  — list of FP score dicts, one per sample
-    """
-    validator = CompositeConstraintValidator([
-        FunctionalConstraintValidator(attack_class="portscan"),
-        PlausibilityConstraintValidator(),
-    ])
-
     mutated   = np.array(X, dtype=np.float64)
     valid     = np.zeros(len(X), dtype=bool)
     fp_scores = []
@@ -181,7 +155,7 @@ def apply_dilute_scan_batch(
                 sample, cover_traffic_rate=cover_traffic_rate, rng=rng
             )
             fp_scores.append(meta["fp_score"])
-            if perturbed is not None and validator.validate(sample, perturbed):
+            if perturbed is not None:
                 mutated[i] = perturbed
                 valid[i]   = True
         except Exception:
