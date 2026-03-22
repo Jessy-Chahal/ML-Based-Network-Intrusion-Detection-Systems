@@ -1,7 +1,7 @@
 {
   "attack": "Attack A - Feature Obfuscation",
   "dataset": "cicids2017",
-  "generated_at_utc": "2026-03-08T04:05:24.590817+00:00",
+  "generated_at_utc": "2026-03-22T22:47:04.762815+00:00",
   "parameters": {
     "k": 5,
     "cover_traffic_rate": 1.0,
@@ -55,8 +55,8 @@
     },
     "dilute_scan_pattern": {
       "target_labels": "PortScan",
-      "constraint_satisfaction_rate": 0.0,
-      "n_constraint_pass": 0,
+      "constraint_satisfaction_rate": 0.9833,
+      "n_constraint_pass": 13395,
       "n_samples": 13623,
       "fp_score_summary": {
         "n_scored": 13623,
@@ -68,26 +68,26 @@
         "random_forest": {
           "model": "random_forest",
           "n_originally_detected": 13485,
-          "n_originally_detected_and_valid": 0,
-          "n_evaded": 0,
-          "esr": 0.0,
-          "esr_on_valid": 0.0
+          "n_originally_detected_and_valid": 13257,
+          "n_evaded": 13216,
+          "esr": 0.9801,
+          "esr_on_valid": 0.9969
         },
         "xgboost": {
           "model": "xgboost",
           "n_originally_detected": 13623,
-          "n_originally_detected_and_valid": 0,
-          "n_evaded": 0,
-          "esr": 0.0,
-          "esr_on_valid": 0.0
+          "n_originally_detected_and_valid": 13395,
+          "n_evaded": 6755,
+          "esr": 0.4959,
+          "esr_on_valid": 0.5043
         },
         "mlp": {
           "model": "mlp",
           "n_originally_detected": 13611,
-          "n_originally_detected_and_valid": 0,
-          "n_evaded": 0,
-          "esr": 0.0,
-          "esr_on_valid": 0.0
+          "n_originally_detected_and_valid": 13394,
+          "n_evaded": 13394,
+          "esr": 0.9841,
+          "esr_on_valid": 1.0
         }
       }
     }
