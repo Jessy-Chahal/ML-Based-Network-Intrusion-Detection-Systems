@@ -6,8 +6,8 @@ Design choice:
   input shape = (n_features, 1)
 
 Outputs:
-- models/lstm_cicids2017.h5
-- results/lstm_metrics_cicids2017.json
+- models/lstm_<dataset>.h5
+- results/lstm_baseline_metrics_<dataset>.json
 """
 
 from __future__ import annotations
@@ -30,10 +30,26 @@ RESULTS_DIR = Path("results")
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
+# Reproducible default settings (edit here to change baseline run behavior).
+DATASET_NAMES = ["cicids2017", "nslkdd", "unswnb15"]
+DEFAULT_DATASET = "cicids2017"
+MODEL_FILENAME_TEMPLATE = "lstm_{dataset}.h5"
+SCALER_FILENAME_TEMPLATE = "scaler_lstm_{dataset}.pkl"
+METRICS_FILENAME_TEMPLATE = "lstm_baseline_metrics_{dataset}.json"
 
-def load_cicids():
-    npz_path = SPLITS_DIR / "cicids2017.npz"
-    label_map_path = SPLITS_DIR / "cicids2017_label_map.npy"
+DEFAULT_LEARNING_RATE = 8e-4
+DEFAULT_EPOCHS = 4
+DEFAULT_WARMUP_EPOCHS = 2
+DEFAULT_BATCH_SIZE = 8192
+DEFAULT_PATIENCE = 2
+DEFAULT_SEED = 42
+DEFAULT_CLASS_WEIGHT_ALPHA = 0.05
+DEFAULT_MAX_CLASS_WEIGHT = 20.0
+
+
+def load_dataset(dataset_name: str):
+    npz_path = SPLITS_DIR / f"{dataset_name}.npz"
+    label_map_path = SPLITS_DIR / f"{dataset_name}_label_map.npy"
     if not npz_path.exists():
         raise FileNotFoundError(f"Missing split file: {npz_path}")
     if not label_map_path.exists():
@@ -70,7 +86,7 @@ def build_model(n_features: int, n_classes: int) -> tf.keras.Model:
         ]
     )
     model.compile(
-        optimizer=tf.keras.optimizers.Adam(learning_rate=8e-4),
+        optimizer=tf.keras.optimizers.Adam(learning_rate=DEFAULT_LEARNING_RATE),
         loss="sparse_categorical_crossentropy",
         metrics=["accuracy"],
     )
@@ -109,34 +125,41 @@ def per_class_metrics(y_true: np.ndarray, y_pred: np.ndarray, label_map: dict[in
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Train CICIDS2017 LSTM classifier.")
-    parser.add_argument("--epochs", type=int, default=12)
+    parser = argparse.ArgumentParser(description="Train an LSTM classifier on NIDS datasets.")
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        choices=DATASET_NAMES,
+        default=DEFAULT_DATASET,
+        help="Dataset split to train/evaluate on.",
+    )
+    parser.add_argument("--epochs", type=int, default=DEFAULT_EPOCHS)
     parser.add_argument(
         "--warmup-epochs",
         type=int,
-        default=2,
+        default=DEFAULT_WARMUP_EPOCHS,
         help="Initial epochs without class weights to stabilize optimization.",
     )
-    parser.add_argument("--batch-size", type=int, default=4096)
-    parser.add_argument("--patience", type=int, default=4)
-    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE)
+    parser.add_argument("--patience", type=int, default=DEFAULT_PATIENCE)
+    parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
     parser.add_argument(
         "--max-class-weight",
         type=float,
-        default=None,
+        default=DEFAULT_MAX_CLASS_WEIGHT,
         help="Cap for balanced class weights to avoid instability from ultra-rare labels.",
     )
     parser.add_argument(
         "--class-weight-alpha",
         type=float,
-        default=1.0,
+        default=DEFAULT_CLASS_WEIGHT_ALPHA,
         help="Interpolation toward balanced weights: 0=uniform, 1=fully balanced.",
     )
     args = parser.parse_args()
 
     tf.keras.utils.set_random_seed(args.seed)
 
-    X_train, y_train, X_val, y_val, X_test, y_test, label_map = load_cicids()
+    X_train, y_train, X_val, y_val, X_test, y_test, label_map = load_dataset(args.dataset)
     n_features = X_train.shape[1]
     n_classes = len(label_map)
 
@@ -209,13 +232,13 @@ def main():
         else "balanced_smoothed"
     )
 
-    model_path = MODELS_DIR / "lstm_cicids2017.h5"
-    scaler_path = MODELS_DIR / "scaler_lstm_cicids2017.pkl"
+    model_path = MODELS_DIR / MODEL_FILENAME_TEMPLATE.format(dataset=args.dataset)
+    scaler_path = MODELS_DIR / SCALER_FILENAME_TEMPLATE.format(dataset=args.dataset)
     model.save(model_path)
     joblib.dump(scaler, scaler_path)
 
     metrics = {
-        "dataset": "cicids2017",
+        "dataset": args.dataset,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "model_path": str(model_path),
         "scaler_path": str(scaler_path),
@@ -236,7 +259,7 @@ def main():
         **details,
     }
 
-    metrics_path = RESULTS_DIR / "lstm_metrics_cicids2017.json"
+    metrics_path = RESULTS_DIR / METRICS_FILENAME_TEMPLATE.format(dataset=args.dataset)
     with open(metrics_path, "w") as f:
         json.dump(metrics, f, indent=2)
 
