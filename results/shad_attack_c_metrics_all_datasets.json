@@ -1,0 +1,353 @@
+{
+  "attack": "Attack C - Protocol Exploitation",
+  "generated_at_utc": "2026-03-24T05:08:58.778452+00:00",
+  "datasets_evaluated": [
+    "cicids2017",
+    "nslkdd",
+    "unswnb15"
+  ],
+  "results": [
+    {
+      "dataset": "cicids2017",
+      "parameters": {
+        "n_fragments": 4,
+        "target_iat_ms": 16.0316669921875,
+        "max_attack_samples": null,
+        "seed": 42
+      },
+      "constraint_validation": {
+        "enabled": true,
+        "validator": "TCPConstraintValidator",
+        "note": "TCPConstraintValidator applied."
+      },
+      "n_attack_samples_evaluated": 63882,
+      "n_attack_samples_total_in_test": 63882,
+      "metrics": {
+        "fragment_payload": {
+          "constraint_satisfaction_rate": 0.40119282426974734,
+          "n_constraint_pass": 25629,
+          "n_samples": 63882,
+          "n_mutation_success": 25629,
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 63556,
+              "n_originally_detected_and_valid": 25617,
+              "n_evaded": 57,
+              "esr": 0.0008968468751966769,
+              "esr_on_valid": 0.0022250849045555685
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 63876,
+              "n_originally_detected_and_valid": 25628,
+              "n_evaded": 9,
+              "esr": 0.00014089798985534473,
+              "esr_on_valid": 0.00035117839862650225
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 63759,
+              "n_originally_detected_and_valid": 25615,
+              "n_evaded": 25615,
+              "esr": 0.4017472043162534,
+              "esr_on_valid": 1.0
+            }
+          }
+        },
+        "add_tcp_options": {
+          "constraint_satisfaction_rate": 0.4012084781315551,
+          "n_constraint_pass": 25630,
+          "n_samples": 63882,
+          "n_mutation_success": 25630,
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 63556,
+              "n_originally_detected_and_valid": 25617,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 63876,
+              "n_originally_detected_and_valid": 25629,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 63759,
+              "n_originally_detected_and_valid": 25616,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            }
+          }
+        },
+        "shift_ack_timing": {
+          "constraint_satisfaction_rate": 0.4012084781315551,
+          "n_constraint_pass": 25630,
+          "n_samples": 63882,
+          "n_mutation_success": 25630,
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 63556,
+              "n_originally_detected_and_valid": 25617,
+              "n_evaded": 3029,
+              "esr": 0.047658757631065515,
+              "esr_on_valid": 0.11824179255962837
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 63876,
+              "n_originally_detected_and_valid": 25629,
+              "n_evaded": 1268,
+              "esr": 0.019850961237397456,
+              "esr_on_valid": 0.04947520387061532
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 63759,
+              "n_originally_detected_and_valid": 25616,
+              "n_evaded": 151,
+              "esr": 0.002368293103718691,
+              "esr_on_valid": 0.0058947532792004995
+            }
+          }
+        }
+      }
+    },
+    {
+      "dataset": "nslkdd",
+      "parameters": {
+        "n_fragments": 4,
+        "target_iat_ms": 1.0,
+        "max_attack_samples": null,
+        "seed": 42
+      },
+      "constraint_validation": {
+        "enabled": false,
+        "validator": null,
+        "note": "Constraint validation skipped: validators are scoped to CICIDS2017 feature schema."
+      },
+      "n_attack_samples_evaluated": 10719,
+      "n_attack_samples_total_in_test": 10719,
+      "metrics": {
+        "fragment_payload": {
+          "constraint_satisfaction_rate": null,
+          "n_constraint_pass": null,
+          "n_samples": 10719,
+          "n_mutation_success": 0,
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 10673,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 10707,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 10672,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            }
+          }
+        },
+        "add_tcp_options": {
+          "constraint_satisfaction_rate": null,
+          "n_constraint_pass": null,
+          "n_samples": 10719,
+          "n_mutation_success": 0,
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 10673,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 10707,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 10672,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            }
+          }
+        },
+        "shift_ack_timing": {
+          "constraint_satisfaction_rate": null,
+          "n_constraint_pass": null,
+          "n_samples": 10719,
+          "n_mutation_success": 0,
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 10673,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 10707,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 10672,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "dataset": "unswnb15",
+      "parameters": {
+        "n_fragments": 4,
+        "target_iat_ms": 1.0,
+        "max_attack_samples": null,
+        "seed": 42
+      },
+      "constraint_validation": {
+        "enabled": false,
+        "validator": null,
+        "note": "Constraint validation skipped: validators are scoped to CICIDS2017 feature schema."
+      },
+      "n_attack_samples_evaluated": 12175,
+      "n_attack_samples_total_in_test": 12175,
+      "metrics": {
+        "fragment_payload": {
+          "constraint_satisfaction_rate": null,
+          "n_constraint_pass": null,
+          "n_samples": 12175,
+          "n_mutation_success": 1,
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 11742,
+              "n_originally_detected_and_valid": 1,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 12156,
+              "n_originally_detected_and_valid": 1,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 12171,
+              "n_originally_detected_and_valid": 1,
+              "n_evaded": 1,
+              "esr": 8.216251745953496e-05,
+              "esr_on_valid": 1.0
+            }
+          }
+        },
+        "add_tcp_options": {
+          "constraint_satisfaction_rate": null,
+          "n_constraint_pass": null,
+          "n_samples": 12175,
+          "n_mutation_success": 2999,
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 11742,
+              "n_originally_detected_and_valid": 2971,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 12156,
+              "n_originally_detected_and_valid": 2999,
+              "n_evaded": 1,
+              "esr": 8.226390259953932e-05,
+              "esr_on_valid": 0.00033344448149383126
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 12171,
+              "n_originally_detected_and_valid": 2996,
+              "n_evaded": 2671,
+              "esr": 0.2194560841344179,
+              "esr_on_valid": 0.8915220293724967
+            }
+          }
+        },
+        "shift_ack_timing": {
+          "constraint_satisfaction_rate": null,
+          "n_constraint_pass": null,
+          "n_samples": 12175,
+          "n_mutation_success": 3,
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 11742,
+              "n_originally_detected_and_valid": 3,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 12156,
+              "n_originally_detected_and_valid": 3,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 12171,
+              "n_originally_detected_and_valid": 1,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            }
+          }
+        }
+      }
+    }
+  ]
+}
