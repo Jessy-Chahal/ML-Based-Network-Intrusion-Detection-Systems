@@ -1,0 +1,108 @@
+{
+  "attack": "Attack C - Protocol Exploitation",
+  "dataset": "cicids2017",
+  "generated_at_utc": "2026-03-08T02:46:50.116294+00:00",
+  "parameters": {
+    "n_fragments": 4,
+    "target_iat_ms": 16.0316669921875,
+    "max_attack_samples": null,
+    "seed": 42
+  },
+  "n_attack_samples_evaluated": 63882,
+  "n_attack_samples_total_in_test": 63882,
+  "metrics": {
+    "fragment_payload": {
+      "constraint_satisfaction_rate": 0.40119282426974734,
+      "n_constraint_pass": 25629,
+      "n_samples": 63882,
+      "models": {
+        "random_forest": {
+          "model": "random_forest",
+          "n_originally_detected": 63556,
+          "n_originally_detected_and_valid": 25617,
+          "n_evaded": 57,
+          "esr": 0.0008968468751966769,
+          "esr_on_valid": 0.0022250849045555685
+        },
+        "xgboost": {
+          "model": "xgboost",
+          "n_originally_detected": 63876,
+          "n_originally_detected_and_valid": 25628,
+          "n_evaded": 9,
+          "esr": 0.00014089798985534473,
+          "esr_on_valid": 0.00035117839862650225
+        },
+        "mlp": {
+          "model": "mlp",
+          "n_originally_detected": 63759,
+          "n_originally_detected_and_valid": 25615,
+          "n_evaded": 25615,
+          "esr": 0.4017472043162534,
+          "esr_on_valid": 1.0
+        }
+      }
+    },
+    "add_tcp_options": {
+      "constraint_satisfaction_rate": 0.4012084781315551,
+      "n_constraint_pass": 25630,
+      "n_samples": 63882,
+      "models": {
+        "random_forest": {
+          "model": "random_forest",
+          "n_originally_detected": 63556,
+          "n_originally_detected_and_valid": 25617,
+          "n_evaded": 0,
+          "esr": 0.0,
+          "esr_on_valid": 0.0
+        },
+        "xgboost": {
+          "model": "xgboost",
+          "n_originally_detected": 63876,
+          "n_originally_detected_and_valid": 25629,
+          "n_evaded": 0,
+          "esr": 0.0,
+          "esr_on_valid": 0.0
+        },
+        "mlp": {
+          "model": "mlp",
+          "n_originally_detected": 63759,
+          "n_originally_detected_and_valid": 25616,
+          "n_evaded": 0,
+          "esr": 0.0,
+          "esr_on_valid": 0.0
+        }
+      }
+    },
+    "shift_ack_timing": {
+      "constraint_satisfaction_rate": 0.4012084781315551,
+      "n_constraint_pass": 25630,
+      "n_samples": 63882,
+      "models": {
+        "random_forest": {
+          "model": "random_forest",
+          "n_originally_detected": 63556,
+          "n_originally_detected_and_valid": 25617,
+          "n_evaded": 3029,
+          "esr": 0.047658757631065515,
+          "esr_on_valid": 0.11824179255962837
+        },
+        "xgboost": {
+          "model": "xgboost",
+          "n_originally_detected": 63876,
+          "n_originally_detected_and_valid": 25629,
+          "n_evaded": 1268,
+          "esr": 0.019850961237397456,
+          "esr_on_valid": 0.04947520387061532
+        },
+        "mlp": {
+          "model": "mlp",
+          "n_originally_detected": 63759,
+          "n_originally_detected_and_valid": 25616,
+          "n_evaded": 151,
+          "esr": 0.002368293103718691,
+          "esr_on_valid": 0.0058947532792004995
+        }
+      }
+    }
+  }
+}
