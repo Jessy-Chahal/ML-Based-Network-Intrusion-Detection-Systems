@@ -1,0 +1,71 @@
+{
+  "cicids2017": {
+    "dataset": "cicids2017",
+    "output_path": "data\\splits\\adversarial_mixed_cicids2017.npz",
+    "benign_label_id": 0,
+    "n_benign_available": 1467539,
+    "n_adversarial_available": 23025,
+    "n_clean_used": 53724,
+    "n_adversarial_used": 23025,
+    "n_final": 76749,
+    "final_clean_ratio": 0.6999960911542822,
+    "final_adversarial_ratio": 0.30000390884571787,
+    "adversarial_class_counts": {
+      "Bot": 108,
+      "DDoS": 6877,
+      "DoS GoldenEye": 548,
+      "DoS Hulk": 9384,
+      "DoS Slowhttptest": 293,
+      "DoS slowloris": 288,
+      "FTP-Patator": 345,
+      "Heartbleed": 1,
+      "Infiltration": 2,
+      "PortScan": 4888,
+      "SSH-Patator": 170,
+      "Web Attack \u2013 Brute Force": 84,
+      "Web Attack \u2013 Sql Injection": 2,
+      "Web Attack \u2013 XSS": 35
+    }
+  },
+  "nslkdd": {
+    "dataset": "nslkdd",
+    "output_path": "data\\splits\\adversarial_mixed_nslkdd.npz",
+    "benign_label_id": 1,
+    "n_benign_available": 53937,
+    "n_adversarial_available": 15009,
+    "n_clean_used": 35020,
+    "n_adversarial_used": 15009,
+    "n_final": 50029,
+    "final_clean_ratio": 0.6999940034779828,
+    "final_adversarial_ratio": 0.3000059965220172,
+    "adversarial_class_counts": {
+      "DoS": 11211,
+      "Probe": 2957,
+      "R2L": 816,
+      "U2R": 25
+    }
+  },
+  "unswnb15": {
+    "dataset": "unswnb15",
+    "output_path": "data\\splits\\adversarial_mixed_unswnb15.npz",
+    "benign_label_id": 6,
+    "n_benign_available": 157502,
+    "n_adversarial_available": 17050,
+    "n_clean_used": 39783,
+    "n_adversarial_used": 17050,
+    "n_final": 56833,
+    "final_clean_ratio": 0.6999982404588884,
+    "final_adversarial_ratio": 0.3000017595411117,
+    "adversarial_class_counts": {
+      "Analysis": 95,
+      "Backdoors": 927,
+      "DoS": 6492,
+      "Exploits": 5543,
+      "Fuzzers": 81,
+      "Generic": 945,
+      "Reconnaissance": 2527,
+      "Shellcode": 389,
+      "Worms": 51
+    }
+  }
+}
