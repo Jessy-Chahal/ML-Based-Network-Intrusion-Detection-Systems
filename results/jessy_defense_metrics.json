@@ -1,0 +1,78 @@
+{
+  "generated_at_utc": "2026-03-25T06:12:36.132085+00:00",
+  "dataset": "cicids2017",
+  "target_recovery_pp": 25.0,
+  "n_attack_samples": 63882,
+  "clean_detection": {
+    "baseline_detection_rate": 0.9768,
+    "adversarial_detection_rate": 0.9928,
+    "note": "Detection rate on unperturbed attack samples. Both ensembles should be near 1.0 here."
+  },
+  "n_mutations_evaluated": 7,
+  "n_mutations_meeting_target": 3,
+  "mutations": [
+    {
+      "mutation": "inject_decoy_flows",
+      "n_samples": 63882,
+      "n_mutation_success": 36008,
+      "baseline_detection_rate": 0.0,
+      "adversarial_detection_rate": 0.2204,
+      "recovery_delta_pp": 22.04,
+      "meets_25pp_target": false
+    },
+    {
+      "mutation": "dilute_scan_pattern",
+      "n_samples": 63882,
+      "n_mutation_success": 48159,
+      "baseline_detection_rate": 0.0001,
+      "adversarial_detection_rate": 0.6689,
+      "recovery_delta_pp": 66.88,
+      "meets_25pp_target": true
+    },
+    {
+      "mutation": "mimic_timing",
+      "n_samples": 63882,
+      "n_mutation_success": 63882,
+      "baseline_detection_rate": 0.809,
+      "adversarial_detection_rate": 0.9216,
+      "recovery_delta_pp": 11.26,
+      "meets_25pp_target": false
+    },
+    {
+      "mutation": "mimic_packet_size",
+      "n_samples": 63882,
+      "n_mutation_success": 63882,
+      "baseline_detection_rate": 0.0077,
+      "adversarial_detection_rate": 0.7216,
+      "recovery_delta_pp": 71.4,
+      "meets_25pp_target": true
+    },
+    {
+      "mutation": "fragment_payload",
+      "n_samples": 63882,
+      "n_mutation_success": 25629,
+      "baseline_detection_rate": 0.0008,
+      "adversarial_detection_rate": 0.9747,
+      "recovery_delta_pp": 97.39,
+      "meets_25pp_target": true
+    },
+    {
+      "mutation": "add_tcp_options",
+      "n_samples": 63882,
+      "n_mutation_success": 25630,
+      "baseline_detection_rate": 0.9984,
+      "adversarial_detection_rate": 0.9909,
+      "recovery_delta_pp": -0.76,
+      "meets_25pp_target": false
+    },
+    {
+      "mutation": "shift_ack_timing",
+      "n_samples": 63882,
+      "n_mutation_success": 25630,
+      "baseline_detection_rate": 0.9181,
+      "adversarial_detection_rate": 0.9786,
+      "recovery_delta_pp": 6.05,
+      "meets_25pp_target": false
+    }
+  ]
+}
