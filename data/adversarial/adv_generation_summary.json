@@ -1,7 +1,7 @@
 {
   "cicids2017": {
     "dataset": "cicids2017",
-    "output_path": "data/adversarial/adv_train_cicids.npz",
+    "output_path": "data\\adversarial\\adv_train_cicids.npz",
     "n_clean": 1235952,
     "n_attack_candidates": 89439,
     "n_adv_generated": 23025,
@@ -10,7 +10,7 @@
   },
   "nslkdd": {
     "dataset": "nslkdd",
-    "output_path": "data/adversarial/adv_train_nslkdd.npz",
+    "output_path": "data\\adversarial\\adv_train_nslkdd.npz",
     "n_clean": 72770,
     "n_attack_candidates": 15009,
     "n_adv_generated": 15009,
@@ -19,7 +19,7 @@
   },
   "unswnb15": {
     "dataset": "unswnb15",
-    "output_path": "data/adversarial/adv_train_unswnb15.npz",
+    "output_path": "data\\adversarial\\adv_train_unswnb15.npz",
     "n_clean": 150020,
     "n_attack_candidates": 17050,
     "n_adv_generated": 17050,
