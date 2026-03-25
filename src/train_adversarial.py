@@ -1,6 +1,8 @@
 """
 Retrain baseline models (RF, XGBoost, MLP, LSTM + majority-voting ensemble)
-on adversarially mixed training data to build evasion resistance.
+on the adversarial training set from data/adversarial/ (output of
+gen_adversarial_dataset.py: adv_train_*.npz). Validation still comes from
+data/splits/<dataset>.npz.
 
 LSTM matches train_lstm.py: stacked LSTM (64→32), dense head, scaled tabular
 features as a sequence (n_features, 1), warmup epochs then class-weighted fit.
@@ -42,6 +44,11 @@ LSTM_MAX_CLASS_WEIGHT = 20.0
 
 # Directory Setup
 SPLITS_DIR = Path("data/splits")
+ADV_DIR = Path("data/adversarial")
+ADV_SUMMARY_PATH = ADV_DIR / "adv_generation_summary.json"
+# File stems after adv_train_ — must match src/gen_adversarial_dataset.py DATASET_NAME_MAP
+ADV_TRAIN_STEM = {"cicids2017": "cicids", "nslkdd": "nslkdd", "unswnb15": "unswnb15"}
+
 MODELS_DIR = Path("models")
 RESULTS_DIR = Path("results")
 
@@ -72,23 +79,64 @@ def get_label_map(dataset_name, split_stats):
     raise FileNotFoundError(f"Could not find a label map for {dataset_name}. Did you run the preprocessor?")
 
 
+def _resolve_adv_train_npz(dataset_name: str) -> Path:
+    """
+    Path to adv_train_*.npz from gen_adversarial_dataset.py.
+    Uses adv_generation_summary.json output_path first, then default names under data/adversarial/.
+    """
+    candidates: list[Path] = []
+    if ADV_SUMMARY_PATH.exists():
+        with open(ADV_SUMMARY_PATH, encoding="utf-8") as f:
+            summary = json.load(f)
+        op = (summary.get(dataset_name) or {}).get("output_path")
+        if op:
+            candidates.append(Path(str(op).replace("\\", "/")))
+    stem = ADV_TRAIN_STEM.get(dataset_name)
+    if stem:
+        candidates.append(ADV_DIR / f"adv_train_{stem}.npz")
+    if dataset_name == "unswnb15":
+        candidates.append(ADV_DIR / "adv_train_unsw_nb15.npz")
+
+    for p in candidates:
+        if p.is_file():
+            return p
+
+    tried = ", ".join(str(p) for p in candidates) if candidates else "(none)"
+    raise FileNotFoundError(
+        f"No adversarial training .npz found for {dataset_name}. "
+        f"Tried: {tried}. Run: python src/gen_adversarial_dataset.py"
+    )
+
+
 def load_adversarial_mixed_dataset(dataset_name, split_stats=None):
     """
-    Loads the 70% clean / 30% perturbed training mix alongside the clean validation set.
+    Training: data/adversarial/adv_train_*.npz (70% stratified clean + generated adversarial).
+    Validation: data/splits/<dataset>.npz (unchanged split).
     """
-    mixed_path = SPLITS_DIR / f"adversarial_mixed_{dataset_name}.npz"
+    adv_path = _resolve_adv_train_npz(dataset_name)
     base_path = SPLITS_DIR / f"{dataset_name}.npz"
 
-    if not mixed_path.exists() or not base_path.exists():
-        raise FileNotFoundError(f"Missing required .npz splits for {dataset_name}. Check your data/splits folder.")
+    if not base_path.exists():
+        raise FileNotFoundError(
+            f"Missing validation split for {dataset_name}: {base_path}"
+        )
 
-    # Load data
-    mixed_data = np.load(mixed_path, allow_pickle=True)
+    adv_data = np.load(adv_path, allow_pickle=True)
     base_data = np.load(base_path, allow_pickle=True)
 
+    if "X_train" not in adv_data.files or "y_train" not in adv_data.files:
+        raise KeyError(f"{adv_path} must contain X_train and y_train")
+
     label_map = get_label_map(dataset_name, split_stats)
-    
-    return mixed_data["X_train"], mixed_data["y_train"], base_data["X_val"], base_data["y_val"], label_map
+
+    return (
+        adv_data["X_train"],
+        adv_data["y_train"],
+        base_data["X_val"],
+        base_data["y_val"],
+        label_map,
+        adv_path,
+    )
 
 
 def compute_metrics(y_true, y_pred, label_map):
@@ -277,8 +325,13 @@ def run_one_dataset(dataset_name, split_stats):
     print(f"\n{'='*60}")
     print(f"Starting Adversarial Training for: {dataset_name.upper()}")
     
-    X_train, y_train, X_val, y_val, label_map = load_adversarial_mixed_dataset(dataset_name, split_stats)
-    print(f"Data loaded -> Train: {X_train.shape[0]:,} samples | Val: {X_val.shape[0]:,} samples | Classes: {len(label_map)}")
+    X_train, y_train, X_val, y_val, label_map, adv_train_path = load_adversarial_mixed_dataset(
+        dataset_name, split_stats
+    )
+    print(f"  Train file: {adv_train_path}")
+    print(
+        f"Data loaded -> Train: {X_train.shape[0]:,} samples | Val: {X_val.shape[0]:,} samples | Classes: {len(label_map)}"
+    )
 
     all_metrics = {}
     preds_for_vote = []
