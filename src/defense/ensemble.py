@@ -88,15 +88,10 @@ class Ensemble:
     def adversarial(cls, models_dir: Path = MODELS_DIR) -> "Ensemble":
         """
         Load adversarially retrained models.
-
-        ── PLACEHOLDER ──────────────────────────────────────────────────────
-        This will raise FileNotFoundError until Jessy's files exist in models/.
-        Use Ensemble.baseline() in the meantime.
-        ─────────────────────────────────────────────────────────────────────
         """
         rf = joblib.load(models_dir / "adv_rf_cicids2017.pkl")
         xgb = joblib.load(models_dir / "adv_xgb_cicids2017.pkl")
-        mlp_scaler = joblib.load(models_dir / "scaler_cicids2017.pkl")
+        mlp_scaler = joblib.load(models_dir / "adv_scaler_cicids2017.pkl")
         mlp = tf.keras.models.load_model(
             models_dir / "adv_mlp_cicids2017.h5", compile=False
         )
