@@ -1,0 +1,296 @@
+{
+  "attack": "Attack A - Feature Obfuscation",
+  "generated_at_utc": "2026-03-25T02:52:42.779963+00:00",
+  "datasets_evaluated": [
+    "cicids2017",
+    "nslkdd",
+    "unswnb15"
+  ],
+  "results": [
+    {
+      "dataset": "cicids2017",
+      "n_benign_pool": 1467539,
+      "n_inject_samples_evaluated": 29063,
+      "n_dilute_samples_evaluated": 13623,
+      "parameters": {
+        "k": 5,
+        "cover_traffic_rate": 1.0,
+        "max_dos_samples": null,
+        "max_scan_samples": null,
+        "seed": 42
+      },
+      "metrics": {
+        "inject_decoy_flows": {
+          "target_labels": "DoS* labels only",
+          "constraint_satisfaction_rate": 0.8331,
+          "n_constraint_pass": 24212,
+          "n_samples": 29063,
+          "n_mutation_success": 24212,
+          "fp_score_summary": {
+            "n_scored": 29063,
+            "mean_pkt_rate_ratio": 4.0562,
+            "median_pkt_rate_ratio": 2.3691,
+            "frac_passing_threshold": 0.8345
+          },
+          "constraint_validation": {
+            "enabled": true,
+            "note": "FunctionalConstraintValidator applied."
+          },
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 28959,
+              "n_originally_detected_and_valid": 24204,
+              "n_evaded": 24204,
+              "esr": 0.8358,
+              "esr_on_valid": 1.0
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 29062,
+              "n_originally_detected_and_valid": 24211,
+              "n_evaded": 24195,
+              "esr": 0.8325,
+              "esr_on_valid": 0.9993
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 27698,
+              "n_originally_detected_and_valid": 24162,
+              "n_evaded": 11628,
+              "esr": 0.4198,
+              "esr_on_valid": 0.4813
+            }
+          }
+        },
+        "dilute_scan_pattern": {
+          "target_labels": "PortScan label only",
+          "constraint_satisfaction_rate": 0.9833,
+          "n_constraint_pass": 13395,
+          "n_samples": 13623,
+          "n_mutation_success": 13395,
+          "fp_score_summary": {
+            "n_scored": 13623,
+            "mean_pkt_rate_ratio": 1.4757,
+            "median_pkt_rate_ratio": 1.5,
+            "frac_passing_threshold": 0.9833
+          },
+          "constraint_validation": {
+            "enabled": true,
+            "note": "FunctionalConstraintValidator applied."
+          },
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 13485,
+              "n_originally_detected_and_valid": 13257,
+              "n_evaded": 13216,
+              "esr": 0.9801,
+              "esr_on_valid": 0.9969
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 13623,
+              "n_originally_detected_and_valid": 13395,
+              "n_evaded": 6755,
+              "esr": 0.4959,
+              "esr_on_valid": 0.5043
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 13611,
+              "n_originally_detected_and_valid": 13394,
+              "n_evaded": 13394,
+              "esr": 0.9841,
+              "esr_on_valid": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "dataset": "nslkdd",
+      "n_benign_pool": 53937,
+      "n_inject_samples_evaluated": 10719,
+      "n_dilute_samples_evaluated": 10719,
+      "parameters": {
+        "k": 5,
+        "cover_traffic_rate": 1.0,
+        "max_dos_samples": null,
+        "max_scan_samples": null,
+        "seed": 42
+      },
+      "metrics": {
+        "inject_decoy_flows": {
+          "target_labels": "All attack labels (no DoS-specific routing for this dataset)",
+          "constraint_satisfaction_rate": null,
+          "n_constraint_pass": null,
+          "n_samples": 10719,
+          "n_mutation_success": 0,
+          "fp_score_summary": null,
+          "constraint_validation": {
+            "enabled": false,
+            "note": "Constraint validation skipped: validators are scoped to the CICIDS2017 feature schema."
+          },
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 10668,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 10707,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 10683,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            }
+          },
+          "compatibility_note": "Attack A mutations reference CICIDS2017-specific feature indices (minimum 67 features required). NSL-KDD has 40 features \u2014 mutations are structurally incompatible with this dataset."
+        },
+        "dilute_scan_pattern": {
+          "target_labels": "All attack labels (no PortScan-specific routing for this dataset)",
+          "constraint_satisfaction_rate": null,
+          "n_constraint_pass": null,
+          "n_samples": 10719,
+          "n_mutation_success": 0,
+          "fp_score_summary": null,
+          "constraint_validation": {
+            "enabled": false,
+            "note": "Constraint validation skipped: validators are scoped to the CICIDS2017 feature schema."
+          },
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 10668,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 10707,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 10683,
+              "n_originally_detected_and_valid": 0,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            }
+          },
+          "compatibility_note": "Attack A mutations reference CICIDS2017-specific feature indices (minimum 67 features required). NSL-KDD has 40 features \u2014 mutations are structurally incompatible with this dataset."
+        }
+      }
+    },
+    {
+      "dataset": "unswnb15",
+      "n_benign_pool": 157502,
+      "n_inject_samples_evaluated": 12175,
+      "n_dilute_samples_evaluated": 12175,
+      "parameters": {
+        "k": 5,
+        "cover_traffic_rate": 1.0,
+        "max_dos_samples": null,
+        "max_scan_samples": null,
+        "seed": 42
+      },
+      "metrics": {
+        "inject_decoy_flows": {
+          "target_labels": "All attack labels (no DoS-specific routing for this dataset)",
+          "constraint_satisfaction_rate": null,
+          "n_constraint_pass": null,
+          "n_samples": 12175,
+          "n_mutation_success": 2526,
+          "fp_score_summary": null,
+          "constraint_validation": {
+            "enabled": false,
+            "note": "Constraint validation skipped: validators are scoped to the CICIDS2017 feature schema."
+          },
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 11749,
+              "n_originally_detected_and_valid": 2366,
+              "n_evaded": 2345,
+              "esr": 0.1996,
+              "esr_on_valid": 0.9911
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 12155,
+              "n_originally_detected_and_valid": 2515,
+              "n_evaded": 1164,
+              "esr": 0.0958,
+              "esr_on_valid": 0.4628
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 12169,
+              "n_originally_detected_and_valid": 2524,
+              "n_evaded": 2390,
+              "esr": 0.1964,
+              "esr_on_valid": 0.9469
+            }
+          }
+        },
+        "dilute_scan_pattern": {
+          "target_labels": "All attack labels (no PortScan-specific routing for this dataset)",
+          "constraint_satisfaction_rate": null,
+          "n_constraint_pass": null,
+          "n_samples": 12175,
+          "n_mutation_success": 663,
+          "fp_score_summary": null,
+          "constraint_validation": {
+            "enabled": false,
+            "note": "Constraint validation skipped: validators are scoped to the CICIDS2017 feature schema."
+          },
+          "models": {
+            "random_forest": {
+              "model": "random_forest",
+              "n_originally_detected": 11749,
+              "n_originally_detected_and_valid": 636,
+              "n_evaded": 17,
+              "esr": 0.0014,
+              "esr_on_valid": 0.0267
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 12155,
+              "n_originally_detected_and_valid": 662,
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
+            },
+            "mlp": {
+              "model": "mlp",
+              "n_originally_detected": 12169,
+              "n_originally_detected_and_valid": 662,
+              "n_evaded": 650,
+              "esr": 0.0534,
+              "esr_on_valid": 0.9819
+            }
+          }
+        }
+      }
+    }
+  ]
+}
