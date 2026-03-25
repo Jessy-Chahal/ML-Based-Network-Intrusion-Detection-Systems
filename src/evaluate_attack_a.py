@@ -1,19 +1,24 @@
 """
-Evaluate Attack A (feature obfuscation) evasion metrics on CICIDS2017.
+Evaluate Attack A (feature obfuscation) evasion metrics across datasets.
 
 Computes per-mutation:
-  - ESR (Evasion Success Rate): among originally-detected attack samples, the fraction classified as BENIGN after mutation.
-  - Constraint satisfaction rate: fraction of perturbed samples that pass FunctionalConstraintValidator + PlausibilityConstraintValidator.
+  - ESR (Evasion Success Rate): among originally-detected attack samples,
+    the fraction classified as BENIGN/Normal after mutation.
+  - Constraint satisfaction rate: fraction of perturbed samples passing
+    FunctionalConstraintValidator. CICIDS2017 only - validators are scoped
+    to the CICIDS2017 feature schema and are skipped for other datasets.
   - FP score summary: mean pkt_rate_ratio and fraction passing FP threshold.
+    CICIDS2017 only for the same reason.
 
 Attack-to-label routing:
-  - inject_decoy_flows  -> DoS* labels (DoS Hulk, DoS GoldenEye, etc.)
-  - dilute_scan_pattern -> PortScan label only
+  - inject_decoy_flows  -> DoS* labels on CICIDS2017 / all attack labels on others
+  - dilute_scan_pattern -> PortScan label on CICIDS2017 / all attack labels on others
 
-Running either attack on the wrong label class would produce meaningless evasion numbers, 
-so each mutation is evaluated on its designated subset.
+For NSL-KDD and UNSW-NB15, both mutations are applied to all attack samples
+(no label-specific routing) since those datasets do not have the same
+DoS*/PortScan label structure as CICIDS2017.
 
-Writes output to results/attack_a_metrics.json.
+Writes output to results/attack_a_metrics_all_datasets.json.
 """
 
 from __future__ import annotations
@@ -22,7 +27,7 @@ import argparse
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Optional
 import sys
 
 import joblib
@@ -46,18 +51,26 @@ from src.constraints import (
     CompositeConstraintValidator,
 )
 
-SPLITS_DIR  = Path("data/splits")
-MODELS_DIR  = Path("models")
+SPLITS_DIR = Path("data/splits")
+MODELS_DIR = Path("models")
 RESULTS_DIR = Path("results")
-RESULTS_PATH = RESULTS_DIR / "attack_a_metrics.json"
+RESULTS_PATH = RESULTS_DIR / "attack_a_metrics_all_datasets.json"
+
+DATASETS = ["cicids2017", "nslkdd", "unswnb15"]
+
+# Only CICIDS2017 has validators scoped to its feature schema
+CONSTRAINT_VALIDATION_DATASETS = {"cicids2017"}
+
+# Benign label names across datasets
+BENIGN_LABEL_CANDIDATES = {"BENIGN", "Normal", "normal"}
 
 
 ###
 # Data loading
 ###
-def load_cicids_data():
-    npz_path   = SPLITS_DIR / "cicids2017.npz"
-    label_path = SPLITS_DIR / "cicids2017_label_map.npy"
+def load_dataset(dataset: str):
+    npz_path = SPLITS_DIR / f"{dataset}.npz"
+    label_path = SPLITS_DIR / f"{dataset}_label_map.npy"
     if not npz_path.exists():
         raise FileNotFoundError(f"Missing split file: {npz_path}")
     if not label_path.exists():
@@ -66,25 +79,26 @@ def load_cicids_data():
     with np.load(npz_path, allow_pickle=True) as data:
         X_train = data["X_train"]
         y_train = data["y_train"]
-        X_test  = data["X_test"]
-        y_test  = data["y_test"]
+        X_test = data["X_test"]
+        y_test = data["y_test"]
     label_map = np.load(label_path, allow_pickle=True).item()
     return X_train, y_train, X_test, y_test, label_map
 
 
-def benign_label_id(label_map: dict) -> int:
+def benign_label_id(label_map: dict, dataset: str) -> int:
     for idx, name in label_map.items():
-        if name == "BENIGN":
+        if name in BENIGN_LABEL_CANDIDATES:
             return int(idx)
-    raise ValueError("Could not find BENIGN label in cicids2017_label_map.npy")
+    raise ValueError(f"Could not find benign label in {dataset}_label_map.npy")
 
 
 def dos_label_ids(label_map: dict) -> list[int]:
-    """Return all label IDs whose name starts with 'DoS'."""
+    """Return all label IDs whose name starts with 'DoS'. CICIDS2017 only."""
     return [int(idx) for idx, name in label_map.items() if name.startswith("DoS")]
 
 
 def portscan_label_id(label_map: dict) -> Optional[int]:
+    """Return the PortScan label ID, or None if not present. CICIDS2017 only."""
     for idx, name in label_map.items():
         if name == "PortScan":
             return int(idx)
@@ -94,11 +108,13 @@ def portscan_label_id(label_map: dict) -> Optional[int]:
 ###
 # Model loading and prediction
 ###
-def load_models():
-    rf     = joblib.load(MODELS_DIR / "rf_cicids2017.pkl")
-    xgb    = joblib.load(MODELS_DIR / "xgb_cicids2017.pkl")
-    scaler = joblib.load(MODELS_DIR / "scaler_cicids2017.pkl")
-    mlp    = tf.keras.models.load_model(MODELS_DIR / "mlp_cicids2017.h5", compile=False)
+def load_models(dataset: str):
+    rf = joblib.load(MODELS_DIR / f"rf_{dataset}.pkl")
+    xgb = joblib.load(MODELS_DIR / f"xgb_{dataset}.pkl")
+    scaler = joblib.load(MODELS_DIR / f"scaler_{dataset}.pkl")
+    mlp = tf.keras.models.load_model(
+        MODELS_DIR / f"mlp_{dataset}.h5", compile=False
+    )
     return rf, xgb, scaler, mlp
 
 
@@ -113,16 +129,76 @@ def predict(model_name: str, model_obj, X: np.ndarray, scaler=None) -> np.ndarra
 
 
 ###
-# Mutation batch application
+# Metrics helpers
+###
+def evasion_metrics(
+    model_name: str,
+    orig_pred: np.ndarray,
+    pert_pred: np.ndarray,
+    valid_mask: np.ndarray,
+    benign_id: int,
+) -> dict:
+    originally_detected = orig_pred != benign_id
+    n_originally_detected = int(originally_detected.sum())
+
+    valid_and_detected = originally_detected & valid_mask
+    n_valid_and_detected = int(valid_and_detected.sum())
+
+    evaded = valid_and_detected & (pert_pred == benign_id)
+    n_evaded = int(evaded.sum())
+
+    esr = n_evaded / n_originally_detected if n_originally_detected > 0 else 0.0
+    esr_on_valid = n_evaded / n_valid_and_detected  if n_valid_and_detected  > 0 else 0.0
+
+    return {
+        "model":                           model_name,
+        "n_originally_detected":           n_originally_detected,
+        "n_originally_detected_and_valid": n_valid_and_detected,
+        "n_evaded":                        n_evaded,
+        "esr":                             round(esr, 4),
+        "esr_on_valid":                    round(esr_on_valid, 4),
+    }
+
+
+def fp_score_summary(fp_scores: list) -> Optional[dict]:
+    """
+    Aggregate FP score dicts into summary statistics.
+    Returns None if no valid scores (e.g. non-CICIDS2017 datasets).
+    """
+    valid_scores = [s for s in fp_scores if s is not None]
+    if not valid_scores:
+        return None
+
+    ratios = [s["pkt_rate_ratio"] for s in valid_scores]
+    passing = [s["passes_threshold"] for s in valid_scores]
+
+    return {
+        "n_scored":               len(valid_scores),
+        "mean_pkt_rate_ratio":    round(float(np.mean(ratios)), 4),
+        "median_pkt_rate_ratio":  round(float(np.median(ratios)), 4),
+        "frac_passing_threshold": round(float(np.mean(passing)), 4),
+    }
+
+
+###
+# Mutation batch runners
 ###
 def apply_inject_decoy_batch(
     X: np.ndarray,
     benign_pool: np.ndarray,
     k: int,
     rng: np.random.Generator,
-) -> tuple[np.ndarray, np.ndarray, list[dict]]:
-    mutated   = np.array(X, dtype=np.float64)
-    valid     = np.zeros(len(X), dtype=bool)
+    validate_constraints: bool,
+) -> tuple[np.ndarray, np.ndarray, list]:
+    """
+    Apply inject_decoy_flows to every sample in X.
+
+    Constraint validation is only meaningful for CICIDS2017. For other
+    datasets validate_constraints=False and all mutations are accepted
+    if the call succeeds without raising an exception.
+    """
+    mutated = np.array(X, dtype=np.float64)
+    valid = np.zeros(len(X), dtype=bool)
     fp_scores = []
 
     for i, sample in enumerate(X):
@@ -130,10 +206,13 @@ def apply_inject_decoy_batch(
             perturbed, meta = inject_decoy_flows(
                 sample, benign_pool, k=k, attack_type="dos", rng=rng
             )
-            fp_scores.append(meta["fp_score"])
+            # FP scores reference CICIDS2017-specific feature indices - only
+            # collect them when constraint validation is active.
+            fp_scores.append(meta["fp_score"] if validate_constraints else None)
+
             if perturbed is not None:
                 mutated[i] = perturbed
-                valid[i]   = True
+                valid[i] = True
         except Exception:
             fp_scores.append(None)
 
@@ -144,9 +223,15 @@ def apply_dilute_scan_batch(
     X: np.ndarray,
     cover_traffic_rate: float,
     rng: np.random.Generator,
-) -> tuple[np.ndarray, np.ndarray, list[dict]]:
-    mutated   = np.array(X, dtype=np.float64)
-    valid     = np.zeros(len(X), dtype=bool)
+    validate_constraints: bool,
+) -> tuple[np.ndarray, np.ndarray, list]:
+    """
+    Apply dilute_scan_pattern to every sample in X.
+
+    Same constraint validation logic as apply_inject_decoy_batch.
+    """
+    mutated = np.array(X, dtype=np.float64)
+    valid = np.zeros(len(X), dtype=bool)
     fp_scores = []
 
     for i, sample in enumerate(X):
@@ -154,10 +239,11 @@ def apply_dilute_scan_batch(
             perturbed, meta = dilute_scan_pattern(
                 sample, cover_traffic_rate=cover_traffic_rate, rng=rng
             )
-            fp_scores.append(meta["fp_score"])
+            fp_scores.append(meta["fp_score"] if validate_constraints else None)
+
             if perturbed is not None:
                 mutated[i] = perturbed
-                valid[i]   = True
+                valid[i] = True
         except Exception:
             fp_scores.append(None)
 
@@ -165,140 +251,158 @@ def apply_dilute_scan_batch(
 
 
 ###
-# Metrics computation
+# Per-dataset evaluation
 ###
-def evasion_metrics(
-    model_name: str,
-    orig_pred: np.ndarray,
-    pert_pred: np.ndarray,
-    valid_mask: np.ndarray,
-    benign_id: int,
-) -> dict:
-    """
-    Compute ESR for one model on one mutation.
-
-    ESR denominator is all originally-detected samples (valid or not), consistent with the Attack C evaluator. 
-    sr_on_valid uses only samples that also passed constraint validation, 
-    which is the more meaningful number when constraint satisfaction rate is low.
-    """
-    originally_detected   = orig_pred != benign_id
-    n_originally_detected = int(originally_detected.sum())
-
-    valid_and_detected   = originally_detected & valid_mask
-    n_valid_and_detected = int(valid_and_detected.sum())
-
-    evaded   = valid_and_detected & (pert_pred == benign_id)
-    n_evaded = int(evaded.sum())
-
-    esr          = n_evaded / n_originally_detected if n_originally_detected > 0 else 0.0
-    esr_on_valid = n_evaded / n_valid_and_detected  if n_valid_and_detected  > 0 else 0.0
-
-    return {
-        "model":                              model_name,
-        "n_originally_detected":              n_originally_detected,
-        "n_originally_detected_and_valid":    n_valid_and_detected,
-        "n_evaded":                           n_evaded,
-        "esr":                                round(esr, 4),
-        "esr_on_valid":                       round(esr_on_valid, 4),
-    }
-
-
-def fp_score_summary(fp_scores: list[dict]) -> dict:
-    """Aggregate FP score dicts into summary statistics."""
-    valid_scores = [s for s in fp_scores if s is not None]
-    if not valid_scores:
-        return {"n_scored": 0}
-
-    ratios   = [s["pkt_rate_ratio"] for s in valid_scores]
-    passing  = [s["passes_threshold"] for s in valid_scores]
-
-    return {
-        "n_scored":              len(valid_scores),
-        "mean_pkt_rate_ratio":   round(float(np.mean(ratios)), 4),
-        "median_pkt_rate_ratio": round(float(np.median(ratios)), 4),
-        "frac_passing_threshold": round(float(np.mean(passing)), 4),
-    }
-
-
-###
-# Main
-###
-def main():
-    parser = argparse.ArgumentParser(description="Evaluate Attack A evasion metrics.")
-    parser.add_argument(
-        "--max-dos-samples",
-        type=int,
-        default=None,
-        help="Cap on DoS samples evaluated by inject_decoy_flows.",
-    )
-    parser.add_argument(
-        "--max-scan-samples",
-        type=int,
-        default=None,
-        help="Cap on PortScan samples evaluated by dilute_scan_pattern.",
-    )
-    parser.add_argument("--seed",               type=int,   default=42)
-    parser.add_argument("--k",                  type=int,   default=5,
-                        help="Number of decoy flows for inject_decoy_flows.")
-    parser.add_argument("--cover-traffic-rate", type=float, default=1.0,
-                        help="Dilution intensity for dilute_scan_pattern (0.0–2.0).")
-    args = parser.parse_args()
-
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+def evaluate_dataset(dataset: str, args) -> dict:
+    X_train, y_train, X_test, y_test, label_map = load_dataset(dataset)
+    benign_id = benign_label_id(label_map, dataset)
+    validate_constraints = dataset in CONSTRAINT_VALIDATION_DATASETS
     rng = np.random.default_rng(args.seed)
 
-    X_train, y_train, X_test, y_test, label_map = load_cicids_data()
-
-    benign_id   = benign_label_id(label_map)
-    dos_ids     = dos_label_ids(label_map)
-    scan_id     = portscan_label_id(label_map)
-
-    # Benign pool for inject_decoy_flows — drawn from training set only
+    # Benign pool drawn from training set only - never touch test split
     benign_pool = X_train[y_train == benign_id].astype(np.float64)
     if len(benign_pool) == 0:
-        raise RuntimeError("No BENIGN samples found in X_train.")
+        raise RuntimeError(f"No benign samples found in {dataset} X_train.")
 
-    ### Build per-attack evaluation subsets from X_test ###
-    dos_mask   = np.isin(y_test, dos_ids)
-    dos_idx    = np.where(dos_mask)[0]
+    ### Label routing ###
+    # CICIDS2017: route each mutation to its designated label subset.
+    # Other datasets: apply both mutations to all attack samples since they
+    # do not have the same DoS*/PortScan label structure.
+    if dataset == "cicids2017":
+        dos_ids = dos_label_ids(label_map)
+        scan_id = portscan_label_id(label_map)
 
-    if args.max_dos_samples is not None and len(dos_idx) > args.max_dos_samples:
-        dos_idx = rng.choice(dos_idx, size=args.max_dos_samples, replace=False)
-        dos_idx = np.sort(dos_idx)
+        dos_idx = np.where(np.isin(y_test, dos_ids))[0]
+        if args.max_dos_samples is not None and len(dos_idx) > args.max_dos_samples:
+            dos_idx = np.sort(rng.choice(dos_idx, size=args.max_dos_samples, replace=False))
+        X_inject = X_test[dos_idx].astype(np.float64)
 
-    X_dos = X_test[dos_idx].astype(np.float64)
+        if scan_id is not None:
+            scan_idx = np.where(y_test == scan_id)[0]
+            if args.max_scan_samples is not None and len(scan_idx) > args.max_scan_samples:
+                scan_idx = np.sort(rng.choice(scan_idx, size=args.max_scan_samples, replace=False))
+            X_dilute = X_test[scan_idx].astype(np.float64)
+        else:
+            X_dilute = np.empty((0, X_test.shape[1]), dtype=np.float64)
 
-    scan_idx = np.array([], dtype=int)
-    X_scan   = np.empty((0, X_test.shape[1]), dtype=np.float64)
-    if scan_id is not None:
-        scan_mask = y_test == scan_id
-        scan_idx  = np.where(scan_mask)[0]
-        if args.max_scan_samples is not None and len(scan_idx) > args.max_scan_samples:
-            scan_idx = rng.choice(scan_idx, size=args.max_scan_samples, replace=False)
-            scan_idx = np.sort(scan_idx)
-        X_scan = X_test[scan_idx].astype(np.float64)
+        inject_label_note = "DoS* labels only"
+        dilute_label_note = "PortScan label only"
 
-    rf, xgb, scaler, mlp = load_models()
+    else:
+        attack_idx = np.where(y_test != benign_id)[0]
+        if args.max_dos_samples is not None and len(attack_idx) > args.max_dos_samples:
+            attack_idx = np.sort(rng.choice(attack_idx, size=args.max_dos_samples, replace=False))
+        X_inject = X_test[attack_idx].astype(np.float64)
+        X_dilute = X_inject.copy()
+
+        inject_label_note = "All attack labels (no DoS-specific routing for this dataset)"
+        dilute_label_note = "All attack labels (no PortScan-specific routing for this dataset)"
+
+    ### Constraint validation note ###
+    if validate_constraints:
+        constraint_note = "FunctionalConstraintValidator applied."
+    else:
+        constraint_note = (
+            "Constraint validation skipped: validators are scoped to "
+            "the CICIDS2017 feature schema."
+        )
+
+    ### Models ###
+    rf, xgb, scaler, mlp = load_models(dataset)
     models = {
         "random_forest": (rf,  None),
         "xgboost":       (xgb, None),
         "mlp":           (mlp, scaler),
     }
 
-    # Baseline predictions on original (unperturbed) subsets
-    dos_baseline  = {
-        name: predict(name, obj, X_dos,  scaler=sc)
+    inject_baseline = {
+        name: predict(name, obj, X_inject, scaler=sc)
         for name, (obj, sc) in models.items()
-    }
-    scan_baseline = {
-        name: predict(name, obj, X_scan, scaler=sc)
-        for name, (obj, sc) in models.items()
-    } if len(X_scan) > 0 else {}
+    } if len(X_inject) > 0 else {}
 
-    output = {
-        "attack":           "Attack A - Feature Obfuscation",
-        "dataset":          "cicids2017",
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+    dilute_baseline = {
+        name: predict(name, obj, X_dilute, scaler=sc)
+        for name, (obj, sc) in models.items()
+    } if len(X_dilute) > 0 else {}
+
+    ### inject_decoy_flows ###
+    inject_metrics: dict = {"skipped": True, "reason": "No samples available."}
+    if len(X_inject) > 0:
+        mutated, valid_mask, fp_scores = apply_inject_decoy_batch(
+            X_inject, benign_pool, k=args.k, rng=rng,
+            validate_constraints=validate_constraints,
+        )
+        eval_X = np.where(valid_mask[:, None], mutated, X_inject.astype(np.float32))
+
+        inject_metrics = {
+            "target_labels":              inject_label_note,
+            "constraint_satisfaction_rate": (
+                round(float(valid_mask.mean()), 4) if validate_constraints else None
+            ),
+            "n_constraint_pass":  int(valid_mask.sum()) if validate_constraints else None,
+            "n_samples":          int(len(valid_mask)),
+            "n_mutation_success": int(valid_mask.sum()),
+            "fp_score_summary":   fp_score_summary(fp_scores),
+            "constraint_validation": {
+                "enabled": validate_constraints,
+                "note":    constraint_note,
+            },
+            "models": {},
+        }
+        for model_name, (model_obj, model_scaler) in models.items():
+            pert_pred = predict(model_name, model_obj, eval_X, scaler=model_scaler)
+            inject_metrics["models"][model_name] = evasion_metrics(
+                model_name, inject_baseline[model_name], pert_pred, valid_mask, benign_id
+            )
+
+    ### dilute_scan_pattern ###
+    dilute_metrics: dict = {"skipped": True, "reason": "No samples available."}
+    if len(X_dilute) > 0:
+        mutated, valid_mask, fp_scores = apply_dilute_scan_batch(
+            X_dilute, cover_traffic_rate=args.cover_traffic_rate, rng=rng,
+            validate_constraints=validate_constraints,
+        )
+        eval_X = np.where(valid_mask[:, None], mutated, X_dilute.astype(np.float32))
+
+        dilute_metrics = {
+            "target_labels":              dilute_label_note,
+            "constraint_satisfaction_rate": (
+                round(float(valid_mask.mean()), 4) if validate_constraints else None
+            ),
+            "n_constraint_pass":  int(valid_mask.sum()) if validate_constraints else None,
+            "n_samples":          int(len(valid_mask)),
+            "n_mutation_success": int(valid_mask.sum()),
+            "fp_score_summary":   fp_score_summary(fp_scores),
+            "constraint_validation": {
+                "enabled": validate_constraints,
+                "note":    constraint_note,
+            },
+            "models": {},
+        }
+        for model_name, (model_obj, model_scaler) in models.items():
+            pert_pred = predict(model_name, model_obj, eval_X, scaler=model_scaler)
+            dilute_metrics["models"][model_name] = evasion_metrics(
+                model_name, dilute_baseline[model_name], pert_pred, valid_mask, benign_id
+            )
+    
+    # NSL-KDD is structurally incompatible with Attack A mutations —
+    # both functions reference CICIDS2017-specific feature indices that
+    # require at least 67 features. NSL-KDD has 40. Add a note so the
+    # 0% results are not misread as meaningful evasion results.
+    if dataset == "nslkdd":
+        incompatible_note = (
+            "Attack A mutations reference CICIDS2017-specific feature indices "
+            "(minimum 67 features required). NSL-KDD has 40 features — "
+            "mutations are structurally incompatible with this dataset."
+        )
+        inject_metrics["compatibility_note"] = incompatible_note
+        dilute_metrics["compatibility_note"] = incompatible_note
+
+    return {
+        "dataset":                    dataset,
+        "n_benign_pool":              int(len(benign_pool)),
+        "n_inject_samples_evaluated": int(len(X_inject)),
+        "n_dilute_samples_evaluated": int(len(X_dilute)),
         "parameters": {
             "k":                  args.k,
             "cover_traffic_rate": args.cover_traffic_rate,
@@ -306,73 +410,76 @@ def main():
             "max_scan_samples":   args.max_scan_samples,
             "seed":               args.seed,
         },
-        "n_benign_pool":                  int(len(benign_pool)),
-        "n_dos_samples_evaluated":        int(len(X_dos)),
-        "n_scan_samples_evaluated":       int(len(X_scan)),
-        "n_dos_samples_total_in_test":    int(dos_mask.sum()),
-        "n_scan_samples_total_in_test":   int((y_test == scan_id).sum()) if scan_id is not None else 0,
-        "metrics": {},
+        "metrics": {
+            "inject_decoy_flows":  inject_metrics,
+            "dilute_scan_pattern": dilute_metrics,
+        },
     }
 
-    ### inject_decoy_flows (DoS subset) ###
-    mutated_dos, valid_dos, fp_dos = apply_inject_decoy_batch(
-        X_dos, benign_pool, k=args.k, rng=rng
+
+###
+# Main
+###
+def main():
+    parser = argparse.ArgumentParser(
+        description="Evaluate Attack A evasion metrics across datasets."
     )
+    parser.add_argument(
+        "--datasets",
+        nargs="+",
+        choices=DATASETS,
+        default=DATASETS,
+        help="Datasets to evaluate. Default: all three.",
+    )
+    parser.add_argument(
+        "--max-dos-samples",
+        type=int,
+        default=None,
+        help="Cap on DoS/attack samples for inject_decoy_flows.",
+    )
+    parser.add_argument(
+        "--max-scan-samples",
+        type=int,
+        default=None,
+        help="Cap on PortScan samples for dilute_scan_pattern (CICIDS2017 only).",
+    )
+    parser.add_argument("--seed",               type=int,   default=42)
+    parser.add_argument("--k",                  type=int,   default=5,
+                        help="Number of decoy flows for inject_decoy_flows.")
+    parser.add_argument("--cover-traffic-rate", type=float, default=1.0,
+                        help="Dilution intensity for dilute_scan_pattern (0.0–2.0).")
+    parser.add_argument(
+        "--output",
+        type=str,
+        default=None,
+        help="Output JSON path (default: results/attack_a_metrics_all_datasets.json).",
+    )
+    args = parser.parse_args()
 
-    # For invalid mutations, fall back to the original so model predictions
-    # do not spuriously inflate ESR; the valid_mask excludes them from ESR.
-    eval_dos = np.where(valid_dos[:, None], mutated_dos, X_dos.astype(np.float32))
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = Path(args.output) if args.output else RESULTS_PATH
 
-    inj_metrics = {
-        "target_labels":              "DoS*",
-        "constraint_satisfaction_rate": round(float(valid_dos.mean()), 4) if len(valid_dos) > 0 else 0.0,
-        "n_constraint_pass":          int(valid_dos.sum()),
-        "n_samples":                  int(len(valid_dos)),
-        "fp_score_summary":           fp_score_summary(fp_dos),
-        "models":                     {},
+    dataset_results = [evaluate_dataset(dataset, args) for dataset in args.datasets]
+
+    output = {
+        "attack":             "Attack A - Feature Obfuscation",
+        "generated_at_utc":   datetime.now(timezone.utc).isoformat(),
+        "datasets_evaluated": args.datasets,
+        "results":            dataset_results,
     }
-    for model_name, (model_obj, model_scaler) in models.items():
-        pert_pred = predict(model_name, model_obj, eval_dos, scaler=model_scaler)
-        inj_metrics["models"][model_name] = evasion_metrics(
-            model_name, dos_baseline[model_name], pert_pred, valid_dos, benign_id
-        )
 
-    output["metrics"]["inject_decoy_flows"] = inj_metrics
-
-    ### dilute_scan_pattern (PortScan subset) ###
-    if len(X_scan) > 0:
-        mutated_scan, valid_scan, fp_scan = apply_dilute_scan_batch(
-            X_scan, cover_traffic_rate=args.cover_traffic_rate, rng=rng
-        )
-        eval_scan = np.where(valid_scan[:, None], mutated_scan, X_scan.astype(np.float32))
-
-        scan_metrics = {
-            "target_labels":              "PortScan",
-            "constraint_satisfaction_rate": round(float(valid_scan.mean()), 4) if len(valid_scan) > 0 else 0.0,
-            "n_constraint_pass":          int(valid_scan.sum()),
-            "n_samples":                  int(len(valid_scan)),
-            "fp_score_summary":           fp_score_summary(fp_scan),
-            "models":                     {},
-        }
-        for model_name, (model_obj, model_scaler) in models.items():
-            pert_pred = predict(model_name, model_obj, eval_scan, scaler=model_scaler)
-            scan_metrics["models"][model_name] = evasion_metrics(
-                model_name, scan_baseline[model_name], pert_pred, valid_scan, benign_id
-            )
-
-        output["metrics"]["dilute_scan_pattern"] = scan_metrics
-    else:
-        output["metrics"]["dilute_scan_pattern"] = {
-            "skipped": True,
-            "reason": "PortScan label not found in test split or no samples available.",
-        }
-
-    with open(RESULTS_PATH, "w") as f:
+    with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
 
-    print(f"Saved {RESULTS_PATH}")
-    print(f"DoS samples evaluated:     {len(X_dos)}")
-    print(f"PortScan samples evaluated: {len(X_scan)}")
+    print(f"Saved {out_path}")
+    for entry in dataset_results:
+        cv = entry["dataset"] in CONSTRAINT_VALIDATION_DATASETS
+        print(
+            f"[{entry['dataset']}]"
+            f"  inject_samples={entry['n_inject_samples_evaluated']}"
+            f"  dilute_samples={entry['n_dilute_samples_evaluated']}"
+            f"  constraint_validation={'yes' if cv else 'no'}"
+        )
 
 
 if __name__ == "__main__":
