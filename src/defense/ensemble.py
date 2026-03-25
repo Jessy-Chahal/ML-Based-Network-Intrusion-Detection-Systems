@@ -96,8 +96,8 @@ class Ensemble:
             models_dir / "adv_mlp_cicids2017.h5", compile=False
         )
 
-        lstm = None
-        lstm_scaler = None
+        lstm_scaler = joblib.load(models_dir / "adv_scaler_lstm_cicids2017.pkl")
+        lstm = tf.keras.models.load_model(models_dir / "adv_lstm_cicids2017.h5", compile=False)
 
         return cls(
             rf=rf, xgb=xgb, mlp=mlp, mlp_scaler=mlp_scaler,
