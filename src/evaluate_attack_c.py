@@ -1,13 +1,15 @@
 """
-Evaluate Attack C (protocol exploitation) evasion metrics on CICIDS2017.
+Evaluate Attack C (protocol exploitation) evasion metrics across datasets.
 
 Computes:
 - ESR (Evasion Success Rate): among originally detected attack samples,
-  the fraction classified as BENIGN after mutation.
-- Constraint satisfaction rate: fraction of perturbed samples that pass
-  TCPConstraintValidator.
+  the fraction classified as benign/normal after mutation.
+- Constraint satisfaction rate on CICIDS2017 only (TCPConstraintValidator).
 
-Writes output to results/attack_c_metrics.json.
+For NSL-KDD and UNSW-NB15, constraint validation is intentionally skipped
+because validator checks are scoped to the CICIDS2017 feature schema.
+
+Writes output to results/attack_c_metrics_all_datasets.json.
 """
 
 from __future__ import annotations
@@ -42,12 +44,16 @@ from src.constraints import TCPConstraintValidator
 SPLITS_DIR = Path("data/splits")
 MODELS_DIR = Path("models")
 RESULTS_DIR = Path("results")
-RESULTS_PATH = RESULTS_DIR / "attack_c_metrics.json"
+RESULTS_PATH = RESULTS_DIR / "attack_c_metrics_all_datasets.json"
+
+DATASETS = ["cicids2017", "nslkdd", "unswnb15"]
+CONSTRAINT_VALIDATION_DATASETS = {"cicids2017"}
+BENIGN_LABEL_CANDIDATES = {"BENIGN", "Normal", "normal"}
 
 
-def load_cicids_test_data():
-    npz_path = SPLITS_DIR / "cicids2017.npz"
-    label_path = SPLITS_DIR / "cicids2017_label_map.npy"
+def load_dataset_data(dataset: str):
+    npz_path = SPLITS_DIR / f"{dataset}.npz"
+    label_path = SPLITS_DIR / f"{dataset}_label_map.npy"
     if not npz_path.exists():
         raise FileNotFoundError(f"Missing split file: {npz_path}")
     if not label_path.exists():
@@ -62,11 +68,11 @@ def load_cicids_test_data():
     return X_train, y_train, X_test, y_test, label_map
 
 
-def benign_label_id(label_map: dict[int, str]) -> int:
+def benign_label_id(label_map: dict[int, str], dataset: str) -> int:
     for idx, name in label_map.items():
-        if name == "BENIGN":
+        if name in BENIGN_LABEL_CANDIDATES:
             return int(idx)
-    raise ValueError("Could not find BENIGN label id in cicids2017_label_map.npy")
+    raise ValueError(f"Could not find benign/normal label id in {dataset}_label_map.npy")
 
 
 def compute_target_iat_ms(X_train: np.ndarray, y_train: np.ndarray, benign_id: int) -> float:
@@ -79,11 +85,11 @@ def compute_target_iat_ms(X_train: np.ndarray, y_train: np.ndarray, benign_id: i
     return float(np.clip(target_iat_ms, 1.0, 2000.0))
 
 
-def load_models():
-    rf = joblib.load(MODELS_DIR / "rf_cicids2017.pkl")
-    xgb = joblib.load(MODELS_DIR / "xgb_cicids2017.pkl")
-    scaler = joblib.load(MODELS_DIR / "scaler_cicids2017.pkl")
-    mlp = tf.keras.models.load_model(MODELS_DIR / "mlp_cicids2017.h5", compile=False)
+def load_models(dataset: str):
+    rf = joblib.load(MODELS_DIR / f"rf_{dataset}.pkl")
+    xgb = joblib.load(MODELS_DIR / f"xgb_{dataset}.pkl")
+    scaler = joblib.load(MODELS_DIR / f"scaler_{dataset}.pkl")
+    mlp = tf.keras.models.load_model(MODELS_DIR / f"mlp_{dataset}.h5", compile=False)
     return rf, xgb, scaler, mlp
 
 
@@ -98,19 +104,22 @@ def predict_by_model(model_name: str, model_obj, X: np.ndarray, scaler=None) -> 
 
 
 def apply_mutation_batch(
-    X: np.ndarray, mutation: Callable[[np.ndarray], np.ndarray]
+    X: np.ndarray,
+    mutation: Callable[[np.ndarray], np.ndarray],
+    validate_constraints: bool,
 ) -> tuple[np.ndarray, np.ndarray]:
-    validator = TCPConstraintValidator()
+    validator = TCPConstraintValidator() if validate_constraints else None
     mutated = np.zeros_like(X, dtype=np.float32)
     valid = np.zeros(len(X), dtype=bool)
 
     for i, sample in enumerate(X):
         try:
             perturbed = mutation(sample)
-            # Mutation functions already validate, but we verify here explicitly.
-            if validator.validate(sample, perturbed):
-                mutated[i] = perturbed.astype(np.float32, copy=False)
-                valid[i] = True
+            if validator is not None and not validator.validate(sample, perturbed):
+                valid[i] = False
+                continue
+            mutated[i] = perturbed.astype(np.float32, copy=False)
+            valid[i] = True
         except Exception:
             valid[i] = False
     return mutated, valid
@@ -145,28 +154,10 @@ def evaluate_mutation(
     }
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Evaluate Attack C evasion metrics.")
-    parser.add_argument(
-        "--max-attack-samples",
-        type=int,
-        default=None,
-        help="Optional cap on number of attack samples from CICIDS2017 test split.",
-    )
-    parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--n-fragments", type=int, default=4)
-    parser.add_argument(
-        "--target-iat-ms",
-        type=float,
-        default=None,
-        help="Override target IAT (ms) for shift_ack_timing. If omitted, uses benign median IAT.",
-    )
-    args = parser.parse_args()
-
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-
-    X_train, y_train, X_test, y_test, label_map = load_cicids_test_data()
-    benign_id = benign_label_id(label_map)
+def evaluate_dataset(dataset: str, args) -> dict:
+    X_train, y_train, X_test, y_test, label_map = load_dataset_data(dataset)
+    benign_id = benign_label_id(label_map, dataset)
+    validate_constraints = dataset in CONSTRAINT_VALIDATION_DATASETS
 
     attack_mask = y_test != benign_id
     attack_indices = np.where(attack_mask)[0]
@@ -186,14 +177,13 @@ def main():
         else compute_target_iat_ms(X_train, y_train, benign_id)
     )
 
-    rf, xgb, scaler, mlp = load_models()
+    rf, xgb, scaler, mlp = load_models(dataset)
     models = {
         "random_forest": (rf, None),
         "xgboost": (xgb, None),
         "mlp": (mlp, scaler),
     }
 
-    # Baseline predictions on original attack samples.
     baseline_predictions = {}
     for model_name, (model_obj, model_scaler) in models.items():
         baseline_predictions[model_name] = predict_by_model(
@@ -206,15 +196,25 @@ def main():
         "shift_ack_timing": lambda row: shift_ack_timing(row, iat_target_ms),
     }
 
-    output = {
-        "attack": "Attack C - Protocol Exploitation",
-        "dataset": "cicids2017",
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+    if validate_constraints:
+        constraint_note = "TCPConstraintValidator applied."
+    else:
+        constraint_note = (
+            "Constraint validation skipped: validators are scoped to CICIDS2017 feature schema."
+        )
+
+    dataset_output = {
+        "dataset": dataset,
         "parameters": {
             "n_fragments": args.n_fragments,
             "target_iat_ms": iat_target_ms,
             "max_attack_samples": args.max_attack_samples,
             "seed": args.seed,
+        },
+        "constraint_validation": {
+            "enabled": validate_constraints,
+            "validator": "TCPConstraintValidator" if validate_constraints else None,
+            "note": constraint_note,
         },
         "n_attack_samples_evaluated": int(len(X_attack)),
         "n_attack_samples_total_in_test": int(attack_mask.sum()),
@@ -222,20 +222,20 @@ def main():
     }
 
     for mutation_name, mutation_fn in mutation_specs.items():
-        mutated_X, valid_mask = apply_mutation_batch(X_attack, mutation_fn)
-        constraint_rate = float(valid_mask.mean()) if len(valid_mask) > 0 else 0.0
+        mutated_X, valid_mask = apply_mutation_batch(
+            X_attack, mutation_fn, validate_constraints=validate_constraints
+        )
+        eval_X = np.where(valid_mask[:, None], mutated_X, X_attack)
 
         mutation_metrics = {
-            "constraint_satisfaction_rate": constraint_rate,
-            "n_constraint_pass": int(valid_mask.sum()),
+            "constraint_satisfaction_rate": (
+                float(valid_mask.mean()) if validate_constraints and len(valid_mask) > 0 else None
+            ),
+            "n_constraint_pass": int(valid_mask.sum()) if validate_constraints else None,
             "n_samples": int(len(valid_mask)),
+            "n_mutation_success": int(valid_mask.sum()),
             "models": {},
         }
-
-        # Predict benign-vs-attack outcome after mutation.
-        # For invalid mutations, use original sample so prediction does not spuriously
-        # inflate evasion rates; invalid samples are excluded from evasion via valid_mask.
-        eval_X = np.where(valid_mask[:, None], mutated_X, X_attack)
 
         for model_name, (model_obj, model_scaler) in models.items():
             pert_pred = predict_by_model(
@@ -250,14 +250,63 @@ def main():
             )
             mutation_metrics["models"][model_name] = model_metrics
 
-        output["metrics"][mutation_name] = mutation_metrics
+        dataset_output["metrics"][mutation_name] = mutation_metrics
 
-    with open(RESULTS_PATH, "w") as f:
+    return dataset_output
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Evaluate Attack C evasion metrics.")
+    parser.add_argument(
+        "--datasets",
+        nargs="+",
+        choices=DATASETS,
+        default=DATASETS,
+        help="Datasets to evaluate. Default: all.",
+    )
+    parser.add_argument(
+        "--max-attack-samples",
+        type=int,
+        default=None,
+        help="Optional cap on number of attack samples from each dataset test split.",
+    )
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--n-fragments", type=int, default=4)
+    parser.add_argument(
+        "--target-iat-ms",
+        type=float,
+        default=None,
+        help="Override target IAT (ms) for shift_ack_timing. If omitted, uses benign median IAT.",
+    )
+    parser.add_argument(
+        "--output",
+        type=str,
+        default=None,
+        help="Output JSON path (default: results/attack_c_metrics_all_datasets.json).",
+    )
+    args = parser.parse_args()
+
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = Path(args.output) if args.output else RESULTS_PATH
+
+    dataset_results = [evaluate_dataset(dataset, args) for dataset in args.datasets]
+
+    output = {
+        "attack": "Attack C - Protocol Exploitation",
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "datasets_evaluated": args.datasets,
+        "results": dataset_results,
+    }
+
+    with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
 
-    print(f"Saved {RESULTS_PATH}")
-    print(f"Attack samples evaluated: {len(X_attack)}")
-    print(f"Target IAT (ms): {iat_target_ms:.3f}")
+    print(f"Saved {out_path}")
+    for entry in dataset_results:
+        print(
+            f"[{entry['dataset']}] attack_samples={entry['n_attack_samples_evaluated']}, "
+            f"constraint_validation={entry['constraint_validation']['enabled']}"
+        )
 
 
 if __name__ == "__main__":

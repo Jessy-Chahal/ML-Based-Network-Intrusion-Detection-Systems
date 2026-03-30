@@ -1,0 +1,170 @@
+{
+  "generated_at_utc": "2026-03-25T05:40:50.193039+00:00",
+  "comparison_mode": "Baseline and retrained accuracies are both computed directly from model files on the same clean X_test split.",
+  "datasets": {
+    "cicids2017": {
+      "n_test_samples": 378355,
+      "target_max_drop_pp": 3.0,
+      "overall_pass": true,
+      "models": {
+        "random_forest": {
+          "baseline_accuracy": 0.9981631007915847,
+          "retrained_clean_test_accuracy": 0.998046807892059,
+          "accuracy_drop_pp": 0.011629289952563848,
+          "within_3pp_target": true,
+          "baseline_model_path": "models/rf_cicids2017.pkl",
+          "model_path": "models/adv_rf_cicids2017.pkl"
+        },
+        "xgboost": {
+          "baseline_accuracy": 0.9986150572874681,
+          "retrained_clean_test_accuracy": 0.9983322540999855,
+          "accuracy_drop_pp": 0.028280318748263866,
+          "within_3pp_target": true,
+          "baseline_model_path": "models/xgb_cicids2017.pkl",
+          "model_path": "models/adv_xgb_cicids2017.pkl"
+        },
+        "mlp": {
+          "baseline_accuracy": 0.8347187165492725,
+          "retrained_clean_test_accuracy": 0.821389964451375,
+          "accuracy_drop_pp": 1.3328752097897523,
+          "within_3pp_target": true,
+          "baseline_model_path": "models/mlp_cicids2017.h5",
+          "baseline_scaler_path": "models/scaler_cicids2017.pkl",
+          "model_path": "models/adv_mlp_cicids2017.h5",
+          "scaler_path": "models/adv_scaler_cicids2017.pkl"
+        },
+        "lstm": {
+          "baseline_accuracy": 0.9244122583288181,
+          "retrained_clean_test_accuracy": 0.9297300154616696,
+          "accuracy_drop_pp": -0.5317757132851431,
+          "within_3pp_target": true,
+          "baseline_model_path": "models/lstm_cicids2017.h5",
+          "baseline_scaler_path": "models/scaler_lstm_cicids2017.pkl",
+          "model_path": "models/adv_lstm_cicids2017.h5",
+          "scaler_path": "models/adv_scaler_lstm_cicids2017.pkl"
+        },
+        "majority_voting": {
+          "baseline_accuracy": 0.9984617621017299,
+          "retrained_clean_test_accuracy": 0.9983454692022042,
+          "accuracy_drop_pp": 0.011629289952563848,
+          "within_3pp_target": true,
+          "member_models": [
+            "random_forest",
+            "xgboost",
+            "mlp"
+          ],
+          "note": "Majority vote compares baseline vs retrained using RF+XGB+MLP only."
+        }
+      }
+    },
+    "nslkdd": {
+      "n_test_samples": 22278,
+      "target_max_drop_pp": 3.0,
+      "overall_pass": true,
+      "models": {
+        "random_forest": {
+          "baseline_accuracy": 0.9956459287189156,
+          "retrained_clean_test_accuracy": 0.9937606607415388,
+          "accuracy_drop_pp": 0.1885267977376759,
+          "within_3pp_target": true,
+          "baseline_model_path": "models/rf_nslkdd.pkl",
+          "model_path": "models/adv_rf_nslkdd.pkl"
+        },
+        "xgboost": {
+          "baseline_accuracy": 0.995286830056558,
+          "retrained_clean_test_accuracy": 0.9925487027560822,
+          "accuracy_drop_pp": 0.27381273004758455,
+          "within_3pp_target": true,
+          "baseline_model_path": "models/xgb_nslkdd.pkl",
+          "model_path": "models/adv_xgb_nslkdd.pkl"
+        },
+        "mlp": {
+          "baseline_accuracy": 0.9680851063829787,
+          "retrained_clean_test_accuracy": 0.9593769638208097,
+          "accuracy_drop_pp": 0.8708142562169008,
+          "within_3pp_target": true,
+          "baseline_model_path": "models/mlp_nslkdd.h5",
+          "baseline_scaler_path": "models/scaler_nslkdd.pkl",
+          "model_path": "models/adv_mlp_nslkdd.h5",
+          "scaler_path": "models/adv_scaler_nslkdd.pkl"
+        },
+        "lstm": {
+          "baseline_accuracy": null,
+          "retrained_clean_test_accuracy": null,
+          "accuracy_drop_pp": null,
+          "within_3pp_target": null,
+          "model_path": "models/adv_lstm_nslkdd.h5",
+          "scaler_path": "models/adv_scaler_lstm_nslkdd.pkl",
+          "baseline_note": "Baseline LSTM model/scaler not found in models/."
+        },
+        "majority_voting": {
+          "baseline_accuracy": 0.9952419427237633,
+          "retrained_clean_test_accuracy": 0.9931322380824131,
+          "accuracy_drop_pp": 0.21097046413501852,
+          "within_3pp_target": true,
+          "member_models": [
+            "random_forest",
+            "xgboost",
+            "mlp"
+          ],
+          "note": "Majority vote compares baseline vs retrained using RF+XGB+MLP only."
+        }
+      }
+    },
+    "unswnb15": {
+      "n_test_samples": 45926,
+      "target_max_drop_pp": 3.0,
+      "overall_pass": true,
+      "models": {
+        "random_forest": {
+          "baseline_accuracy": 0.904041283804381,
+          "retrained_clean_test_accuracy": 0.9009929016243522,
+          "accuracy_drop_pp": 0.3048382180028786,
+          "within_3pp_target": true,
+          "baseline_model_path": "models/rf_unswnb15.pkl",
+          "model_path": "models/adv_rf_unswnb15.pkl"
+        },
+        "xgboost": {
+          "baseline_accuracy": 0.8871880851805077,
+          "retrained_clean_test_accuracy": 0.877411488045987,
+          "accuracy_drop_pp": 0.9776597134520726,
+          "within_3pp_target": true,
+          "baseline_model_path": "models/xgb_unswnb15.pkl",
+          "model_path": "models/adv_xgb_unswnb15.pkl"
+        },
+        "mlp": {
+          "baseline_accuracy": 0.8447502504028219,
+          "retrained_clean_test_accuracy": 0.8275268910856596,
+          "accuracy_drop_pp": 1.7223359317162346,
+          "within_3pp_target": true,
+          "baseline_model_path": "models/mlp_unswnb15.h5",
+          "baseline_scaler_path": "models/scaler_unswnb15.pkl",
+          "model_path": "models/adv_mlp_unswnb15.h5",
+          "scaler_path": "models/adv_scaler_unswnb15.pkl"
+        },
+        "lstm": {
+          "baseline_accuracy": null,
+          "retrained_clean_test_accuracy": null,
+          "accuracy_drop_pp": null,
+          "within_3pp_target": null,
+          "model_path": "models/adv_lstm_unswnb15.h5",
+          "scaler_path": "models/adv_scaler_lstm_unswnb15.pkl",
+          "baseline_note": "Baseline LSTM model/scaler not found in models/."
+        },
+        "majority_voting": {
+          "baseline_accuracy": 0.8992509689500501,
+          "retrained_clean_test_accuracy": 0.889213081914384,
+          "accuracy_drop_pp": 1.0037887035666104,
+          "within_3pp_target": true,
+          "member_models": [
+            "random_forest",
+            "xgboost",
+            "mlp"
+          ],
+          "note": "Majority vote compares baseline vs retrained using RF+XGB+MLP only."
+        }
+      }
+    }
+  },
+  "overall_pass": true
+}
