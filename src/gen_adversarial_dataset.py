@@ -7,13 +7,18 @@ For each dataset:
   three attack families (A/B/C).
 - Merge and save:
   data/adversarial/adv_train_{cicids,nslkdd,unswnb15}.npz
+
+Performance: inject_decoy_flows, dilute_scan_pattern, and protocol_exploitation
+already run their own constraint validation. Do not re-run TCPConstraintValidator
+on every sample — that duplicated work and made full CICIDS runs orders of
+magnitude slower than the old proxy pipeline.
 """
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Optional
 import sys
 
 import numpy as np
@@ -26,14 +31,19 @@ if __package__ is None or __package__ == "":
     if str(repo_root) not in sys.path:
         sys.path.insert(0, str(repo_root))
 
+from src.attacks.behavioral_mimicry import mimic_packet_size, mimic_timing
+from src.attacks.feature_obfuscation import dilute_scan_pattern, inject_decoy_flows
 from src.attacks.protocol_exploitation import (
     add_tcp_options,
     fragment_payload,
     shift_ack_timing,
 )
 from src.constraints import CICIDSFeatures as F
-from src.constraints import TCPConstraintValidator
-from src.mutations import blend_with_benign, split_packets
+from src.mutations import blend_with_benign
+
+SECONDS_TO_MICROSECONDS = 1_000_000.0
+INJECT_DECOY_K = 5
+DILUTE_COVER_TRAFFIC_RATE = 1.0
 
 SPLITS_DIR = Path("data/splits")
 OUT_DIR = Path("data/adversarial")
@@ -58,9 +68,60 @@ def load_split(dataset: str):
 
 def find_benign_label_id(label_map: dict[int, str]) -> int:
     for idx, name in label_map.items():
-        if name in {"BENIGN", "Normal"}:
+        if name in {"BENIGN", "Normal", "normal"}:
             return int(idx)
     raise ValueError(f"Could not find benign label in label_map={label_map}")
+
+
+def compute_benign_profile_from_data(
+    X_train: np.ndarray, y_train: np.ndarray, benign_id: int
+) -> dict:
+    """
+    Build a benign profile dict from training data for use with mimic_timing and mimic_packet_size.
+    Shape matches what load_benign_profile() returns from benign_profiles.json.
+    """
+    benign = X_train[y_train == benign_id]
+    if len(benign) == 0:
+        # Fallback defaults if no benign samples
+        return {
+            "flow_iat_mean": {"mean_us": 50_000.0},
+            "flow_iat_std": {"mean_us": 10_000.0},
+            "pkt_len_mean": {"mean_us": 200.0},
+        }
+
+    iat_mean_us = np.clip(benign[:, F.FLOW_IAT_MEAN], 0.0, None)
+    iat_std_us = np.clip(benign[:, F.FLOW_IAT_STD], 0.0, None)
+    total_pkts = benign[:, F.TOT_FWD_PKTS] + benign[:, F.TOT_BWD_PKTS]
+    total_bytes = benign[:, F.TOT_LEN_FWD_PKTS] + benign[:, F.TOT_LEN_BWD_PKTS]
+    # Per-flow average packet size (bytes); avoid div-by-zero
+    pkt_sizes = np.full(total_bytes.shape, np.nan, dtype=np.float64)
+    np.divide(total_bytes, total_pkts, out=pkt_sizes, where=total_pkts > 0)
+    pkt_sizes = pkt_sizes[~np.isnan(pkt_sizes)]
+    pkt_mean_bytes = float(np.median(pkt_sizes)) if len(pkt_sizes) > 0 else 200.0
+    pkt_mean_bytes = float(np.clip(pkt_mean_bytes, 20.0, 1500.0))
+
+    return {
+        "flow_iat_mean": {"mean_us": float(np.median(iat_mean_us))},
+        "flow_iat_std": {"mean_us": float(np.median(iat_std_us))},
+        "pkt_len_mean": {"mean_us": pkt_mean_bytes},
+    }
+
+
+def _recompute_rates_after_packet_size(flow: np.ndarray) -> np.ndarray:
+    """
+    Recompute FLOW_BYTS_S, FLOW_PKTS_S, FWD_PKTS_S, BWD_PKTS_S from totals and duration.
+    mimic_packet_size does not update these (evaluate_attack_b does this before constraint checks).
+    """
+    duration_sec = flow[F.FLOW_DURATION] / SECONDS_TO_MICROSECONDS
+    if duration_sec <= 0:
+        return flow
+    total_bytes = flow[F.TOT_LEN_FWD_PKTS] + flow[F.TOT_LEN_BWD_PKTS]
+    total_pkts = flow[F.TOT_FWD_PKTS] + flow[F.TOT_BWD_PKTS]
+    flow[F.FLOW_BYTS_S] = total_bytes / duration_sec
+    flow[F.FLOW_PKTS_S] = total_pkts / duration_sec
+    flow[F.FWD_PKTS_S] = flow[F.TOT_FWD_PKTS] / duration_sec
+    flow[F.BWD_PKTS_S] = flow[F.TOT_BWD_PKTS] / duration_sec
+    return flow
 
 
 def stratified_clean_split(y: np.ndarray, clean_ratio: float, rng: np.random.Generator) -> tuple[np.ndarray, np.ndarray]:
@@ -80,7 +141,7 @@ def stratified_clean_split(y: np.ndarray, clean_ratio: float, rng: np.random.Gen
     return clean_idx, remain_idx
 
 
-def _safe_attack_call(fn: Callable[[np.ndarray], np.ndarray], sample: np.ndarray):
+def _safe_attack_call(fn: Callable[[np.ndarray], Optional[np.ndarray]], sample: np.ndarray):
     try:
         out = fn(sample)
         if out is None:
@@ -90,48 +151,90 @@ def _safe_attack_call(fn: Callable[[np.ndarray], np.ndarray], sample: np.ndarray
         return None
 
 
-def build_cicids_adversarial(
-    X_attack: np.ndarray, benign_pool: np.ndarray, rng: np.random.Generator
-) -> tuple[np.ndarray, np.ndarray]:
-    """
-    Build Attack A/B/C outputs for CICIDS using mutation + protocol modules.
-    """
-    validator = TCPConstraintValidator()
+def _label_name(label_map: dict, label_id: int) -> str:
+    for key in (label_id, int(label_id), str(label_id), str(int(label_id))):
+        if key in label_map:
+            return str(label_map[key])
+    return ""
 
-    # Use benign median IAT as protocol timing target (ms).
-    if len(benign_pool) > 0:
-        target_iat_ms = float(np.median(np.clip(benign_pool[:, F.FLOW_IAT_MEAN], 0, None)) / 1000.0)
-        target_iat_ms = float(np.clip(target_iat_ms, 1.0, 2000.0))
-    else:
-        target_iat_ms = 50.0
+
+def build_cicids_adversarial(
+    X_attack: np.ndarray,
+    y_attack: np.ndarray,
+    benign_pool: np.ndarray,
+    benign_profile: dict,
+    label_map: dict,
+    rng: np.random.Generator,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Attack A: dilute_scan_pattern (PortScan), inject_decoy_flows (all other labels in this third).
+    Attack B: mimic_timing / mimic_packet_size alternating (profile from training benign).
+    Attack C: fragment_payload, add_tcp_options, shift_ack_timing (unchanged).
+
+    Validity: trust feature_obfuscation and protocol_exploitation validators only — no extra TCP pass.
+    """
+    if len(benign_pool) == 0:
+        raise RuntimeError("CICIDS adversarial generation requires a non-empty benign_pool.")
+
+    benign_fp64 = benign_pool.astype(np.float64, copy=False)
+
+    target_iat_ms = float(np.median(np.clip(benign_pool[:, F.FLOW_IAT_MEAN], 0, None)) / 1000.0)
+    target_iat_ms = float(np.clip(target_iat_ms, 1.0, 2000.0))
 
     n = len(X_attack)
     order = rng.permutation(n)
     thirds = np.array_split(order, 3)
 
-    X_adv = []
-    src = []
+    X_adv: list[np.ndarray] = []
+    src: list[int] = []
+    y_adv: list[int] = []
 
-    # Attack A: feature obfuscation style (split packets)
+    # Attack A
     for idx in thirds[0]:
-        sample = X_attack[idx]
-        pert = _safe_attack_call(lambda s: split_packets(s, number_of_fragments=2), sample)
-        if pert is not None and validator.validate(sample, pert):
-            X_adv.append(pert)
+        sample = X_attack[idx].astype(np.float64, copy=False)
+        lid = int(y_attack[idx])
+        name = _label_name(label_map, lid)
+        pert: Optional[np.ndarray] = None
+        try:
+            if name == "PortScan":
+                out, _meta = dilute_scan_pattern(
+                    sample, cover_traffic_rate=DILUTE_COVER_TRAFFIC_RATE, rng=rng
+                )
+                pert = out
+            else:
+                out, _meta = inject_decoy_flows(
+                    sample,
+                    benign_fp64,
+                    k=INJECT_DECOY_K,
+                    attack_type="dos",
+                    rng=rng,
+                )
+                pert = out
+        except Exception:
+            pert = None
+        if pert is not None:
+            X_adv.append(np.asarray(pert, dtype=np.float32))
             src.append(1)
+            y_adv.append(lid)
 
-    # Attack B: behavioral mimicry style (blend with benign)
-    for idx in thirds[1]:
-        sample = X_attack[idx]
-        pert = _safe_attack_call(
-            lambda s: blend_with_benign(s, benign_pool=benign_pool, k_samples=3, random_number_generator=rng),
-            sample,
-        )
-        if pert is not None and validator.validate(sample, pert):
-            X_adv.append(pert)
+    # Attack B
+    for j, idx in enumerate(thirds[1]):
+        sample = X_attack[idx].astype(np.float64, copy=False)
+        lid = int(y_attack[idx])
+        try:
+            if j % 2 == 0:
+                pert = mimic_timing(sample, benign_profile)
+            else:
+                pert = mimic_packet_size(sample, benign_profile)
+                pert = _recompute_rates_after_packet_size(pert)
+        except Exception:
+            pert = None
+        if pert is not None:
+            X_adv.append(np.asarray(pert, dtype=np.float32))
             src.append(2)
+            y_adv.append(lid)
 
-    # Attack C: protocol exploitation (cycle through three protocol mutations)
+    # Attack C (protocol helpers already TCP-validate internally)
     protocol_fns = [
         lambda s: fragment_payload(s, n_fragments=4),
         add_tcp_options,
@@ -139,34 +242,22 @@ def build_cicids_adversarial(
     ]
     for k, idx in enumerate(thirds[2]):
         sample = X_attack[idx]
+        lid = int(y_attack[idx])
         fn = protocol_fns[k % len(protocol_fns)]
         pert = _safe_attack_call(fn, sample)
-        if pert is not None and validator.validate(sample, pert):
+        if pert is not None:
             X_adv.append(pert)
             src.append(3)
+            y_adv.append(lid)
 
     if len(X_adv) == 0:
-        return np.empty((0, X_attack.shape[1]), dtype=np.float32), np.empty((0,), dtype=np.int64)
-    return np.stack(X_adv).astype(np.float32), np.asarray(src, dtype=np.int64)
-
-
-def generic_attack_a(sample: np.ndarray, feature_std: np.ndarray, rng: np.random.Generator) -> np.ndarray:
-    x = sample.astype(np.float32, copy=True)
-    n_features = x.shape[0]
-    k = max(1, int(0.10 * n_features))
-    idx = rng.choice(n_features, size=k, replace=False)
-    noise = rng.normal(0.0, 0.10 * (feature_std[idx] + 1e-6), size=k)
-    x[idx] = x[idx] + noise.astype(np.float32)
-    return x
-
-
-def generic_attack_b(sample: np.ndarray, benign_pool: np.ndarray, rng: np.random.Generator) -> np.ndarray:
-    x = sample.astype(np.float32, copy=True)
-    if len(benign_pool) == 0:
-        return x
-    ref = benign_pool[rng.integers(0, len(benign_pool))]
-    alpha = 0.70
-    return (alpha * x + (1.0 - alpha) * ref).astype(np.float32)
+        empty = np.empty((0, X_attack.shape[1]), dtype=np.float32)
+        return empty, np.empty((0,), dtype=np.int64), np.empty((0,), dtype=np.int64)
+    return (
+        np.stack(X_adv).astype(np.float32),
+        np.asarray(src, dtype=np.int64),
+        np.asarray(y_adv, dtype=np.int64),
+    )
 
 
 def generic_attack_c(sample: np.ndarray, rng: np.random.Generator) -> np.ndarray:
@@ -179,28 +270,83 @@ def generic_attack_c(sample: np.ndarray, rng: np.random.Generator) -> np.ndarray
 
 
 def build_generic_adversarial(
-    X_attack: np.ndarray, benign_pool: np.ndarray, feature_std: np.ndarray, rng: np.random.Generator
-) -> tuple[np.ndarray, np.ndarray]:
+    X_attack: np.ndarray,
+    y_attack: np.ndarray,
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+    benign_id: int,
+    benign_pool: np.ndarray,
+    rng: np.random.Generator,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Attack A: blend_with_benign (inject_decoy/dilute are CICIDS-scoped).
+    Attack B: mimic_timing / mimic_packet_size alternating.
+    Attack C: generic feature scaling (no CICIDS protocol mutations).
+    """
+    benign_profile = compute_benign_profile_from_data(X_train, y_train, benign_id)
+
     n = len(X_attack)
     order = rng.permutation(n)
     thirds = np.array_split(order, 3)
 
-    X_adv = []
-    src = []
+    X_adv: list[np.ndarray] = []
+    src: list[int] = []
+    y_adv: list[int] = []
 
     for idx in thirds[0]:
-        X_adv.append(generic_attack_a(X_attack[idx], feature_std, rng))
-        src.append(1)
-    for idx in thirds[1]:
-        X_adv.append(generic_attack_b(X_attack[idx], benign_pool, rng))
-        src.append(2)
+        sample = X_attack[idx]
+        lid = int(y_attack[idx])
+        pert = _safe_attack_call(
+            lambda s, bp=benign_pool: blend_with_benign(
+                s, benign_pool=bp, k_samples=3, random_number_generator=rng
+            ),
+            sample,
+        )
+        if pert is not None:
+            X_adv.append(pert)
+            src.append(1)
+            y_adv.append(lid)
+
+    for j, idx in enumerate(thirds[1]):
+        sample = X_attack[idx].astype(np.float64, copy=False)
+        lid = int(y_attack[idx])
+        try:
+            if j % 2 == 0:
+                pert = mimic_timing(sample, benign_profile)
+            else:
+                pert = mimic_packet_size(sample, benign_profile)
+        except Exception:
+            pert = None
+        if pert is not None:
+            X_adv.append(np.asarray(pert, dtype=np.float32))
+            src.append(2)
+            y_adv.append(lid)
+
     for idx in thirds[2]:
         X_adv.append(generic_attack_c(X_attack[idx], rng))
         src.append(3)
+        y_adv.append(int(y_attack[idx]))
 
     if len(X_adv) == 0:
-        return np.empty((0, X_attack.shape[1]), dtype=np.float32), np.empty((0,), dtype=np.int64)
-    return np.stack(X_adv).astype(np.float32), np.asarray(src, dtype=np.int64)
+        empty = np.empty((0, X_attack.shape[1]), dtype=np.float32)
+        return empty, np.empty((0,), dtype=np.int64), np.empty((0,), dtype=np.int64)
+    return (
+        np.stack(X_adv).astype(np.float32),
+        np.asarray(src, dtype=np.int64),
+        np.asarray(y_adv, dtype=np.int64),
+    )
+
+
+def _validate_adversarial_families(source_id: np.ndarray, dataset: str) -> dict[str, int]:
+    adv_src = source_id[source_id > 0]
+    counts = {f"family_{k}": int((adv_src == k).sum()) for k in (1, 2, 3)}
+    zero = [k for k in (1, 2, 3) if counts[f"family_{k}"] == 0]
+    if zero:
+        raise RuntimeError(
+            f"{dataset}: adversarial generation produced zero samples for attack family(ies) {zero}. "
+            f"Counts per family (source_id 1=A, 2=B, 3=C): {counts}."
+        )
+    return counts
 
 
 def build_for_dataset(dataset: str, rng: np.random.Generator):
@@ -217,14 +363,23 @@ def build_for_dataset(dataset: str, rng: np.random.Generator):
     y_attack = y_train[attack_idx]
     benign_pool = X_train[y_train == benign_id]
 
-    if dataset == "cicids2017":
-        X_adv, source_id = build_cicids_adversarial(X_attack, benign_pool, rng)
-    else:
-        feature_std = X_train.std(axis=0).astype(np.float32)
-        X_adv, source_id = build_generic_adversarial(X_attack, benign_pool, feature_std, rng)
+    n_train = len(y_train)
+    clean_ratio_actual = len(X_clean) / n_train if n_train else 0.0
 
-    # Keep original attack labels for adversarial samples.
-    y_adv = y_attack[: len(X_adv)].astype(np.int64)
+    if dataset == "cicids2017":
+        benign_profile = compute_benign_profile_from_data(X_train, y_train, benign_id)
+        X_adv, source_id, y_adv = build_cicids_adversarial(
+            X_attack, y_attack, benign_pool, benign_profile, label_map, rng
+        )
+    else:
+        X_adv, source_id, y_adv = build_generic_adversarial(
+            X_attack, y_attack, X_train, y_train, benign_id, benign_pool, rng
+        )
+
+    family_counts = _validate_adversarial_families(
+        np.concatenate([np.zeros(len(X_clean), dtype=np.int64), source_id]),
+        dataset,
+    )
 
     X_out = np.concatenate([X_clean, X_adv], axis=0).astype(np.float32)
     y_out = np.concatenate([y_clean, y_adv], axis=0).astype(np.int64)
@@ -233,7 +388,6 @@ def build_for_dataset(dataset: str, rng: np.random.Generator):
         axis=0,
     )
 
-    # Shuffle final training set.
     perm = rng.permutation(len(X_out))
     X_out = X_out[perm]
     y_out = y_out[perm]
@@ -245,7 +399,7 @@ def build_for_dataset(dataset: str, rng: np.random.Generator):
         out_path,
         X_train=X_out,
         y_train=y_out,
-        source_id=source_out,   # 0=clean,1=attack_a,2=attack_b,3=attack_c
+        source_id=source_out,
     )
 
     return {
@@ -256,6 +410,9 @@ def build_for_dataset(dataset: str, rng: np.random.Generator):
         "n_adv_generated": int(len(X_adv)),
         "n_final": int(len(X_out)),
         "feature_dim": int(X_out.shape[1]),
+        "n_train_total": int(n_train),
+        "clean_ratio_actual": round(float(clean_ratio_actual), 6),
+        "adv_family_counts": family_counts,
     }
 
 
@@ -264,11 +421,19 @@ def main():
     summary = {}
 
     for dataset in ["cicids2017", "nslkdd", "unswnb15"]:
+        print(f"{dataset}: generating...", flush=True)
         stats = build_for_dataset(dataset, rng)
         summary[dataset] = stats
+        fc = stats["adv_family_counts"]
+        cr = stats["clean_ratio_actual"]
+        n_tot = stats["n_train_total"]
         print(
-            f"{dataset}: clean={stats['n_clean']}, adv={stats['n_adv_generated']}, "
-            f"final={stats['n_final']} -> {stats['output_path']}"
+            f"{dataset}: clean={stats['n_clean']}/{n_tot} (clean_ratio~{cr:.4f}, target 0.70), "
+            f"adv={stats['n_adv_generated']}, final={stats['n_final']} -> {stats['output_path']}"
+        )
+        print(
+            f"  Adversarial samples per family: A={fc['family_1']}, B={fc['family_2']}, C={fc['family_3']}",
+            flush=True,
         )
 
     summary_path = OUT_DIR / "adv_generation_summary.json"
