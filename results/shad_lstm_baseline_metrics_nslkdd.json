@@ -1,0 +1,91 @@
+{
+  "dataset": "nslkdd",
+  "generated_at_utc": "2026-04-04T20:10:05.702634+00:00",
+  "model_path": "models/lstm_nslkdd.h5",
+  "scaler_path": "models/scaler_lstm_nslkdd.pkl",
+  "test_loss": 0.4453675448894501,
+  "test_accuracy": 0.8642157912254333,
+  "warmup_epochs_ran": 2,
+  "weighted_epochs_ran": 4,
+  "best_val_accuracy": 0.8647544384002686,
+  "best_val_accuracy_warmup": 0.5471317172050476,
+  "best_val_accuracy_weighted": 0.8647544384002686,
+  "class_weight_mode": "balanced_smoothed",
+  "class_weight_alpha": 0.05,
+  "max_class_weight": 20.0,
+  "batch_size": 8192,
+  "epochs_requested": 4,
+  "warmup_epochs_requested": 2,
+  "patience": 2,
+  "per_class": {
+    "DoS": {
+      "precision": 0.8845419847328244,
+      "recall": 0.926073926073926,
+      "f1": 0.9048316251830161
+    },
+    "Normal": {
+      "precision": 0.895846033266568,
+      "recall": 0.8899558785362055,
+      "f1": 0.8928912420796806
+    },
+    "Probe": {
+      "precision": 0.6737556561085973,
+      "recall": 0.705352913311227,
+      "f1": 0.6891923165933812
+    },
+    "R2L": {
+      "precision": 0.3034825870646766,
+      "recall": 0.10481099656357389,
+      "f1": 0.1558109833971903
+    },
+    "U2R": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      7416,
+      461,
+      96,
+      35,
+      0
+    ],
+    [
+      595,
+      10287,
+      580,
+      97,
+      0
+    ],
+    [
+      338,
+      281,
+      1489,
+      3,
+      0
+    ],
+    [
+      34,
+      449,
+      38,
+      61,
+      0
+    ],
+    [
+      1,
+      5,
+      7,
+      5,
+      0
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "DoS",
+    "Normal",
+    "Probe",
+    "R2L",
+    "U2R"
+  ]
+}
