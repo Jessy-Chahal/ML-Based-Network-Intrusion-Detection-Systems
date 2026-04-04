@@ -4,18 +4,32 @@
     "output_path": "data\\adversarial\\adv_train_cicids.npz",
     "n_clean": 1235952,
     "n_attack_candidates": 89439,
-    "n_adv_generated": 23025,
-    "n_final": 1258977,
-    "feature_dim": 70
+    "n_adv_generated": 64839,
+    "n_final": 1300791,
+    "feature_dim": 70,
+    "n_train_total": 1765653,
+    "clean_ratio_actual": 0.699997,
+    "adv_family_counts": {
+      "family_1": 22985,
+      "family_2": 29813,
+      "family_3": 12041
+    }
   },
   "nslkdd": {
     "dataset": "nslkdd",
     "output_path": "data\\adversarial\\adv_train_nslkdd.npz",
     "n_clean": 72770,
     "n_attack_candidates": 15009,
-    "n_adv_generated": 15009,
-    "n_final": 87779,
-    "feature_dim": 40
+    "n_adv_generated": 12508,
+    "n_final": 85278,
+    "feature_dim": 40,
+    "n_train_total": 103961,
+    "clean_ratio_actual": 0.699974,
+    "adv_family_counts": {
+      "family_1": 5003,
+      "family_2": 2502,
+      "family_3": 5003
+    }
   },
   "unswnb15": {
     "dataset": "unswnb15",
@@ -24,6 +38,13 @@
     "n_attack_candidates": 17050,
     "n_adv_generated": 17050,
     "n_final": 167070,
-    "feature_dim": 67
+    "feature_dim": 67,
+    "n_train_total": 214321,
+    "clean_ratio_actual": 0.699978,
+    "adv_family_counts": {
+      "family_1": 5684,
+      "family_2": 5683,
+      "family_3": 5683
+    }
   }
 }
