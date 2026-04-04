@@ -1,11 +1,11 @@
 {
-  "generated_at_utc": "2026-03-25T06:20:02.456736+00:00",
+  "generated_at_utc": "2026-04-04T04:34:21.635175+00:00",
   "dataset": "cicids2017",
   "target_recovery_pp": 25.0,
   "n_attack_samples": 63882,
   "clean_detection": {
     "baseline_detection_rate": 0.9928,
-    "adversarial_detection_rate": 0.9917,
+    "adversarial_detection_rate": 0.9932,
     "note": "Detection rate on unperturbed attack samples. Both ensembles should be near 1.0 here."
   },
   "n_mutations_evaluated": 7,
@@ -16,8 +16,8 @@
       "n_samples": 63882,
       "n_mutation_success": 36008,
       "baseline_detection_rate": 0.0,
-      "adversarial_detection_rate": 0.1829,
-      "recovery_delta_pp": 18.29,
+      "adversarial_detection_rate": 0.1687,
+      "recovery_delta_pp": 16.87,
       "meets_25pp_target": false
     },
     {
@@ -25,8 +25,8 @@
       "n_samples": 63882,
       "n_mutation_success": 48159,
       "baseline_detection_rate": 0.0,
-      "adversarial_detection_rate": 0.6919,
-      "recovery_delta_pp": 69.19,
+      "adversarial_detection_rate": 0.691,
+      "recovery_delta_pp": 69.1,
       "meets_25pp_target": true
     },
     {
@@ -34,8 +34,8 @@
       "n_samples": 63882,
       "n_mutation_success": 63882,
       "baseline_detection_rate": 0.8212,
-      "adversarial_detection_rate": 0.8842,
-      "recovery_delta_pp": 6.3,
+      "adversarial_detection_rate": 0.8223,
+      "recovery_delta_pp": 0.11,
       "meets_25pp_target": false
     },
     {
@@ -43,8 +43,8 @@
       "n_samples": 63882,
       "n_mutation_success": 63882,
       "baseline_detection_rate": 0.0005,
-      "adversarial_detection_rate": 0.6367,
-      "recovery_delta_pp": 63.63,
+      "adversarial_detection_rate": 0.6425,
+      "recovery_delta_pp": 64.2,
       "meets_25pp_target": true
     },
     {
@@ -52,8 +52,8 @@
       "n_samples": 63882,
       "n_mutation_success": 25629,
       "baseline_detection_rate": 0.0008,
-      "adversarial_detection_rate": 0.9831,
-      "recovery_delta_pp": 98.23,
+      "adversarial_detection_rate": 0.9862,
+      "recovery_delta_pp": 98.54,
       "meets_25pp_target": true
     },
     {
@@ -61,8 +61,8 @@
       "n_samples": 63882,
       "n_mutation_success": 25630,
       "baseline_detection_rate": 0.9991,
-      "adversarial_detection_rate": 0.9899,
-      "recovery_delta_pp": -0.92,
+      "adversarial_detection_rate": 0.9913,
+      "recovery_delta_pp": -0.78,
       "meets_25pp_target": false
     },
     {
@@ -70,8 +70,8 @@
       "n_samples": 63882,
       "n_mutation_success": 25630,
       "baseline_detection_rate": 0.8971,
-      "adversarial_detection_rate": 0.8644,
-      "recovery_delta_pp": -3.27,
+      "adversarial_detection_rate": 0.8757,
+      "recovery_delta_pp": -2.14,
       "meets_25pp_target": false
     }
   ]
