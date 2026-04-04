@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-25T04:40:46.251322+00:00",
+  "generated_at_utc": "2026-04-04T05:05:19.500273+00:00",
   "comparison_mode": "Baseline and retrained accuracies are both computed directly from model files on the same clean X_test split.",
   "datasets": {
     "cicids2017": {
@@ -9,8 +9,8 @@
       "models": {
         "random_forest": {
           "baseline_accuracy": 0.9981313845462595,
-          "retrained_clean_test_accuracy": 0.9980520939329466,
-          "accuracy_drop_pp": 0.00792906133129101,
+          "retrained_clean_test_accuracy": 0.9980494509125029,
+          "accuracy_drop_pp": 0.008193363375663676,
           "within_3pp_target": true,
           "baseline_model_path": "models/rf_cicids2017.pkl",
           "model_path": "models/adv_rf_cicids2017.pkl"
@@ -25,8 +25,8 @@
         },
         "mlp": {
           "baseline_accuracy": 0.770675688176448,
-          "retrained_clean_test_accuracy": 0.8236074586036923,
-          "accuracy_drop_pp": -5.2931770427244285,
+          "retrained_clean_test_accuracy": 0.8476166563148366,
+          "accuracy_drop_pp": -7.694096813838858,
           "within_3pp_target": true,
           "baseline_model_path": "models/mlp_cicids2017.h5",
           "baseline_scaler_path": "models/scaler_cicids2017.pkl",
@@ -35,9 +35,9 @@
         },
         "lstm": {
           "baseline_accuracy": 0.955679190178536,
-          "retrained_clean_test_accuracy": 0.9194565949967624,
-          "accuracy_drop_pp": 3.622259518177362,
-          "within_3pp_target": false,
+          "retrained_clean_test_accuracy": 0.9343764454018052,
+          "accuracy_drop_pp": 2.1302744776730775,
+          "within_3pp_target": true,
           "baseline_model_path": "models/lstm_cicids2017.h5",
           "baseline_scaler_path": "models/scaler_lstm_cicids2017.pkl",
           "model_path": "models/adv_lstm_cicids2017.h5",
@@ -45,8 +45,8 @@
         },
         "majority_voting": {
           "baseline_accuracy": 0.9983639703453107,
-          "retrained_clean_test_accuracy": 0.9982952518137728,
-          "accuracy_drop_pp": 0.0068718531537892424,
+          "retrained_clean_test_accuracy": 0.9982397483844537,
+          "accuracy_drop_pp": 0.01242219608569295,
           "within_3pp_target": true,
           "member_models": [
             "random_forest",
