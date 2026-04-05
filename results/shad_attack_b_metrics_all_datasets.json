@@ -1,6 +1,6 @@
 {
   "attack": "Attack B - Behavioral Mimicry",
-  "generated_at_utc": "2026-03-24T05:07:53.157062+00:00",
+  "generated_at_utc": "2026-04-05T23:51:38.545196+00:00",
   "datasets_evaluated": [
     "cicids2017",
     "nslkdd",
@@ -37,27 +37,27 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 63556,
+              "n_originally_detected": 63548,
               "n_originally_detected_and_valid": 25617,
-              "n_evaded": 2306,
-              "esr": 0.036282963056202405,
-              "esr_on_valid": 0.09001834719131827
+              "n_evaded": 2345,
+              "esr": 0.03690124000755335,
+              "esr_on_valid": 0.09154077370496155
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 63876,
+              "n_originally_detected": 63875,
               "n_originally_detected_and_valid": 25629,
-              "n_evaded": 1618,
-              "esr": 0.025330327509549753,
-              "esr_on_valid": 0.06313160872449179
+              "n_evaded": 1623,
+              "esr": 0.02540900195694716,
+              "esr_on_valid": 0.0633267002224043
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 63759,
-              "n_originally_detected_and_valid": 25616,
-              "n_evaded": 152,
-              "esr": 0.0023839771640082183,
-              "esr_on_valid": 0.005933791380387258
+              "n_originally_detected": 62412,
+              "n_originally_detected_and_valid": 25563,
+              "n_evaded": 934,
+              "esr": 0.014965070819714158,
+              "esr_on_valid": 0.036537182646794196
             }
           }
         },
@@ -69,25 +69,25 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 63556,
-              "n_originally_detected_and_valid": 63556,
-              "n_evaded": 24110,
-              "esr": 0.37935049405248916,
-              "esr_on_valid": 0.37935049405248916
+              "n_originally_detected": 63548,
+              "n_originally_detected_and_valid": 63548,
+              "n_evaded": 24456,
+              "esr": 0.38484295335809154,
+              "esr_on_valid": 0.38484295335809154
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 63876,
-              "n_originally_detected_and_valid": 63876,
-              "n_evaded": 2746,
-              "esr": 0.04298954223808629,
-              "esr_on_valid": 0.04298954223808629
+              "n_originally_detected": 63875,
+              "n_originally_detected_and_valid": 63875,
+              "n_evaded": 2668,
+              "esr": 0.04176908023483366,
+              "esr_on_valid": 0.04176908023483366
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 63759,
-              "n_originally_detected_and_valid": 63759,
-              "n_evaded": 63759,
+              "n_originally_detected": 62412,
+              "n_originally_detected_and_valid": 62412,
+              "n_evaded": 62412,
               "esr": 1.0,
               "esr_on_valid": 1.0
             }
@@ -125,11 +125,11 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 10673,
-              "n_originally_detected_and_valid": 10673,
-              "n_evaded": 734,
-              "esr": 0.06877166682282394,
-              "esr_on_valid": 0.06877166682282394
+              "n_originally_detected": 10668,
+              "n_originally_detected_and_valid": 10668,
+              "n_evaded": 703,
+              "esr": 0.06589801274840645,
+              "esr_on_valid": 0.06589801274840645
             },
             "xgboost": {
               "model": "xgboost",
@@ -141,11 +141,11 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 10672,
-              "n_originally_detected_and_valid": 10672,
-              "n_evaded": 763,
-              "esr": 0.07149550224887556,
-              "esr_on_valid": 0.07149550224887556
+              "n_originally_detected": 10683,
+              "n_originally_detected_and_valid": 10683,
+              "n_evaded": 973,
+              "esr": 0.09107928484508097,
+              "esr_on_valid": 0.09107928484508097
             }
           }
         },
@@ -157,7 +157,7 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 10673,
+              "n_originally_detected": 10668,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -173,7 +173,7 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 10672,
+              "n_originally_detected": 10683,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -213,27 +213,27 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 11742,
-              "n_originally_detected_and_valid": 11742,
-              "n_evaded": 525,
-              "esr": 0.04471129279509453,
-              "esr_on_valid": 0.04471129279509453
+              "n_originally_detected": 11749,
+              "n_originally_detected_and_valid": 11749,
+              "n_evaded": 945,
+              "esr": 0.0804323772235935,
+              "esr_on_valid": 0.0804323772235935
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 12156,
-              "n_originally_detected_and_valid": 12156,
+              "n_originally_detected": 12155,
+              "n_originally_detected_and_valid": 12155,
               "n_evaded": 0,
               "esr": 0.0,
               "esr_on_valid": 0.0
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 12171,
-              "n_originally_detected_and_valid": 12171,
-              "n_evaded": 0,
-              "esr": 0.0,
-              "esr_on_valid": 0.0
+              "n_originally_detected": 12169,
+              "n_originally_detected_and_valid": 12169,
+              "n_evaded": 64,
+              "esr": 0.0052592653463719285,
+              "esr_on_valid": 0.0052592653463719285
             }
           }
         },
@@ -245,27 +245,27 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 11742,
-              "n_originally_detected_and_valid": 11742,
-              "n_evaded": 645,
-              "esr": 0.05493101686254471,
-              "esr_on_valid": 0.05493101686254471
+              "n_originally_detected": 11749,
+              "n_originally_detected_and_valid": 11749,
+              "n_evaded": 543,
+              "esr": 0.0462166992935569,
+              "esr_on_valid": 0.0462166992935569
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 12156,
-              "n_originally_detected_and_valid": 12156,
-              "n_evaded": 7,
-              "esr": 0.0005758473181967752,
-              "esr_on_valid": 0.0005758473181967752
+              "n_originally_detected": 12155,
+              "n_originally_detected_and_valid": 12155,
+              "n_evaded": 3,
+              "esr": 0.00024681201151789385,
+              "esr_on_valid": 0.00024681201151789385
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 12171,
-              "n_originally_detected_and_valid": 12171,
-              "n_evaded": 6729,
-              "esr": 0.5528715799852107,
-              "esr_on_valid": 0.5528715799852107
+              "n_originally_detected": 12169,
+              "n_originally_detected_and_valid": 12169,
+              "n_evaded": 5832,
+              "esr": 0.479250554688142,
+              "esr_on_valid": 0.479250554688142
             }
           }
         }

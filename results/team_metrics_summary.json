@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-04-05T23:35:51.883196+00:00",
+  "generated_at_utc": "2026-04-05T23:52:40.882089+00:00",
   "results_dir": "results",
   "owners": [
     "shad",
@@ -93,20 +93,20 @@
           "owner": "shad",
           "attack": "attack_a",
           "n_esr_points": 18,
-          "overall_mean_esr": 0.278861,
+          "overall_mean_esr": 0.283044,
           "dataset_mean_esr": {
-            "cicids2017": 0.742117,
+            "cicids2017": 0.758033,
             "nslkdd": 0.0,
-            "unswnb15": 0.094467
+            "unswnb15": 0.0911
           },
           "model_mean_esr": {
-            "mlp": 0.262317,
-            "random_forest": 0.334817,
-            "xgboost": 0.23945
+            "mlp": 0.275617,
+            "random_forest": 0.33615,
+            "xgboost": 0.237367
           },
           "mutation_mean_esr": {
-            "dilute_scan_pattern": 0.278033,
-            "inject_decoy_flows": 0.279689
+            "dilute_scan_pattern": 0.279433,
+            "inject_decoy_flows": 0.286656
           },
           "overall_mean_constraint_satisfaction_rate": 0.9082,
           "overall_mean_success_rate": 0.34638,
@@ -120,20 +120,20 @@
           "owner": "shad",
           "attack": "attack_b",
           "n_esr_points": 18,
-          "overall_mean_esr": 0.127111,
+          "overall_mean_esr": 0.126699,
           "dataset_mean_esr": {
-            "cicids2017": 0.247723,
-            "nslkdd": 0.024763,
-            "unswnb15": 0.108848
+            "cicids2017": 0.250648,
+            "nslkdd": 0.027548,
+            "unswnb15": 0.101901
           },
           "model_mean_esr": {
-            "mlp": 0.271125,
-            "random_forest": 0.097341,
-            "xgboost": 0.012868
+            "mlp": 0.265092,
+            "random_forest": 0.102382,
+            "xgboost": 0.012623
           },
           "mutation_mean_esr": {
-            "mimic_packet_size": 0.225635,
-            "mimic_timing": 0.028588
+            "mimic_packet_size": 0.216925,
+            "mimic_timing": 0.036473
           },
           "overall_mean_constraint_satisfaction_rate": 0.700604,
           "overall_mean_success_rate": 0.733535,
@@ -145,21 +145,21 @@
           "owner": "shad",
           "attack": "attack_c",
           "n_esr_points": 27,
-          "overall_mean_esr": 0.02564,
+          "overall_mean_esr": 0.02595,
           "dataset_mean_esr": {
-            "cicids2017": 0.052518,
+            "cicids2017": 0.053596,
             "nslkdd": 0.0,
-            "unswnb15": 0.024402
+            "unswnb15": 0.024252
           },
           "model_mean_esr": {
-            "mlp": 0.069295,
-            "random_forest": 0.005395,
-            "xgboost": 0.00223
+            "mlp": 0.071385,
+            "random_forest": 0.004458,
+            "xgboost": 0.002006
           },
           "mutation_mean_esr": {
-            "add_tcp_options": 0.024393,
-            "fragment_payload": 0.044763,
-            "shift_ack_timing": 0.007764
+            "add_tcp_options": 0.024216,
+            "fragment_payload": 0.04558,
+            "shift_ack_timing": 0.008053
           },
           "overall_mean_constraint_satisfaction_rate": 0.401203,
           "overall_mean_success_rate": 0.16114,
@@ -1068,56 +1068,56 @@
         "n_owners_present": 3
       },
       "attack_a.esr.cicids2017.dilute_scan_pattern.mlp": {
-        "average": 0.984167,
+        "average": 0.9841,
         "values_by_owner": {
           "alyssa": 0.9841,
           "jessy": 0.9841,
-          "shad": 0.9843
+          "shad": 0.9841
         },
         "n_owners_present": 3
       },
       "attack_a.esr.cicids2017.dilute_scan_pattern.random_forest": {
-        "average": 0.978,
+        "average": 0.9801,
         "values_by_owner": {
           "alyssa": 0.9801,
           "jessy": 0.9801,
-          "shad": 0.9738
+          "shad": 0.9801
         },
         "n_owners_present": 3
       },
       "attack_a.esr.cicids2017.dilute_scan_pattern.xgboost": {
-        "average": 0.4933,
+        "average": 0.4959,
         "values_by_owner": {
           "alyssa": 0.4959,
           "jessy": 0.4959,
-          "shad": 0.4881
+          "shad": 0.4959
         },
         "n_owners_present": 3
       },
       "attack_a.esr.cicids2017.inject_decoy_flows.mlp": {
-        "average": 0.392533,
+        "average": 0.4198,
         "values_by_owner": {
           "alyssa": 0.4198,
           "jessy": 0.4198,
-          "shad": 0.338
+          "shad": 0.4198
         },
         "n_owners_present": 3
       },
       "attack_a.esr.cicids2017.inject_decoy_flows.random_forest": {
-        "average": 0.835733,
+        "average": 0.8358,
         "values_by_owner": {
           "alyssa": 0.8358,
           "jessy": 0.8358,
-          "shad": 0.8356
+          "shad": 0.8358
         },
         "n_owners_present": 3
       },
       "attack_a.esr.cicids2017.inject_decoy_flows.xgboost": {
-        "average": 0.832633,
+        "average": 0.8325,
         "values_by_owner": {
           "alyssa": 0.8325,
           "jessy": 0.8325,
-          "shad": 0.8329
+          "shad": 0.8325
         },
         "n_owners_present": 3
       },
@@ -1176,20 +1176,20 @@
         "n_owners_present": 3
       },
       "attack_a.esr.unswnb15.dilute_scan_pattern.mlp": {
-        "average": 0.053533,
+        "average": 0.0534,
         "values_by_owner": {
           "alyssa": 0.0534,
           "jessy": 0.0534,
-          "shad": 0.0538
+          "shad": 0.0534
         },
         "n_owners_present": 3
       },
       "attack_a.esr.unswnb15.dilute_scan_pattern.random_forest": {
-        "average": 0.0017,
+        "average": 0.0014,
         "values_by_owner": {
           "alyssa": 0.0014,
           "jessy": 0.0014,
-          "shad": 0.0023
+          "shad": 0.0014
         },
         "n_owners_present": 3
       },
@@ -1203,29 +1203,29 @@
         "n_owners_present": 3
       },
       "attack_a.esr.unswnb15.inject_decoy_flows.mlp": {
-        "average": 0.196867,
+        "average": 0.1964,
         "values_by_owner": {
           "alyssa": 0.1964,
           "jessy": 0.1964,
-          "shad": 0.1978
+          "shad": 0.1964
         },
         "n_owners_present": 3
       },
       "attack_a.esr.unswnb15.inject_decoy_flows.random_forest": {
-        "average": 0.1988,
+        "average": 0.1996,
         "values_by_owner": {
           "alyssa": 0.1996,
           "jessy": 0.1996,
-          "shad": 0.1972
+          "shad": 0.1996
         },
         "n_owners_present": 3
       },
       "attack_a.esr.unswnb15.inject_decoy_flows.xgboost": {
-        "average": 0.102433,
+        "average": 0.0958,
         "values_by_owner": {
           "alyssa": 0.0958,
           "jessy": 0.0958,
-          "shad": 0.1157
+          "shad": 0.0958
         },
         "n_owners_present": 3
       },
@@ -1239,29 +1239,29 @@
         "n_owners_present": 3
       },
       "attack_a.esr_on_valid.cicids2017.dilute_scan_pattern.random_forest": {
-        "average": 0.9948,
+        "average": 0.9969,
         "values_by_owner": {
           "alyssa": 0.9969,
           "jessy": 0.9969,
-          "shad": 0.9906
+          "shad": 0.9969
         },
         "n_owners_present": 3
       },
       "attack_a.esr_on_valid.cicids2017.dilute_scan_pattern.xgboost": {
-        "average": 0.501667,
+        "average": 0.5043,
         "values_by_owner": {
           "alyssa": 0.5043,
           "jessy": 0.5043,
-          "shad": 0.4964
+          "shad": 0.5043
         },
         "n_owners_present": 3
       },
       "attack_a.esr_on_valid.cicids2017.inject_decoy_flows.mlp": {
-        "average": 0.455767,
+        "average": 0.4813,
         "values_by_owner": {
           "alyssa": 0.4813,
           "jessy": 0.4813,
-          "shad": 0.4047
+          "shad": 0.4813
         },
         "n_owners_present": 3
       },
@@ -1275,11 +1275,11 @@
         "n_owners_present": 3
       },
       "attack_a.esr_on_valid.cicids2017.inject_decoy_flows.xgboost": {
-        "average": 0.999467,
+        "average": 0.9993,
         "values_by_owner": {
           "alyssa": 0.9993,
           "jessy": 0.9993,
-          "shad": 0.9998
+          "shad": 0.9993
         },
         "n_owners_present": 3
       },
@@ -1338,20 +1338,20 @@
         "n_owners_present": 3
       },
       "attack_a.esr_on_valid.unswnb15.dilute_scan_pattern.mlp": {
-        "average": 0.9839,
+        "average": 0.9819,
         "values_by_owner": {
           "alyssa": 0.9819,
           "jessy": 0.9819,
-          "shad": 0.9879
+          "shad": 0.9819
         },
         "n_owners_present": 3
       },
       "attack_a.esr_on_valid.unswnb15.dilute_scan_pattern.random_forest": {
-        "average": 0.031933,
+        "average": 0.0267,
         "values_by_owner": {
           "alyssa": 0.0267,
           "jessy": 0.0267,
-          "shad": 0.0424
+          "shad": 0.0267
         },
         "n_owners_present": 3
       },
@@ -1365,29 +1365,29 @@
         "n_owners_present": 3
       },
       "attack_a.esr_on_valid.unswnb15.inject_decoy_flows.mlp": {
-        "average": 0.949033,
+        "average": 0.9469,
         "values_by_owner": {
           "alyssa": 0.9469,
           "jessy": 0.9469,
-          "shad": 0.9533
+          "shad": 0.9469
         },
         "n_owners_present": 3
       },
       "attack_a.esr_on_valid.unswnb15.inject_decoy_flows.random_forest": {
-        "average": 0.986467,
+        "average": 0.9911,
         "values_by_owner": {
           "alyssa": 0.9911,
           "jessy": 0.9911,
-          "shad": 0.9772
+          "shad": 0.9911
         },
         "n_owners_present": 3
       },
       "attack_a.esr_on_valid.unswnb15.inject_decoy_flows.xgboost": {
-        "average": 0.4948,
+        "average": 0.4628,
         "values_by_owner": {
           "alyssa": 0.4628,
           "jessy": 0.4628,
-          "shad": 0.5588
+          "shad": 0.4628
         },
         "n_owners_present": 3
       },
@@ -1473,47 +1473,47 @@
         "n_owners_present": 3
       },
       "attack_b.esr.cicids2017.mimic_packet_size.random_forest": {
-        "average": 0.383012,
+        "average": 0.384843,
         "values_by_owner": {
           "alyssa": 0.384843,
           "jessy": 0.384843,
-          "shad": 0.37935
+          "shad": 0.384843
         },
         "n_owners_present": 3
       },
       "attack_b.esr.cicids2017.mimic_packet_size.xgboost": {
-        "average": 0.042176,
+        "average": 0.041769,
         "values_by_owner": {
           "alyssa": 0.041769,
           "jessy": 0.041769,
-          "shad": 0.04299
+          "shad": 0.041769
         },
         "n_owners_present": 3
       },
       "attack_b.esr.cicids2017.mimic_timing.mlp": {
-        "average": 0.010771,
+        "average": 0.014965,
         "values_by_owner": {
           "alyssa": 0.014965,
           "jessy": 0.014965,
-          "shad": 0.002384
+          "shad": 0.014965
         },
         "n_owners_present": 3
       },
       "attack_b.esr.cicids2017.mimic_timing.random_forest": {
-        "average": 0.036695,
+        "average": 0.036901,
         "values_by_owner": {
           "alyssa": 0.036901,
           "jessy": 0.036901,
-          "shad": 0.036283
+          "shad": 0.036901
         },
         "n_owners_present": 3
       },
       "attack_b.esr.cicids2017.mimic_timing.xgboost": {
-        "average": 0.025383,
+        "average": 0.025409,
         "values_by_owner": {
           "alyssa": 0.025409,
           "jessy": 0.025409,
-          "shad": 0.02533
+          "shad": 0.025409
         },
         "n_owners_present": 3
       },
@@ -1545,20 +1545,20 @@
         "n_owners_present": 3
       },
       "attack_b.esr.nslkdd.mimic_timing.mlp": {
-        "average": 0.084551,
+        "average": 0.091079,
         "values_by_owner": {
           "alyssa": 0.091079,
           "jessy": 0.091079,
-          "shad": 0.071496
+          "shad": 0.091079
         },
         "n_owners_present": 3
       },
       "attack_b.esr.nslkdd.mimic_timing.random_forest": {
-        "average": 0.066856,
+        "average": 0.065898,
         "values_by_owner": {
           "alyssa": 0.065898,
           "jessy": 0.065898,
-          "shad": 0.068772
+          "shad": 0.065898
         },
         "n_owners_present": 3
       },
@@ -1572,47 +1572,47 @@
         "n_owners_present": 3
       },
       "attack_b.esr.unswnb15.mimic_packet_size.mlp": {
-        "average": 0.503791,
+        "average": 0.479251,
         "values_by_owner": {
           "alyssa": 0.479251,
           "jessy": 0.479251,
-          "shad": 0.552872
+          "shad": 0.479251
         },
         "n_owners_present": 3
       },
       "attack_b.esr.unswnb15.mimic_packet_size.random_forest": {
-        "average": 0.049121,
+        "average": 0.046217,
         "values_by_owner": {
           "alyssa": 0.046217,
           "jessy": 0.046217,
-          "shad": 0.054931
+          "shad": 0.046217
         },
         "n_owners_present": 3
       },
       "attack_b.esr.unswnb15.mimic_packet_size.xgboost": {
-        "average": 0.000356,
+        "average": 0.000247,
         "values_by_owner": {
           "alyssa": 0.000247,
           "jessy": 0.000247,
-          "shad": 0.000576
+          "shad": 0.000247
         },
         "n_owners_present": 3
       },
       "attack_b.esr.unswnb15.mimic_timing.mlp": {
-        "average": 0.003506,
+        "average": 0.005259,
         "values_by_owner": {
           "alyssa": 0.005259,
           "jessy": 0.005259,
-          "shad": 0.0
+          "shad": 0.005259
         },
         "n_owners_present": 3
       },
       "attack_b.esr.unswnb15.mimic_timing.random_forest": {
-        "average": 0.068525,
+        "average": 0.080432,
         "values_by_owner": {
           "alyssa": 0.080432,
           "jessy": 0.080432,
-          "shad": 0.044711
+          "shad": 0.080432
         },
         "n_owners_present": 3
       },
@@ -1635,47 +1635,47 @@
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.cicids2017.mimic_packet_size.random_forest": {
-        "average": 0.383012,
+        "average": 0.384843,
         "values_by_owner": {
           "alyssa": 0.384843,
           "jessy": 0.384843,
-          "shad": 0.37935
+          "shad": 0.384843
         },
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.cicids2017.mimic_packet_size.xgboost": {
-        "average": 0.042176,
+        "average": 0.041769,
         "values_by_owner": {
           "alyssa": 0.041769,
           "jessy": 0.041769,
-          "shad": 0.04299
+          "shad": 0.041769
         },
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.cicids2017.mimic_timing.mlp": {
-        "average": 0.026336,
+        "average": 0.036537,
         "values_by_owner": {
           "alyssa": 0.036537,
           "jessy": 0.036537,
-          "shad": 0.005934
+          "shad": 0.036537
         },
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.cicids2017.mimic_timing.random_forest": {
-        "average": 0.091033,
+        "average": 0.091541,
         "values_by_owner": {
           "alyssa": 0.091541,
           "jessy": 0.091541,
-          "shad": 0.090018
+          "shad": 0.091541
         },
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.cicids2017.mimic_timing.xgboost": {
-        "average": 0.063262,
+        "average": 0.063327,
         "values_by_owner": {
           "alyssa": 0.063327,
           "jessy": 0.063327,
-          "shad": 0.063132
+          "shad": 0.063327
         },
         "n_owners_present": 3
       },
@@ -1707,20 +1707,20 @@
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.nslkdd.mimic_timing.mlp": {
-        "average": 0.084551,
+        "average": 0.091079,
         "values_by_owner": {
           "alyssa": 0.091079,
           "jessy": 0.091079,
-          "shad": 0.071496
+          "shad": 0.091079
         },
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.nslkdd.mimic_timing.random_forest": {
-        "average": 0.066856,
+        "average": 0.065898,
         "values_by_owner": {
           "alyssa": 0.065898,
           "jessy": 0.065898,
-          "shad": 0.068772
+          "shad": 0.065898
         },
         "n_owners_present": 3
       },
@@ -1734,47 +1734,47 @@
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.unswnb15.mimic_packet_size.mlp": {
-        "average": 0.503791,
+        "average": 0.479251,
         "values_by_owner": {
           "alyssa": 0.479251,
           "jessy": 0.479251,
-          "shad": 0.552872
+          "shad": 0.479251
         },
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.unswnb15.mimic_packet_size.random_forest": {
-        "average": 0.049121,
+        "average": 0.046217,
         "values_by_owner": {
           "alyssa": 0.046217,
           "jessy": 0.046217,
-          "shad": 0.054931
+          "shad": 0.046217
         },
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.unswnb15.mimic_packet_size.xgboost": {
-        "average": 0.000356,
+        "average": 0.000247,
         "values_by_owner": {
           "alyssa": 0.000247,
           "jessy": 0.000247,
-          "shad": 0.000576
+          "shad": 0.000247
         },
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.unswnb15.mimic_timing.mlp": {
-        "average": 0.003506,
+        "average": 0.005259,
         "values_by_owner": {
           "alyssa": 0.005259,
           "jessy": 0.005259,
-          "shad": 0.0
+          "shad": 0.005259
         },
         "n_owners_present": 3
       },
       "attack_b.esr_on_valid.unswnb15.mimic_timing.random_forest": {
-        "average": 0.068525,
+        "average": 0.080432,
         "values_by_owner": {
           "alyssa": 0.080432,
           "jessy": 0.080432,
-          "shad": 0.044711
+          "shad": 0.080432
         },
         "n_owners_present": 3
       },
@@ -1896,56 +1896,56 @@
         "n_owners_present": 3
       },
       "attack_c.esr.cicids2017.fragment_payload.mlp": {
-        "average": 0.406962,
+        "average": 0.409569,
         "values_by_owner": {
           "alyssa": 0.409569,
           "jessy": 0.409569,
-          "shad": 0.401747
+          "shad": 0.409569
         },
         "n_owners_present": 3
       },
       "attack_c.esr.cicids2017.fragment_payload.random_forest": {
-        "average": 0.000572,
+        "average": 0.000409,
         "values_by_owner": {
           "alyssa": 0.000409,
           "jessy": 0.000409,
-          "shad": 0.000897
+          "shad": 0.000409
         },
         "n_owners_present": 3
       },
       "attack_c.esr.cicids2017.fragment_payload.xgboost": {
-        "average": 0.000151,
+        "average": 0.000157,
         "values_by_owner": {
           "alyssa": 0.000157,
           "jessy": 0.000157,
-          "shad": 0.000141
+          "shad": 0.000157
         },
         "n_owners_present": 3
       },
       "attack_c.esr.cicids2017.shift_ack_timing.mlp": {
-        "average": 0.010766,
+        "average": 0.014965,
         "values_by_owner": {
           "alyssa": 0.014965,
           "jessy": 0.014965,
-          "shad": 0.002368
+          "shad": 0.014965
         },
         "n_owners_present": 3
       },
       "attack_c.esr.cicids2017.shift_ack_timing.random_forest": {
-        "average": 0.042134,
+        "average": 0.039372,
         "values_by_owner": {
           "alyssa": 0.039372,
           "jessy": 0.039372,
-          "shad": 0.047659
+          "shad": 0.039372
         },
         "n_owners_present": 3
       },
       "attack_c.esr.cicids2017.shift_ack_timing.xgboost": {
-        "average": 0.018547,
+        "average": 0.017894,
         "values_by_owner": {
           "alyssa": 0.017894,
           "jessy": 0.017894,
-          "shad": 0.019851
+          "shad": 0.017894
         },
         "n_owners_present": 3
       },
@@ -2031,29 +2031,29 @@
         "n_owners_present": 3
       },
       "attack_c.esr.unswnb15.add_tcp_options.mlp": {
-        "average": 0.218275,
+        "average": 0.217684,
         "values_by_owner": {
           "alyssa": 0.217684,
           "jessy": 0.217684,
-          "shad": 0.219456
+          "shad": 0.217684
         },
         "n_owners_present": 3
       },
       "attack_c.esr.unswnb15.add_tcp_options.random_forest": {
-        "average": 0.00017,
+        "average": 0.000255,
         "values_by_owner": {
           "alyssa": 0.000255,
           "jessy": 0.000255,
-          "shad": 0.0
+          "shad": 0.000255
         },
         "n_owners_present": 3
       },
       "attack_c.esr.unswnb15.add_tcp_options.xgboost": {
-        "average": 2.7e-05,
+        "average": 0.0,
         "values_by_owner": {
           "alyssa": 0.0,
           "jessy": 0.0,
-          "shad": 8.2e-05
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
@@ -2085,20 +2085,20 @@
         "n_owners_present": 3
       },
       "attack_c.esr.unswnb15.shift_ack_timing.mlp": {
-        "average": 0.00011,
+        "average": 0.000164,
         "values_by_owner": {
           "alyssa": 0.000164,
           "jessy": 0.000164,
-          "shad": 0.0
+          "shad": 0.000164
         },
         "n_owners_present": 3
       },
       "attack_c.esr.unswnb15.shift_ack_timing.random_forest": {
-        "average": 5.7e-05,
+        "average": 8.5e-05,
         "values_by_owner": {
           "alyssa": 8.5e-05,
           "jessy": 8.5e-05,
-          "shad": 0.0
+          "shad": 8.5e-05
         },
         "n_owners_present": 3
       },
@@ -2148,47 +2148,47 @@
         "n_owners_present": 3
       },
       "attack_c.esr_on_valid.cicids2017.fragment_payload.random_forest": {
-        "average": 0.001418,
+        "average": 0.001015,
         "values_by_owner": {
           "alyssa": 0.001015,
           "jessy": 0.001015,
-          "shad": 0.002225
+          "shad": 0.001015
         },
         "n_owners_present": 3
       },
       "attack_c.esr_on_valid.cicids2017.fragment_payload.xgboost": {
-        "average": 0.000377,
+        "average": 0.00039,
         "values_by_owner": {
           "alyssa": 0.00039,
           "jessy": 0.00039,
-          "shad": 0.000351
+          "shad": 0.00039
         },
         "n_owners_present": 3
       },
       "attack_c.esr_on_valid.cicids2017.shift_ack_timing.mlp": {
-        "average": 0.026323,
+        "average": 0.036537,
         "values_by_owner": {
           "alyssa": 0.036537,
           "jessy": 0.036537,
-          "shad": 0.005895
+          "shad": 0.036537
         },
         "n_owners_present": 3
       },
       "attack_c.esr_on_valid.cicids2017.shift_ack_timing.random_forest": {
-        "average": 0.104527,
+        "average": 0.09767,
         "values_by_owner": {
           "alyssa": 0.09767,
           "jessy": 0.09767,
-          "shad": 0.118242
+          "shad": 0.09767
         },
         "n_owners_present": 3
       },
       "attack_c.esr_on_valid.cicids2017.shift_ack_timing.xgboost": {
-        "average": 0.046224,
+        "average": 0.044598,
         "values_by_owner": {
           "alyssa": 0.044598,
           "jessy": 0.044598,
-          "shad": 0.049475
+          "shad": 0.044598
         },
         "n_owners_present": 3
       },
@@ -2274,29 +2274,29 @@
         "n_owners_present": 3
       },
       "attack_c.esr_on_valid.unswnb15.add_tcp_options.mlp": {
-        "average": 0.88643,
+        "average": 0.883884,
         "values_by_owner": {
           "alyssa": 0.883884,
           "jessy": 0.883884,
-          "shad": 0.891522
+          "shad": 0.883884
         },
         "n_owners_present": 3
       },
       "attack_c.esr_on_valid.unswnb15.add_tcp_options.random_forest": {
-        "average": 0.000672,
+        "average": 0.001008,
         "values_by_owner": {
           "alyssa": 0.001008,
           "jessy": 0.001008,
-          "shad": 0.0
+          "shad": 0.001008
         },
         "n_owners_present": 3
       },
       "attack_c.esr_on_valid.unswnb15.add_tcp_options.xgboost": {
-        "average": 0.000111,
+        "average": 0.0,
         "values_by_owner": {
           "alyssa": 0.0,
           "jessy": 0.0,
-          "shad": 0.000333
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
@@ -2328,20 +2328,20 @@
         "n_owners_present": 3
       },
       "attack_c.esr_on_valid.unswnb15.shift_ack_timing.mlp": {
-        "average": 0.666667,
+        "average": 1.0,
         "values_by_owner": {
           "alyssa": 1.0,
           "jessy": 1.0,
-          "shad": 0.0
+          "shad": 1.0
         },
         "n_owners_present": 3
       },
       "attack_c.esr_on_valid.unswnb15.shift_ack_timing.random_forest": {
-        "average": 0.222222,
+        "average": 0.333333,
         "values_by_owner": {
           "alyssa": 0.333333,
           "jessy": 0.333333,
-          "shad": 0.0
+          "shad": 0.333333
         },
         "n_owners_present": 3
       },
@@ -3114,11 +3114,11 @@
     "metrics_missing_owners": {}
   },
   "skew_analysis": {
-    "n_warnings": 21,
+    "n_warnings": 19,
     "warning_counts_by_owner": {
       "alyssa": 2,
       "jessy": 12,
-      "shad": 7
+      "shad": 5
     },
     "warnings": [
       {
@@ -3178,21 +3178,6 @@
           "shad": -1.576826,
           "alyssa": -7.694097,
           "jessy": 20.461471
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "high",
-        "metric": "attack_c.esr_on_valid.unswnb15.shift_ack_timing.mlp",
-        "owner_with_max_deviation": "shad",
-        "owner_value": 0.0,
-        "team_median": 1.0,
-        "absolute_deviation": 1.0,
-        "threshold": 0.2,
-        "values_by_owner": {
-          "shad": 0.0,
-          "alyssa": 1.0,
-          "jessy": 1.0
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
@@ -3343,21 +3328,6 @@
           "shad": 1.0,
           "alyssa": 1.0,
           "jessy": 0.0
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "attack_c.esr_on_valid.unswnb15.shift_ack_timing.random_forest",
-        "owner_with_max_deviation": "shad",
-        "owner_value": 0.0,
-        "team_median": 0.333333,
-        "absolute_deviation": 0.333333,
-        "threshold": 0.2,
-        "values_by_owner": {
-          "shad": 0.0,
-          "alyssa": 0.333333,
-          "jessy": 0.333333
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
