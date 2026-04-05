@@ -67,42 +67,67 @@ class Ensemble:
     ### Named constructors ###
     @classmethod
     def baseline(cls, models_dir: Path = MODELS_DIR) -> "Ensemble":
-        """Load the standard Sprint 2 baseline models."""
-        rf = joblib.load(models_dir / "rf_cicids2017.pkl")
-        xgb = joblib.load(models_dir / "xgb_cicids2017.pkl")
-        mlp_scaler = joblib.load(models_dir / "scaler_cicids2017.pkl")
-        mlp = tf.keras.models.load_model(
-            models_dir / "mlp_cicids2017.h5", compile=False
-        )
-
-        lstm_scaler = joblib.load(models_dir / "scaler_lstm_cicids2017.pkl")
-        lstm = tf.keras.models.load_model(models_dir / "lstm_cicids2017.h5", compile=False)
-
-        return cls(
-            rf=rf, xgb=xgb, mlp=mlp, mlp_scaler=mlp_scaler,
-            lstm=lstm, lstm_scaler=lstm_scaler,
-            name="baseline",
-        )
+        """Load the standard Sprint 2 CICIDS2017 baseline models."""
+        return cls.baseline_for("cicids2017", models_dir)
 
     @classmethod
     def adversarial(cls, models_dir: Path = MODELS_DIR) -> "Ensemble":
+        """Load adversarially retrained CICIDS2017 models."""
+        return cls.adversarial_for("cicids2017", models_dir)
+
+    @classmethod
+    def baseline_for(cls, dataset: str, models_dir: Path = MODELS_DIR) -> "Ensemble":
         """
-        Load adversarially retrained models.
+        Load baseline models for the specified dataset.
+
+        LSTM is loaded when the file is present (lstm_{dataset}.h5 + scaler_lstm_{dataset}.pkl).
         """
-        rf = joblib.load(models_dir / "adv_rf_cicids2017.pkl")
-        xgb = joblib.load(models_dir / "adv_xgb_cicids2017.pkl")
-        mlp_scaler = joblib.load(models_dir / "adv_scaler_cicids2017.pkl")
+        rf = joblib.load(models_dir / f"rf_{dataset}.pkl")
+        xgb = joblib.load(models_dir / f"xgb_{dataset}.pkl")
+        mlp_scaler = joblib.load(models_dir / f"scaler_{dataset}.pkl")
         mlp = tf.keras.models.load_model(
-            models_dir / "adv_mlp_cicids2017.h5", compile=False
+            models_dir / f"mlp_{dataset}.h5", compile=False
         )
 
-        lstm_scaler = joblib.load(models_dir / "adv_scaler_lstm_cicids2017.pkl")
-        lstm = tf.keras.models.load_model(models_dir / "adv_lstm_cicids2017.h5", compile=False)
+        lstm, lstm_scaler = None, None
+        lstm_path = models_dir / f"lstm_{dataset}.h5"
+        lstm_scaler_path = models_dir / f"scaler_lstm_{dataset}.pkl"
+        if lstm_path.exists() and lstm_scaler_path.exists():
+            lstm_scaler = joblib.load(lstm_scaler_path)
+            lstm = tf.keras.models.load_model(lstm_path, compile=False)
 
         return cls(
             rf=rf, xgb=xgb, mlp=mlp, mlp_scaler=mlp_scaler,
             lstm=lstm, lstm_scaler=lstm_scaler,
-            name="adversarial",
+            name=f"baseline_{dataset}",
+        )
+
+    @classmethod
+    def adversarial_for(cls, dataset: str, models_dir: Path = MODELS_DIR) -> "Ensemble":
+        """
+        Load adversarially retrained models for the specified dataset.
+
+        Adversarial LSTM files (adv_lstm_{dataset}.h5 + adv_scaler_lstm_{dataset}.pkl)
+        exist for all three datasets and are loaded automatically when present.
+        """
+        rf = joblib.load(models_dir / f"adv_rf_{dataset}.pkl")
+        xgb = joblib.load(models_dir / f"adv_xgb_{dataset}.pkl")
+        mlp_scaler = joblib.load(models_dir / f"adv_scaler_{dataset}.pkl")
+        mlp = tf.keras.models.load_model(
+            models_dir / f"adv_mlp_{dataset}.h5", compile=False
+        )
+
+        lstm, lstm_scaler = None, None
+        lstm_path = models_dir / f"adv_lstm_{dataset}.h5"
+        lstm_scaler_path = models_dir / f"adv_scaler_lstm_{dataset}.pkl"
+        if lstm_path.exists() and lstm_scaler_path.exists():
+            lstm_scaler = joblib.load(lstm_scaler_path)
+            lstm = tf.keras.models.load_model(lstm_path, compile=False)
+
+        return cls(
+            rf=rf, xgb=xgb, mlp=mlp, mlp_scaler=mlp_scaler,
+            lstm=lstm, lstm_scaler=lstm_scaler,
+            name=f"adversarial_{dataset}",
         )
 
     ### Prediction ###
