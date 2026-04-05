@@ -230,63 +230,149 @@ def _extract_defense_metrics(
     payload: Dict[str, Any],
     metric_store: Dict[str, float],
 ) -> Dict[str, Any]:
-    clean = payload.get("clean_detection", {})
+    def _extract_one_dataset(ds_blob: Dict[str, Any]) -> Dict[str, Any]:
+        ds = str(ds_blob.get("dataset", "unknown"))
+        clean = ds_blob.get("clean_detection", {})
 
-    baseline_clean = _as_float(clean.get("baseline_detection_rate"))
-    adv_clean = _as_float(clean.get("adversarial_detection_rate"))
-    if baseline_clean is not None:
-        metric_store["defense.clean.baseline_detection_rate"] = baseline_clean
-    if adv_clean is not None:
-        metric_store["defense.clean.adversarial_detection_rate"] = adv_clean
+        baseline_clean = _as_float(clean.get("baseline_detection_rate"))
+        adv_clean = _as_float(clean.get("adversarial_detection_rate"))
+        if baseline_clean is not None:
+            metric_store[f"defense.clean.baseline_detection_rate.{ds}"] = baseline_clean
+        if adv_clean is not None:
+            metric_store[f"defense.clean.adversarial_detection_rate.{ds}"] = adv_clean
 
-    n_eval = _as_float(payload.get("n_mutations_evaluated"))
-    n_hit = _as_float(payload.get("n_mutations_meeting_target"))
-    if n_eval is not None:
-        metric_store["defense.n_mutations_evaluated"] = n_eval
-    if n_hit is not None:
-        metric_store["defense.n_mutations_meeting_target"] = n_hit
-    if n_eval and n_hit is not None and n_eval > 0:
-        metric_store["defense.target_hit_rate"] = n_hit / n_eval
+        n_eval = _as_float(ds_blob.get("n_mutations_evaluated"))
+        n_hit = _as_float(ds_blob.get("n_mutations_meeting_target"))
+        if n_eval is not None:
+            metric_store[f"defense.n_mutations_evaluated.{ds}"] = n_eval
+        if n_hit is not None:
+            metric_store[f"defense.n_mutations_meeting_target.{ds}"] = n_hit
+        if n_eval and n_hit is not None and n_eval > 0:
+            metric_store[f"defense.target_hit_rate.{ds}"] = n_hit / n_eval
 
-    mutation_rows: List[Dict[str, Any]] = []
-    for m in payload.get("mutations", []):
-        mutation = str(m.get("mutation", "unknown"))
-        base_dr = _as_float(m.get("baseline_detection_rate"))
-        adv_dr = _as_float(m.get("adversarial_detection_rate"))
-        delta_pp = _as_float(m.get("recovery_delta_pp"))
+        mutation_rows: List[Dict[str, Any]] = []
+        for m in ds_blob.get("mutations", []):
+            mutation = str(m.get("mutation", "unknown"))
+            base_dr = _as_float(m.get("baseline_detection_rate"))
+            adv_dr = _as_float(m.get("adversarial_detection_rate"))
+            delta_pp = _as_float(m.get("recovery_delta_pp"))
 
-        if base_dr is not None:
-            metric_store[f"defense.mutation.baseline_detection_rate.{mutation}"] = base_dr
-        if adv_dr is not None:
-            metric_store[f"defense.mutation.adversarial_detection_rate.{mutation}"] = adv_dr
-        if delta_pp is not None:
-            metric_store[f"defense.mutation.recovery_delta_pp.{mutation}"] = delta_pp
-            mutation_rows.append({"mutation": mutation, "recovery_delta_pp": delta_pp})
+            if base_dr is not None:
+                metric_store[f"defense.mutation.baseline_detection_rate.{ds}.{mutation}"] = base_dr
+            if adv_dr is not None:
+                metric_store[f"defense.mutation.adversarial_detection_rate.{ds}.{mutation}"] = adv_dr
+            if delta_pp is not None:
+                metric_store[f"defense.mutation.recovery_delta_pp.{ds}.{mutation}"] = delta_pp
+                mutation_rows.append({"mutation": mutation, "recovery_delta_pp": delta_pp})
 
-    best = None
-    worst = None
-    if mutation_rows:
-        best = max(mutation_rows, key=lambda r: r["recovery_delta_pp"])
-        worst = min(mutation_rows, key=lambda r: r["recovery_delta_pp"])
+        best = None
+        worst = None
+        if mutation_rows:
+            best = max(mutation_rows, key=lambda r: r["recovery_delta_pp"])
+            worst = min(mutation_rows, key=lambda r: r["recovery_delta_pp"])
+
+        target_hit_rate = (
+            (n_hit / n_eval) if (n_eval and n_hit is not None and n_eval > 0) else None
+        )
+        return {
+            "dataset": ds,
+            "target_recovery_pp": ds_blob.get("target_recovery_pp"),
+            "n_attack_samples": ds_blob.get("n_attack_samples"),
+            "n_mutations_evaluated": int(n_eval) if n_eval is not None else None,
+            "n_mutations_skipped": (
+                int(ds_blob["n_mutations_skipped"])
+                if _as_float(ds_blob.get("n_mutations_skipped")) is not None
+                else None
+            ),
+            "n_mutations_meeting_target": int(n_hit) if n_hit is not None else None,
+            "target_hit_rate": _round_or_none(target_hit_rate),
+            "clean_baseline_detection_rate": _round_or_none(baseline_clean),
+            "clean_adversarial_detection_rate": _round_or_none(adv_clean),
+            "mean_recovery_delta_pp": _round_or_none(
+                _safe_mean(r["recovery_delta_pp"] for r in mutation_rows), digits=4
+            ),
+            "median_recovery_delta_pp": _round_or_none(
+                _safe_median(r["recovery_delta_pp"] for r in mutation_rows), digits=4
+            ),
+            "best_mutation_by_recovery": best,
+            "worst_mutation_by_recovery": worst,
+        }
+
+    # New schema: {"datasets": [ ... ]}
+    dataset_entries = payload.get("datasets")
+    per_dataset_list: List[Dict[str, Any]] = []
+    if isinstance(dataset_entries, list) and dataset_entries:
+        for ds_blob in dataset_entries:
+            if isinstance(ds_blob, dict):
+                per_dataset_list.append(_extract_one_dataset(ds_blob))
+    else:
+        # Backward compatibility with old single-dataset schema
+        if isinstance(payload, dict):
+            per_dataset_list.append(_extract_one_dataset(payload))
+
+    per_dataset: Dict[str, Dict[str, Any]] = {
+        str(d.get("dataset", "unknown")): d for d in per_dataset_list
+    }
+
+    eval_totals = [
+        int(d["n_mutations_evaluated"])
+        for d in per_dataset_list
+        if isinstance(d.get("n_mutations_evaluated"), int)
+    ]
+    hit_totals = [
+        int(d["n_mutations_meeting_target"])
+        for d in per_dataset_list
+        if isinstance(d.get("n_mutations_meeting_target"), int)
+    ]
+    clean_base_vals = [
+        float(d["clean_baseline_detection_rate"])
+        for d in per_dataset_list
+        if _as_float(d.get("clean_baseline_detection_rate")) is not None
+    ]
+    clean_adv_vals = [
+        float(d["clean_adversarial_detection_rate"])
+        for d in per_dataset_list
+        if _as_float(d.get("clean_adversarial_detection_rate")) is not None
+    ]
+    mean_delta_vals = [
+        float(d["mean_recovery_delta_pp"])
+        for d in per_dataset_list
+        if _as_float(d.get("mean_recovery_delta_pp")) is not None
+    ]
+
+    total_eval = sum(eval_totals) if eval_totals else None
+    total_hit = sum(hit_totals) if hit_totals else None
+    overall_hit_rate = (
+        (total_hit / total_eval)
+        if (total_eval is not None and total_eval > 0 and total_hit is not None)
+        else None
+    )
+
+    if total_eval is not None:
+        metric_store["defense.n_mutations_evaluated.overall"] = float(total_eval)
+    if total_hit is not None:
+        metric_store["defense.n_mutations_meeting_target.overall"] = float(total_hit)
+    if overall_hit_rate is not None:
+        metric_store["defense.target_hit_rate.overall"] = float(overall_hit_rate)
+    if clean_base_vals:
+        metric_store["defense.clean.baseline_detection_rate.overall"] = float(mean(clean_base_vals))
+    if clean_adv_vals:
+        metric_store["defense.clean.adversarial_detection_rate.overall"] = float(mean(clean_adv_vals))
+    if mean_delta_vals:
+        metric_store["defense.mean_recovery_delta_pp.overall"] = float(mean(mean_delta_vals))
 
     return {
-        "dataset": payload.get("dataset"),
-        "target_recovery_pp": payload.get("target_recovery_pp"),
-        "n_mutations_evaluated": int(n_eval) if n_eval is not None else None,
-        "n_mutations_meeting_target": int(n_hit) if n_hit is not None else None,
-        "target_hit_rate": _round_or_none(
-            (n_hit / n_eval) if (n_eval and n_hit is not None and n_eval > 0) else None
-        ),
-        "clean_baseline_detection_rate": _round_or_none(baseline_clean),
-        "clean_adversarial_detection_rate": _round_or_none(adv_clean),
-        "mean_recovery_delta_pp": _round_or_none(
-            _safe_mean(r["recovery_delta_pp"] for r in mutation_rows), digits=4
-        ),
-        "median_recovery_delta_pp": _round_or_none(
-            _safe_median(r["recovery_delta_pp"] for r in mutation_rows), digits=4
-        ),
-        "best_mutation_by_recovery": best,
-        "worst_mutation_by_recovery": worst,
+        "n_datasets": len(per_dataset_list),
+        "per_dataset": per_dataset,
+        "overall": {
+            "n_mutations_evaluated_total": total_eval,
+            "n_mutations_meeting_target_total": total_hit,
+            "target_hit_rate_overall": _round_or_none(overall_hit_rate),
+            "mean_clean_baseline_detection_rate": _round_or_none(_safe_mean(clean_base_vals)),
+            "mean_clean_adversarial_detection_rate": _round_or_none(_safe_mean(clean_adv_vals)),
+            "mean_recovery_delta_pp": _round_or_none(_safe_mean(mean_delta_vals), digits=4),
+            "median_recovery_delta_pp": _round_or_none(_safe_median(mean_delta_vals), digits=4),
+        },
     }
 
 
@@ -419,24 +505,35 @@ def _print_terminal_summary(
         blob = owner_summaries.get(owner, {})
         attacks = blob.get("attacks", {})
         defense = blob.get("defense", {})
+        defense_overall = defense.get("overall", {})
+        defense_by_ds = defense.get("per_dataset", {})
         adv_clean = blob.get("adv_training_clean", {})
         retr = blob.get("retrained_adversarial", {})
 
         a_esr = attacks.get("attack_a", {}).get("overall_mean_esr")
         b_esr = attacks.get("attack_b", {}).get("overall_mean_esr")
         c_esr = attacks.get("attack_c", {}).get("overall_mean_esr")
-        hit = defense.get("n_mutations_meeting_target")
-        total = defense.get("n_mutations_evaluated")
-        mean_recovery = defense.get("mean_recovery_delta_pp")
+        hit = defense_overall.get("n_mutations_meeting_target_total")
+        total = defense_overall.get("n_mutations_evaluated_total")
+        mean_recovery = defense_overall.get("mean_recovery_delta_pp")
 
         print(f"\n{owner.upper()}:")
         print(f"  Attack mean ESR (A/B/C): {a_esr} / {b_esr} / {c_esr}")
-        print(f"  Defense target hits: {hit}/{total}; mean recovery_delta_pp: {mean_recovery}")
+        print(f"  Defense target hits (total): {hit}/{total}; mean recovery_delta_pp: {mean_recovery}")
         print(
-            "  Clean detection (baseline/adversarial): "
-            f"{defense.get('clean_baseline_detection_rate')} / "
-            f"{defense.get('clean_adversarial_detection_rate')}"
+            "  Clean detection mean (baseline/adversarial): "
+            f"{defense_overall.get('mean_clean_baseline_detection_rate')} / "
+            f"{defense_overall.get('mean_clean_adversarial_detection_rate')}"
         )
+        if defense_by_ds:
+            ds_bits = []
+            for ds_name in sorted(defense_by_ds):
+                ds_obj = defense_by_ds[ds_name]
+                ds_bits.append(
+                    f"{ds_name}: {ds_obj.get('n_mutations_meeting_target')}/"
+                    f"{ds_obj.get('n_mutations_evaluated')}"
+                )
+            print(f"  Defense per-dataset target hits: {' | '.join(ds_bits)}")
         print(
             "  Adv-train clean mean drop (pp): "
             f"{adv_clean.get('mean_accuracy_drop_pp')} | violations: "
@@ -449,9 +546,10 @@ def _print_terminal_summary(
 
     print("\n--- Team average snapshots ---")
     snapshot_keys = [
-        "defense.clean.baseline_detection_rate",
-        "defense.clean.adversarial_detection_rate",
-        "defense.target_hit_rate",
+        "defense.clean.baseline_detection_rate.cicids2017",
+        "defense.clean.adversarial_detection_rate.cicids2017",
+        "defense.target_hit_rate.cicids2017",
+        "defense.target_hit_rate.overall",
         "attack_a.esr.cicids2017.inject_decoy_flows.random_forest",
         "attack_b.esr.cicids2017.mimic_packet_size.mlp",
         "attack_c.esr.cicids2017.fragment_payload.mlp",
