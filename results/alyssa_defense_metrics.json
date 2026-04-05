@@ -1,78 +1,209 @@
 {
-  "generated_at_utc": "2026-04-04T05:38:23.727704+00:00",
-  "dataset": "cicids2017",
-  "target_recovery_pp": 25.0,
-  "n_attack_samples": 63882,
-  "clean_detection": {
-    "baseline_detection_rate": 0.9953,
-    "adversarial_detection_rate": 0.9903,
-    "note": "Detection rate on unperturbed attack samples. Both ensembles should be near 1.0 here."
-  },
-  "n_mutations_evaluated": 7,
-  "n_mutations_meeting_target": 0,
-  "mutations": [
+  "generated_at_utc": "2026-04-05T22:43:48.824530+00:00",
+  "datasets": [
     {
-      "mutation": "inject_decoy_flows",
-      "n_samples": 63882,
-      "n_mutation_success": 36008,
-      "baseline_detection_rate": 0.0,
-      "adversarial_detection_rate": 0.1968,
-      "recovery_delta_pp": 19.68,
-      "meets_25pp_target": false
+      "dataset": "cicids2017",
+      "n_attack_samples": 63882,
+      "target_recovery_pp": 25.0,
+      "clean_detection": {
+        "baseline_detection_rate": 0.9768,
+        "adversarial_detection_rate": 0.9898,
+        "note": "Detection rate on unperturbed attack samples. Both ensembles should be near 1.0 here."
+      },
+      "n_mutations_evaluated": 7,
+      "n_mutations_skipped": 0,
+      "n_mutations_meeting_target": 3,
+      "mutations": [
+        {
+          "mutation": "inject_decoy_flows",
+          "n_samples": 63882,
+          "n_mutation_success": 36008,
+          "baseline_detection_rate": 0.0,
+          "adversarial_detection_rate": 0.2246,
+          "recovery_delta_pp": 22.46,
+          "meets_25pp_target": false
+        },
+        {
+          "mutation": "dilute_scan_pattern",
+          "n_samples": 63882,
+          "n_mutation_success": 48159,
+          "baseline_detection_rate": 0.0001,
+          "adversarial_detection_rate": 0.6676,
+          "recovery_delta_pp": 66.75,
+          "meets_25pp_target": true
+        },
+        {
+          "mutation": "mimic_timing",
+          "n_samples": 63882,
+          "n_mutation_success": 63882,
+          "baseline_detection_rate": 0.809,
+          "adversarial_detection_rate": 0.8716,
+          "recovery_delta_pp": 6.26,
+          "meets_25pp_target": false
+        },
+        {
+          "mutation": "mimic_packet_size",
+          "n_samples": 63882,
+          "n_mutation_success": 63882,
+          "baseline_detection_rate": 0.0077,
+          "adversarial_detection_rate": 0.6919,
+          "recovery_delta_pp": 68.42,
+          "meets_25pp_target": true
+        },
+        {
+          "mutation": "fragment_payload",
+          "n_samples": 63882,
+          "n_mutation_success": 25629,
+          "baseline_detection_rate": 0.0008,
+          "adversarial_detection_rate": 0.9776,
+          "recovery_delta_pp": 97.68,
+          "meets_25pp_target": true
+        },
+        {
+          "mutation": "add_tcp_options",
+          "n_samples": 63882,
+          "n_mutation_success": 25630,
+          "baseline_detection_rate": 0.9984,
+          "adversarial_detection_rate": 0.9918,
+          "recovery_delta_pp": -0.66,
+          "meets_25pp_target": false
+        },
+        {
+          "mutation": "shift_ack_timing",
+          "n_samples": 63882,
+          "n_mutation_success": 25630,
+          "baseline_detection_rate": 0.9181,
+          "adversarial_detection_rate": 0.9507,
+          "recovery_delta_pp": 3.25,
+          "meets_25pp_target": false
+        }
+      ]
     },
     {
-      "mutation": "dilute_scan_pattern",
-      "n_samples": 63882,
-      "n_mutation_success": 48159,
-      "baseline_detection_rate": 0.6915,
-      "adversarial_detection_rate": 0.6822,
-      "recovery_delta_pp": -0.93,
-      "meets_25pp_target": false
+      "dataset": "nslkdd",
+      "n_attack_samples": 10719,
+      "target_recovery_pp": 25.0,
+      "clean_detection": {
+        "baseline_detection_rate": 0.9949,
+        "adversarial_detection_rate": 0.9945,
+        "note": "Detection rate on unperturbed attack samples. Both ensembles should be near 1.0 here."
+      },
+      "n_mutations_evaluated": 1,
+      "n_mutations_skipped": 6,
+      "n_mutations_meeting_target": 0,
+      "schema_note": "Mutations that ran on this dataset operate on CICIDS2017-equivalent positional feature indices. The perturbed index positions may carry different semantic meaning in this dataset's schema. Results test whether adversarial retraining provides general robustness to feature perturbations, not protocol-specific evasion.",
+      "mutations": [
+        {
+          "mutation": "inject_decoy_flows",
+          "skipped": true,
+          "reason": "Requires CICIDS2017-schema benign pool and constraint validators tied to CICIDS2017 feature indices."
+        },
+        {
+          "mutation": "dilute_scan_pattern",
+          "skipped": true,
+          "reason": "Requires CICIDS2017 feature semantics for cover-traffic insertion and constraint validators."
+        },
+        {
+          "mutation": "mimic_timing",
+          "n_samples": 10719,
+          "n_mutation_success": 10719,
+          "baseline_detection_rate": 0.9064,
+          "adversarial_detection_rate": 0.9233,
+          "recovery_delta_pp": 1.69,
+          "meets_25pp_target": false
+        },
+        {
+          "mutation": "mimic_packet_size",
+          "skipped": true,
+          "reason": "Accesses feature indices 48 (PKT_SIZE_AVG), 52 (SUBFLOW_FWD_BYTS), 54 (SUBFLOW_BWD_BYTS) which exceed NSL-KDD dimensionality (40 features)."
+        },
+        {
+          "mutation": "fragment_payload",
+          "skipped": true,
+          "reason": "TCPConstraintValidator._check_inputs requires \u226567 features; NSL-KDD has 40."
+        },
+        {
+          "mutation": "add_tcp_options",
+          "skipped": true,
+          "reason": "TCPConstraintValidator._check_inputs requires \u226567 features; NSL-KDD has 40."
+        },
+        {
+          "mutation": "shift_ack_timing",
+          "skipped": true,
+          "reason": "TCPConstraintValidator._check_inputs requires \u226567 features; NSL-KDD has 40."
+        }
+      ]
     },
     {
-      "mutation": "mimic_timing",
-      "n_samples": 63882,
-      "n_mutation_success": 63882,
-      "baseline_detection_rate": 0.8245,
-      "adversarial_detection_rate": 0.8712,
-      "recovery_delta_pp": 4.67,
-      "meets_25pp_target": false
-    },
-    {
-      "mutation": "mimic_packet_size",
-      "n_samples": 63882,
-      "n_mutation_success": 63882,
-      "baseline_detection_rate": 0.7415,
-      "adversarial_detection_rate": 0.6776,
-      "recovery_delta_pp": -6.39,
-      "meets_25pp_target": false
-    },
-    {
-      "mutation": "fragment_payload",
-      "n_samples": 63882,
-      "n_mutation_success": 25629,
-      "baseline_detection_rate": 0.9977,
-      "adversarial_detection_rate": 0.9793,
-      "recovery_delta_pp": -1.84,
-      "meets_25pp_target": false
-    },
-    {
-      "mutation": "add_tcp_options",
-      "n_samples": 63882,
-      "n_mutation_success": 25630,
-      "baseline_detection_rate": 0.9995,
-      "adversarial_detection_rate": 0.9921,
-      "recovery_delta_pp": -0.74,
-      "meets_25pp_target": false
-    },
-    {
-      "mutation": "shift_ack_timing",
-      "n_samples": 63882,
-      "n_mutation_success": 25630,
-      "baseline_detection_rate": 0.9158,
-      "adversarial_detection_rate": 0.9153,
-      "recovery_delta_pp": -0.04,
-      "meets_25pp_target": false
+      "dataset": "unswnb15",
+      "n_attack_samples": 12175,
+      "target_recovery_pp": 25.0,
+      "clean_detection": {
+        "baseline_detection_rate": 0.9805,
+        "adversarial_detection_rate": 0.9822,
+        "note": "Detection rate on unperturbed attack samples. Both ensembles should be near 1.0 here."
+      },
+      "n_mutations_evaluated": 5,
+      "n_mutations_skipped": 2,
+      "n_mutations_meeting_target": 2,
+      "schema_note": "Mutations that ran on this dataset operate on CICIDS2017-equivalent positional feature indices. The perturbed index positions may carry different semantic meaning in this dataset's schema. Results test whether adversarial retraining provides general robustness to feature perturbations, not protocol-specific evasion.",
+      "mutations": [
+        {
+          "mutation": "inject_decoy_flows",
+          "skipped": true,
+          "reason": "Requires a CICIDS2017-schema benign pool; UNSW-NB15 features at the same positional indices carry different semantics."
+        },
+        {
+          "mutation": "dilute_scan_pattern",
+          "skipped": true,
+          "reason": "Requires CICIDS2017 feature semantics for cover-traffic insertion."
+        },
+        {
+          "mutation": "mimic_timing",
+          "n_samples": 12175,
+          "n_mutation_success": 12175,
+          "baseline_detection_rate": 0.9195,
+          "adversarial_detection_rate": 0.6272,
+          "recovery_delta_pp": -29.23,
+          "meets_25pp_target": false
+        },
+        {
+          "mutation": "mimic_packet_size",
+          "n_samples": 12175,
+          "n_mutation_success": 12175,
+          "baseline_detection_rate": 0.9745,
+          "adversarial_detection_rate": 0.9865,
+          "recovery_delta_pp": 1.21,
+          "meets_25pp_target": false
+        },
+        {
+          "mutation": "fragment_payload",
+          "n_samples": 12175,
+          "n_mutation_success": 1,
+          "baseline_detection_rate": 0.0,
+          "adversarial_detection_rate": 1.0,
+          "recovery_delta_pp": 100.0,
+          "meets_25pp_target": true
+        },
+        {
+          "mutation": "add_tcp_options",
+          "n_samples": 12175,
+          "n_mutation_success": 2999,
+          "baseline_detection_rate": 0.8486,
+          "adversarial_detection_rate": 1.0,
+          "recovery_delta_pp": 15.14,
+          "meets_25pp_target": false
+        },
+        {
+          "mutation": "shift_ack_timing",
+          "n_samples": 12175,
+          "n_mutation_success": 3,
+          "baseline_detection_rate": 0.0,
+          "adversarial_detection_rate": 0.6667,
+          "recovery_delta_pp": 66.67,
+          "meets_25pp_target": true
+        }
+      ]
     }
   ]
 }
