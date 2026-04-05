@@ -1,12 +1,12 @@
 {
-  "generated_at_utc": "2026-04-04T20:27:40.659090+00:00",
+  "generated_at_utc": "2026-04-05T21:45:55.687719+00:00",
   "datasets": [
     {
       "dataset": "cicids2017",
       "n_attack_samples": 63882,
       "target_recovery_pp": 25.0,
       "clean_detection": {
-        "baseline_detection_rate": 0.9928,
+        "baseline_detection_rate": 0.9768,
         "adversarial_detection_rate": 0.9932,
         "note": "Detection rate on unperturbed attack samples. Both ensembles should be near 1.0 here."
       },
@@ -27,27 +27,27 @@
           "mutation": "dilute_scan_pattern",
           "n_samples": 63882,
           "n_mutation_success": 48159,
-          "baseline_detection_rate": 0.0,
+          "baseline_detection_rate": 0.0001,
           "adversarial_detection_rate": 0.691,
-          "recovery_delta_pp": 69.1,
+          "recovery_delta_pp": 69.09,
           "meets_25pp_target": true
         },
         {
           "mutation": "mimic_timing",
           "n_samples": 63882,
           "n_mutation_success": 63882,
-          "baseline_detection_rate": 0.8212,
+          "baseline_detection_rate": 0.809,
           "adversarial_detection_rate": 0.8223,
-          "recovery_delta_pp": 0.11,
+          "recovery_delta_pp": 1.33,
           "meets_25pp_target": false
         },
         {
           "mutation": "mimic_packet_size",
           "n_samples": 63882,
           "n_mutation_success": 63882,
-          "baseline_detection_rate": 0.0005,
+          "baseline_detection_rate": 0.0077,
           "adversarial_detection_rate": 0.6425,
-          "recovery_delta_pp": 64.2,
+          "recovery_delta_pp": 63.48,
           "meets_25pp_target": true
         },
         {
@@ -63,18 +63,18 @@
           "mutation": "add_tcp_options",
           "n_samples": 63882,
           "n_mutation_success": 25630,
-          "baseline_detection_rate": 0.9991,
+          "baseline_detection_rate": 0.9984,
           "adversarial_detection_rate": 0.9913,
-          "recovery_delta_pp": -0.78,
+          "recovery_delta_pp": -0.72,
           "meets_25pp_target": false
         },
         {
           "mutation": "shift_ack_timing",
           "n_samples": 63882,
           "n_mutation_success": 25630,
-          "baseline_detection_rate": 0.8971,
+          "baseline_detection_rate": 0.9181,
           "adversarial_detection_rate": 0.8661,
-          "recovery_delta_pp": -3.1,
+          "recovery_delta_pp": -5.21,
           "meets_25pp_target": false
         }
       ]
@@ -84,7 +84,7 @@
       "n_attack_samples": 10719,
       "target_recovery_pp": 25.0,
       "clean_detection": {
-        "baseline_detection_rate": 0.9948,
+        "baseline_detection_rate": 0.9949,
         "adversarial_detection_rate": 0.9946,
         "note": "Detection rate on unperturbed attack samples. Both ensembles should be near 1.0 here."
       },
@@ -107,9 +107,9 @@
           "mutation": "mimic_timing",
           "n_samples": 10719,
           "n_mutation_success": 10719,
-          "baseline_detection_rate": 0.9176,
+          "baseline_detection_rate": 0.9064,
           "adversarial_detection_rate": 0.9114,
-          "recovery_delta_pp": -0.63,
+          "recovery_delta_pp": 0.49,
           "meets_25pp_target": false
         },
         {
@@ -139,13 +139,13 @@
       "n_attack_samples": 12175,
       "target_recovery_pp": 25.0,
       "clean_detection": {
-        "baseline_detection_rate": 0.9835,
+        "baseline_detection_rate": 0.9805,
         "adversarial_detection_rate": 0.9768,
         "note": "Detection rate on unperturbed attack samples. Both ensembles should be near 1.0 here."
       },
       "n_mutations_evaluated": 5,
       "n_mutations_skipped": 2,
-      "n_mutations_meeting_target": 0,
+      "n_mutations_meeting_target": 1,
       "schema_note": "Mutations that ran on this dataset operate on CICIDS2017-equivalent positional feature indices. The perturbed index positions may carry different semantic meaning in this dataset's schema. Results test whether adversarial retraining provides general robustness to feature perturbations, not protocol-specific evasion.",
       "mutations": [
         {
@@ -162,18 +162,18 @@
           "mutation": "mimic_timing",
           "n_samples": 12175,
           "n_mutation_success": 12175,
-          "baseline_detection_rate": 0.9543,
+          "baseline_detection_rate": 0.9195,
           "adversarial_detection_rate": 0.8076,
-          "recovery_delta_pp": -14.68,
+          "recovery_delta_pp": -11.2,
           "meets_25pp_target": false
         },
         {
           "mutation": "mimic_packet_size",
           "n_samples": 12175,
           "n_mutation_success": 12175,
-          "baseline_detection_rate": 0.8905,
+          "baseline_detection_rate": 0.9745,
           "adversarial_detection_rate": 0.9852,
-          "recovery_delta_pp": 9.47,
+          "recovery_delta_pp": 1.08,
           "meets_25pp_target": false
         },
         {
@@ -189,19 +189,19 @@
           "mutation": "add_tcp_options",
           "n_samples": 12175,
           "n_mutation_success": 2999,
-          "baseline_detection_rate": 0.856,
+          "baseline_detection_rate": 0.8486,
           "adversarial_detection_rate": 0.8093,
-          "recovery_delta_pp": -4.67,
+          "recovery_delta_pp": -3.93,
           "meets_25pp_target": false
         },
         {
           "mutation": "shift_ack_timing",
           "n_samples": 12175,
           "n_mutation_success": 3,
-          "baseline_detection_rate": 1.0,
+          "baseline_detection_rate": 0.0,
           "adversarial_detection_rate": 0.6667,
-          "recovery_delta_pp": -33.33,
-          "meets_25pp_target": false
+          "recovery_delta_pp": 66.67,
+          "meets_25pp_target": true
         }
       ]
     }
