@@ -252,6 +252,8 @@ def _extract_defense_metrics(
 
         mutation_rows: List[Dict[str, Any]] = []
         for m in ds_blob.get("mutations", []):
+            if m.get("skipped"):
+                continue
             mutation = str(m.get("mutation", "unknown"))
             base_dr = _as_float(m.get("baseline_detection_rate"))
             adv_dr = _as_float(m.get("adversarial_detection_rate"))
@@ -264,6 +266,33 @@ def _extract_defense_metrics(
             if delta_pp is not None:
                 metric_store[f"defense.mutation.recovery_delta_pp.{ds}.{mutation}"] = delta_pp
                 mutation_rows.append({"mutation": mutation, "recovery_delta_pp": delta_pp})
+
+            # Per-model detection rates — baseline
+            for model, dr in m.get("baseline_per_model", {}).items():
+                val = _as_float(dr)
+                if val is not None:
+                    metric_store[
+                        f"defense.mutation.baseline_detection_rate_per_model.{ds}.{mutation}.{model}"
+                    ] = val
+
+            # Per-model detection rates — adversarial
+            for model, dr in m.get("adversarial_per_model", {}).items():
+                val = _as_float(dr)
+                if val is not None:
+                    metric_store[
+                        f"defense.mutation.adversarial_detection_rate_per_model.{ds}.{mutation}.{model}"
+                    ] = val
+
+            # Per-model recovery delta
+            base_per = m.get("baseline_per_model", {})
+            adv_per  = m.get("adversarial_per_model", {})
+            for model in set(base_per) & set(adv_per):
+                b = _as_float(base_per[model])
+                a = _as_float(adv_per[model])
+                if b is not None and a is not None:
+                    metric_store[
+                        f"defense.mutation.recovery_delta_pp_per_model.{ds}.{mutation}.{model}"
+                    ] = round((a - b) * 100.0, 4)
 
         best = None
         worst = None
