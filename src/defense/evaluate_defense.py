@@ -211,6 +211,32 @@ def apply_mutation_batch(X: np.ndarray, mutate_fn) -> tuple[np.ndarray, np.ndarr
 
 
 ### Metrics ###
+def detection_rate_per_model(
+    ensemble: Ensemble,
+    X: np.ndarray,
+    y_true: np.ndarray,
+    benign_id: int,
+) -> dict:
+    """
+    Detection rate for each individual voter.
+    Returns a dict keyed by model name matching the order _get_votes() returns them:
+    always RF, XGBoost, MLP, and LSTM if present.
+    """
+    votes = ensemble._get_votes(np.array(X, dtype=np.float64))
+    voter_names = ["random_forest", "xgboost", "mlp", "lstm"][:len(votes)]
+
+    is_attack = y_true != benign_id
+    n_attack = int(is_attack.sum())
+
+    result = {}
+    for name, preds in zip(voter_names, votes):
+        if n_attack == 0:
+            result[name] = None
+        else:
+            result[name] = round(
+                float((preds[is_attack] != benign_id).sum()) / n_attack, 4
+            )
+    return result
 
 def detection_rate(
     ensemble: Ensemble,
@@ -260,18 +286,23 @@ def evaluate_mutation(
             "note": "No valid mutations produced - cannot compute detection rates.",
         }
 
-    baseline_dr = detection_rate(baseline,    X_valid, y_valid, benign_id)
+    baseline_dr = detection_rate(baseline, X_valid, y_valid, benign_id)
     adversarial_dr = detection_rate(adversarial, X_valid, y_valid, benign_id)
     delta_pp = (adversarial_dr - baseline_dr) * 100.0
 
+    baseline_per_model = detection_rate_per_model(baseline, X_valid, y_valid, benign_id)
+    adversarial_per_model = detection_rate_per_model(adversarial, X_valid, y_valid, benign_id)
+
     return {
-        "mutation": mutation_name,
-        "n_samples": n_total,
-        "n_mutation_success": n_valid,
-        "baseline_detection_rate": round(baseline_dr, 4),
+        "mutation":                   mutation_name,
+        "n_samples":                  n_total,
+        "n_mutation_success":         n_valid,
+        "baseline_detection_rate":    round(baseline_dr, 4),
         "adversarial_detection_rate": round(adversarial_dr, 4),
-        "recovery_delta_pp": round(delta_pp, 2),
-        "meets_25pp_target": delta_pp >= 25.0,
+        "recovery_delta_pp":          round(delta_pp, 2),
+        "meets_25pp_target":          delta_pp >= 25.0,
+        "baseline_per_model":         baseline_per_model,
+        "adversarial_per_model":      adversarial_per_model,
     }
 
 

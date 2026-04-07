@@ -1,6 +1,6 @@
 {
   "attack": "Attack C - Protocol Exploitation",
-  "generated_at_utc": "2026-03-24T05:19:01.652988+00:00",
+  "generated_at_utc": "2026-04-05T23:28:58.127799+00:00",
   "datasets_evaluated": [
     "cicids2017",
     "nslkdd",
@@ -39,19 +39,19 @@
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 63876,
+              "n_originally_detected": 63875,
               "n_originally_detected_and_valid": 25628,
-              "n_evaded": 9,
-              "esr": 0.00014089798985534473,
-              "esr_on_valid": 0.00035117839862650225
+              "n_evaded": 10,
+              "esr": 0.00015655577299412916,
+              "esr_on_valid": 0.00039019822069611364
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 63709,
-              "n_originally_detected_and_valid": 25625,
-              "n_evaded": 8,
-              "esr": 0.0001255709554380072,
-              "esr_on_valid": 0.0003121951219512195
+              "n_originally_detected": 62412,
+              "n_originally_detected_and_valid": 25562,
+              "n_evaded": 25562,
+              "esr": 0.40956867269114916,
+              "esr_on_valid": 1.0
             }
           }
         },
@@ -71,7 +71,7 @@
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 63876,
+              "n_originally_detected": 63875,
               "n_originally_detected_and_valid": 25629,
               "n_evaded": 0,
               "esr": 0.0,
@@ -79,8 +79,8 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 63709,
-              "n_originally_detected_and_valid": 25626,
+              "n_originally_detected": 62412,
+              "n_originally_detected_and_valid": 25563,
               "n_evaded": 0,
               "esr": 0.0,
               "esr_on_valid": 0.0
@@ -103,19 +103,19 @@
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 63876,
+              "n_originally_detected": 63875,
               "n_originally_detected_and_valid": 25629,
-              "n_evaded": 1268,
-              "esr": 0.019850961237397456,
-              "esr_on_valid": 0.04947520387061532
+              "n_evaded": 1143,
+              "esr": 0.017894324853228963,
+              "esr_on_valid": 0.044597916422802295
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 63709,
-              "n_originally_detected_and_valid": 25626,
-              "n_evaded": 44,
-              "esr": 0.0006906402549090396,
-              "esr_on_valid": 0.0017170061656130492
+              "n_originally_detected": 62412,
+              "n_originally_detected_and_valid": 25563,
+              "n_evaded": 934,
+              "esr": 0.014965070819714158,
+              "esr_on_valid": 0.036537182646794196
             }
           }
         }
@@ -161,7 +161,7 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 10674,
+              "n_originally_detected": 10683,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -193,7 +193,7 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 10674,
+              "n_originally_detected": 10683,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -225,7 +225,7 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 10674,
+              "n_originally_detected": 10683,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -267,7 +267,7 @@
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 12156,
+              "n_originally_detected": 12155,
               "n_originally_detected_and_valid": 1,
               "n_evaded": 0,
               "esr": 0.0,
@@ -275,10 +275,10 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 12163,
+              "n_originally_detected": 12169,
               "n_originally_detected_and_valid": 1,
               "n_evaded": 1,
-              "esr": 8.221655841486475e-05,
+              "esr": 8.217602103706138e-05,
               "esr_on_valid": 1.0
             }
           }
@@ -299,19 +299,19 @@
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 12156,
+              "n_originally_detected": 12155,
               "n_originally_detected_and_valid": 2999,
-              "n_evaded": 1,
-              "esr": 8.226390259953932e-05,
-              "esr_on_valid": 0.00033344448149383126
+              "n_evaded": 0,
+              "esr": 0.0,
+              "esr_on_valid": 0.0
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 12163,
-              "n_originally_detected_and_valid": 2992,
-              "n_evaded": 2992,
-              "esr": 0.24599194277727535,
-              "esr_on_valid": 1.0
+              "n_originally_detected": 12169,
+              "n_originally_detected_and_valid": 2997,
+              "n_evaded": 2649,
+              "esr": 0.2176842797271756,
+              "esr_on_valid": 0.8838838838838838
             }
           }
         },
@@ -331,7 +331,7 @@
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 12156,
+              "n_originally_detected": 12155,
               "n_originally_detected_and_valid": 3,
               "n_evaded": 0,
               "esr": 0.0,
@@ -339,11 +339,11 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 12163,
-              "n_originally_detected_and_valid": 1,
-              "n_evaded": 0,
-              "esr": 0.0,
-              "esr_on_valid": 0.0
+              "n_originally_detected": 12169,
+              "n_originally_detected_and_valid": 2,
+              "n_evaded": 2,
+              "esr": 0.00016435204207412277,
+              "esr_on_valid": 1.0
             }
           }
         }

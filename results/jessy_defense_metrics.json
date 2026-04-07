@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-04-04T18:50:26.807345+00:00",
+  "generated_at_utc": "2026-04-06T00:58:23.457565+00:00",
   "datasets": [
     {
       "dataset": "cicids2017",
@@ -21,7 +21,19 @@
           "baseline_detection_rate": 0.0,
           "adversarial_detection_rate": 0.1041,
           "recovery_delta_pp": 10.41,
-          "meets_25pp_target": false
+          "meets_25pp_target": false,
+          "baseline_per_model": {
+            "random_forest": 0.0,
+            "xgboost": 0.0003,
+            "mlp": 0.4656,
+            "lstm": 0.0083
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.1843,
+            "xgboost": 0.7402,
+            "mlp": 0.633,
+            "lstm": 0.0031
+          }
         },
         {
           "mutation": "dilute_scan_pattern",
@@ -30,7 +42,19 @@
           "baseline_detection_rate": 0.0001,
           "adversarial_detection_rate": 0.9848,
           "recovery_delta_pp": 98.48,
-          "meets_25pp_target": true
+          "meets_25pp_target": true,
+          "baseline_per_model": {
+            "random_forest": 0.6927,
+            "xgboost": 0.859,
+            "mlp": 0.0,
+            "lstm": 0.0086
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9763,
+            "xgboost": 0.9996,
+            "mlp": 0.9999,
+            "lstm": 0.5196
+          }
         },
         {
           "mutation": "mimic_timing",
@@ -39,7 +63,19 @@
           "baseline_detection_rate": 0.809,
           "adversarial_detection_rate": 0.7843,
           "recovery_delta_pp": -2.47,
-          "meets_25pp_target": false
+          "meets_25pp_target": false,
+          "baseline_per_model": {
+            "random_forest": 0.8149,
+            "xgboost": 0.9473,
+            "mlp": 0.9518,
+            "lstm": 0.5772
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.6755,
+            "xgboost": 0.9981,
+            "mlp": 0.9982,
+            "lstm": 0.6865
+          }
         },
         {
           "mutation": "mimic_packet_size",
@@ -48,7 +84,19 @@
           "baseline_detection_rate": 0.0077,
           "adversarial_detection_rate": 0.9975,
           "recovery_delta_pp": 98.99,
-          "meets_25pp_target": true
+          "meets_25pp_target": true,
+          "baseline_per_model": {
+            "random_forest": 0.6289,
+            "xgboost": 0.9583,
+            "mlp": 0.0,
+            "lstm": 0.0077
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9995,
+            "xgboost": 1.0,
+            "mlp": 0.9982,
+            "lstm": 0.6783
+          }
         },
         {
           "mutation": "fragment_payload",
@@ -57,7 +105,19 @@
           "baseline_detection_rate": 0.0008,
           "adversarial_detection_rate": 0.9995,
           "recovery_delta_pp": 99.87,
-          "meets_25pp_target": true
+          "meets_25pp_target": true,
+          "baseline_per_model": {
+            "random_forest": 0.9986,
+            "xgboost": 0.9996,
+            "mlp": 0.0,
+            "lstm": 0.0008
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9995,
+            "xgboost": 1.0,
+            "mlp": 1.0,
+            "lstm": 0.9488
+          }
         },
         {
           "mutation": "add_tcp_options",
@@ -66,7 +126,19 @@
           "baseline_detection_rate": 0.9984,
           "adversarial_detection_rate": 0.999,
           "recovery_delta_pp": 0.06,
-          "meets_25pp_target": false
+          "meets_25pp_target": false,
+          "baseline_per_model": {
+            "random_forest": 0.9995,
+            "xgboost": 1.0,
+            "mlp": 0.9974,
+            "lstm": 0.9518
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9995,
+            "xgboost": 1.0,
+            "mlp": 0.9995,
+            "lstm": 0.9444
+          }
         },
         {
           "mutation": "shift_ack_timing",
@@ -75,7 +147,19 @@
           "baseline_detection_rate": 0.9181,
           "adversarial_detection_rate": 0.9988,
           "recovery_delta_pp": 8.06,
-          "meets_25pp_target": false
+          "meets_25pp_target": false,
+          "baseline_per_model": {
+            "random_forest": 0.9019,
+            "xgboost": 0.9554,
+            "mlp": 0.9609,
+            "lstm": 0.4769
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9988,
+            "xgboost": 0.9996,
+            "mlp": 1.0,
+            "lstm": 0.9356
+          }
         }
       ]
     },
@@ -110,7 +194,19 @@
           "baseline_detection_rate": 0.9064,
           "adversarial_detection_rate": 0.998,
           "recovery_delta_pp": 9.16,
-          "meets_25pp_target": false
+          "meets_25pp_target": false,
+          "baseline_per_model": {
+            "random_forest": 0.9302,
+            "xgboost": 0.9908,
+            "mlp": 0.9075,
+            "lstm": 0.0593
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9983,
+            "xgboost": 1.0,
+            "mlp": 0.9993,
+            "lstm": 0.8746
+          }
         },
         {
           "mutation": "mimic_packet_size",
@@ -165,7 +261,19 @@
           "baseline_detection_rate": 0.9195,
           "adversarial_detection_rate": 0.9799,
           "recovery_delta_pp": 6.04,
-          "meets_25pp_target": false
+          "meets_25pp_target": false,
+          "baseline_per_model": {
+            "random_forest": 0.9198,
+            "xgboost": 1.0,
+            "mlp": 0.9947,
+            "lstm": 0.0
+          },
+          "adversarial_per_model": {
+            "random_forest": 1.0,
+            "xgboost": 1.0,
+            "mlp": 0.9998,
+            "lstm": 0.0
+          }
         },
         {
           "mutation": "mimic_packet_size",
@@ -174,7 +282,19 @@
           "baseline_detection_rate": 0.9745,
           "adversarial_detection_rate": 0.9994,
           "recovery_delta_pp": 2.5,
-          "meets_25pp_target": false
+          "meets_25pp_target": false,
+          "baseline_per_model": {
+            "random_forest": 0.9743,
+            "xgboost": 0.9988,
+            "mlp": 0.9999,
+            "lstm": 0.0
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9993,
+            "xgboost": 1.0,
+            "mlp": 0.9994,
+            "lstm": 0.0
+          }
         },
         {
           "mutation": "fragment_payload",
@@ -183,7 +303,19 @@
           "baseline_detection_rate": 0.0,
           "adversarial_detection_rate": 1.0,
           "recovery_delta_pp": 100.0,
-          "meets_25pp_target": true
+          "meets_25pp_target": true,
+          "baseline_per_model": {
+            "random_forest": 1.0,
+            "xgboost": 1.0,
+            "mlp": 0.0,
+            "lstm": 0.0
+          },
+          "adversarial_per_model": {
+            "random_forest": 1.0,
+            "xgboost": 1.0,
+            "mlp": 1.0,
+            "lstm": 0.0
+          }
         },
         {
           "mutation": "add_tcp_options",
@@ -192,7 +324,19 @@
           "baseline_detection_rate": 0.8486,
           "adversarial_detection_rate": 0.9723,
           "recovery_delta_pp": 12.37,
-          "meets_25pp_target": false
+          "meets_25pp_target": false,
+          "baseline_per_model": {
+            "random_forest": 0.999,
+            "xgboost": 1.0,
+            "mlp": 0.116,
+            "lstm": 0.0
+          },
+          "adversarial_per_model": {
+            "random_forest": 1.0,
+            "xgboost": 1.0,
+            "mlp": 0.7796,
+            "lstm": 0.0
+          }
         },
         {
           "mutation": "shift_ack_timing",
@@ -201,7 +345,19 @@
           "baseline_detection_rate": 0.0,
           "adversarial_detection_rate": 1.0,
           "recovery_delta_pp": 100.0,
-          "meets_25pp_target": true
+          "meets_25pp_target": true,
+          "baseline_per_model": {
+            "random_forest": 0.6667,
+            "xgboost": 1.0,
+            "mlp": 0.0,
+            "lstm": 0.0
+          },
+          "adversarial_per_model": {
+            "random_forest": 1.0,
+            "xgboost": 1.0,
+            "mlp": 1.0,
+            "lstm": 0.0
+          }
         }
       ]
     }
