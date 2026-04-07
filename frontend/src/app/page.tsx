@@ -62,6 +62,16 @@ function formatPctLabel(value: number): string {
   return `${Number(value).toFixed(1)}%`;
 }
 
+function labelDrop(value: unknown): string {
+  const n = typeof value === "number" ? value : Number(value);
+  return formatDropLabel(n);
+}
+
+function labelPct(value: unknown): string {
+  const n = typeof value === "number" ? value : Number(value);
+  return formatPctLabel(n);
+}
+
 function getBadgeClass(status?: JobStatus): string {
   switch (status) {
     case "running":
@@ -526,7 +536,7 @@ export default function Home() {
                       <LabelList
                         dataKey="avgDropPP"
                         position="top"
-                        formatter={(v: number) => formatDropLabel(v)}
+                        formatter={labelDrop}
                         style={{ fontSize: 10, fill: "#334155" }}
                       />
                     </Bar>
@@ -539,7 +549,7 @@ export default function Home() {
                       <LabelList
                         dataKey="worstDropPP"
                         position="top"
-                        formatter={(v: number) => formatDropLabel(v)}
+                        formatter={labelDrop}
                         style={{ fontSize: 10, fill: "#334155" }}
                       />
                     </Bar>
@@ -603,7 +613,7 @@ export default function Home() {
                       <LabelList
                         dataKey="cleanBaselinePct"
                         position="top"
-                        formatter={(v: number) => formatPctLabel(v)}
+                        formatter={labelPct}
                         style={{ fontSize: 10, fill: "#334155" }}
                       />
                     </Bar>
@@ -616,7 +626,7 @@ export default function Home() {
                       <LabelList
                         dataKey="cleanAdversarialPct"
                         position="top"
-                        formatter={(v: number) => formatPctLabel(v)}
+                        formatter={labelPct}
                         style={{ fontSize: 10, fill: "#334155" }}
                       />
                     </Bar>
