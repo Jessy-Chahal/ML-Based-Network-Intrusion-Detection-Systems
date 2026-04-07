@@ -174,13 +174,17 @@ export default function Home() {
           absDrops.length > 0
             ? absDrops.reduce((sum, value) => sum + value, 0) / absDrops.length
             : 0;
-        const worstDropPP = absDrops.length > 0 ? Math.max(...absDrops) : 0;
+        // Purple bar + pass/fail: only *degradation* (positive drop) counts.
+        // Negative drop = clean accuracy improved; it must not push a dataset to "fail".
+        const rawMax = drops.length > 0 ? Math.max(...drops) : 0;
+        const worstDegradationPP = Math.max(0, rawMax);
+        const derivedPass = worstDegradationPP <= attackTargetMaxDropPP;
 
         attackDatasets.push({
           dataset,
-          overallPass: Boolean(data.overall_pass),
+          overallPass: derivedPass,
           avgDropPP,
-          worstDropPP,
+          worstDropPP: worstDegradationPP,
           modelCount: drops.length,
         });
       }
@@ -479,12 +483,13 @@ export default function Home() {
                 Adv training — clean test accuracy drop
               </h4>
               <p className="mt-1 text-xs leading-relaxed text-muted">
-                Target: worst drop per dataset should stay ≤{" "}
+                Target: worst <span className="font-semibold text-foreground">clean-accuracy
+                degradation</span> (positive drop only) must stay ≤{" "}
                 <span className="font-semibold text-foreground">
                   {metrics?.attackTargetMaxDropPP ?? 3} pp
-                </span>{" "}
-                (~≤{metrics?.attackTargetMaxDropPP ?? 3}% absolute). Anything above the red line
-                fails that dataset.
+                </span>
+                . The purple bar uses that rule (improvements do not count). Anything above the red
+                line fails.
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {(metrics?.attackDatasets ?? []).map((d) => (
@@ -543,7 +548,7 @@ export default function Home() {
                     <Bar
                       dataKey="worstDropPP"
                       fill="#7c3aed"
-                      name="Worst |drop| (pp)"
+                      name="Worst degradation (pp)"
                       radius={[6, 6, 0, 0]}
                     >
                       <LabelList
