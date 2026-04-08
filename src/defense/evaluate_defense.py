@@ -14,7 +14,7 @@ NSL-KDD (40 features):
     Only mimic_timing is run.  
     All other mutations are structurally incompatible:
       - mimic_packet_size accesses indices 48, 52, 54 which exceed the 40-feature NSL-KDD dimensionality.
-      - fragment_payload, add_tcp_options, and shift_ack_timing call TCPConstraintValidator, which requires ≥67 features.
+      - fragment_payload, add_tcp_options, and shift_ack_timing call TCPConstraintValidator, which requires >=67 features.
       - inject_decoy_flows and dilute_scan_pattern depend on the CICIDS2017-schema benign pool and constraint validators.
 
 UNSW-NB15 (67 features):
@@ -44,6 +44,12 @@ import sys
 import numpy as np
 import joblib
 import tensorflow as tf
+from sklearn.metrics import (
+    accuracy_score, 
+    precision_score, 
+    recall_score, 
+    f1_score
+)
 
 if __package__ is None or __package__ == "":
     repo_root = Path(__file__).resolve().parents[2]
@@ -83,7 +89,6 @@ ALL_MUTATIONS = [
 ]
 
 # Mutations to skip per dataset, with the reason stored as the dict value
-# Any mutation not listed here is attempted
 SKIPPED_MUTATIONS: dict[str, dict[str, str]] = {
     "nslkdd": {
         "inject_decoy_flows": (
@@ -99,15 +104,15 @@ SKIPPED_MUTATIONS: dict[str, dict[str, str]] = {
             "54 (SUBFLOW_BWD_BYTS) which exceed NSL-KDD dimensionality (40 features)."
         ),
         "fragment_payload": (
-            "TCPConstraintValidator._check_inputs requires ≥67 features; "
+            "TCPConstraintValidator._check_inputs requires >=67 features; "
             "NSL-KDD has 40."
         ),
         "add_tcp_options": (
-            "TCPConstraintValidator._check_inputs requires ≥67 features; "
+            "TCPConstraintValidator._check_inputs requires >=67 features; "
             "NSL-KDD has 40."
         ),
         "shift_ack_timing": (
-            "TCPConstraintValidator._check_inputs requires ≥67 features; "
+            "TCPConstraintValidator._check_inputs requires >=67 features; "
             "NSL-KDD has 40."
         ),
     },
@@ -149,15 +154,6 @@ def get_benign_id(label_map: dict, dataset: str) -> int:
 ### Benign profile helpers ###
 
 def build_benign_profile(X_benign: np.ndarray) -> dict:
-    """
-    Compute the benign traffic profile used by mimic_timing and mimic_packet_size.
-
-    For CICIDS2017 the indices map to their named features exactly.
-    For NSL-KDD and UNSW-NB15 the same positional indices are used.
-    The resulting profile values reflect whatever features occupy those positions in the other dataset's schema.  
-    This is intentional as the mutations then perturb those positions using the dataset's own statistics, 
-    making the test self-consistent within each dataset.
-    """
     iat_mean = np.clip(X_benign[:, F.FLOW_IAT_MEAN], 0, None)
     iat_std = np.clip(X_benign[:, F.FLOW_IAT_STD],  0, None)
 
@@ -173,7 +169,6 @@ def build_benign_profile(X_benign: np.ndarray) -> dict:
 
 
 def build_target_iat_ms(X_benign: np.ndarray) -> float:
-    """Median benign IAT (ms) used by shift_ack_timing."""
     iat_us = np.clip(X_benign[:, F.FLOW_IAT_MEAN], 0, None)
     return float(np.clip(np.median(iat_us) / 1000.0, 1.0, 2000.0))
 
@@ -181,21 +176,12 @@ def build_target_iat_ms(X_benign: np.ndarray) -> float:
 ### Mutation application ###
 
 def apply_mutation_batch(X: np.ndarray, mutate_fn) -> tuple[np.ndarray, np.ndarray]:
-    """
-    Apply mutate_fn to each sample in X.
-
-    Returns:
-        mutated  - array of perturbed samples (invalid rows hold original)
-        valid    - boolean mask, True where mutation succeeded
-    """
     mutated = np.array(X, dtype=np.float32)
     valid = np.zeros(len(X), dtype=bool)
 
     for i, sample in enumerate(X):
         try:
             result = mutate_fn(sample)
-            # Attack A/B/C functions return (perturbed, meta) tuples;
-            # raw mutation functions return just the array.
             if isinstance(result, tuple):
                 perturbed, _ = result
             else:
@@ -211,6 +197,7 @@ def apply_mutation_batch(X: np.ndarray, mutate_fn) -> tuple[np.ndarray, np.ndarr
 
 
 ### Metrics ###
+
 def detection_rate_per_model(
     ensemble: Ensemble,
     X: np.ndarray,
@@ -218,12 +205,10 @@ def detection_rate_per_model(
     benign_id: int,
 ) -> dict:
     """
-    Detection rate for each individual voter.
-    Returns a dict keyed by model name matching the order _get_votes() returns them:
-    always RF, XGBoost, MLP, and LSTM if present.
+    Returns the binary attack detection rate (TPR) per individual model inside the ensemble.
     """
     votes = ensemble._get_votes(np.array(X, dtype=np.float64))
-    voter_names = ["random_forest", "xgboost", "mlp", "lstm"][:len(votes)]
+    voter_names = ["random_forest", "xgboost", "mlp"][:len(votes)]
 
     is_attack = y_true != benign_id
     n_attack = int(is_attack.sum())
@@ -238,15 +223,13 @@ def detection_rate_per_model(
             )
     return result
 
+
 def detection_rate(
     ensemble: Ensemble,
     X: np.ndarray,
     y_true: np.ndarray,
     benign_id: int,
 ) -> float:
-    """
-    Fraction of originally-detected attack samples that are still detected (i.e. NOT classified as benign) after mutation.
-    """
     preds = ensemble.predict(X)
     detected = preds != benign_id
     is_attack = y_true != benign_id
@@ -256,19 +239,51 @@ def detection_rate(
     return float(detected[is_attack].sum()) / n_attack
 
 
+def compute_clean_metrics(
+    ensemble: Ensemble,
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    benign_id: int,
+) -> dict:
+    """
+    Computes overarching Accuracy, Precision, Recall, F1, and Detection Rate 
+    on the clean, unperturbed test dataset (binary: Attack vs Benign).
+    """
+    preds = ensemble.predict(X_test.astype(np.float32))
+    
+    y_true_binary = (y_test != benign_id).astype(int)
+    preds_binary = (preds != benign_id).astype(int)
+    
+    acc = accuracy_score(y_true_binary, preds_binary)
+    prec = precision_score(y_true_binary, preds_binary, zero_division=0)
+    rec = recall_score(y_true_binary, preds_binary, zero_division=0)
+    f1 = f1_score(y_true_binary, preds_binary, zero_division=0)
+    
+    return {
+        "accuracy":       round(float(acc), 4),
+        "precision":      round(float(prec), 4),
+        "recall":         round(float(rec), 4),
+        "f1":             round(float(f1), 4),
+        "detection_rate": round(float(rec), 4), # DR is identical to Recall in this binary setup
+    }
+
+
 def evaluate_mutation(
     mutation_name: str,
     X_attack: np.ndarray,
     y_attack: np.ndarray,
+    X_benign_test: np.ndarray,
+    y_benign_test: np.ndarray,
     mutate_fn,
     baseline: Ensemble,
     adversarial: Ensemble,
     benign_id: int,
 ) -> dict:
-    """Run one mutation against both ensembles and return the metrics dict."""
     mutated, valid = apply_mutation_batch(X_attack, mutate_fn)
 
+    # Reconstruct the test set attacks, keeping failed mutations as originals
     eval_X = np.where(valid[:, None], mutated, X_attack.astype(np.float32))
+    
     X_valid = eval_X[valid]
     y_valid = y_attack[valid]
     n_valid = int(valid.sum())
@@ -279,17 +294,43 @@ def evaluate_mutation(
             "mutation": mutation_name,
             "n_samples": n_total,
             "n_mutation_success": 0,
-            "baseline_detection_rate": None,
-            "adversarial_detection_rate": None,
             "recovery_delta_pp": None,
             "meets_25pp_target": False,
-            "note": "No valid mutations produced - cannot compute detection rates.",
+            "baseline_metrics": None,
+            "adversarial_metrics": None,
+            "baseline_per_model": None,
+            "adversarial_per_model": None,
+            "note": "No valid mutations produced - cannot compute metrics.",
         }
 
+    # 1. Detection Rate (Calculated specifically on successfully mutated samples)
     baseline_dr = detection_rate(baseline, X_valid, y_valid, benign_id)
     adversarial_dr = detection_rate(adversarial, X_valid, y_valid, benign_id)
     delta_pp = (adversarial_dr - baseline_dr) * 100.0
 
+    # 2. Reconstruct the FULL test set (Benign + Mutated Attacks) for overarching binary metrics
+    X_full_test = np.vstack([X_benign_test, eval_X]).astype(np.float32)
+    y_full_test = np.concatenate([y_benign_test, y_attack])
+    
+    # Binarize labels for overarching metric calculations (Attack=1, Benign=0)
+    y_true_binary = (y_full_test != benign_id).astype(int)
+
+    def compute_full_metrics(ensemble, dr):
+        preds = ensemble.predict(X_full_test)
+        preds_binary = (preds != benign_id).astype(int)
+        
+        return {
+            "accuracy": round(float(accuracy_score(y_true_binary, preds_binary)), 4),
+            "precision": round(float(precision_score(y_true_binary, preds_binary, zero_division=0)), 4),
+            "recall": round(float(recall_score(y_true_binary, preds_binary, zero_division=0)), 4),
+            "f1": round(float(f1_score(y_true_binary, preds_binary, zero_division=0)), 4),
+            "detection_rate": round(dr, 4),
+        }
+
+    baseline_metrics = compute_full_metrics(baseline, baseline_dr)
+    adversarial_metrics = compute_full_metrics(adversarial, adversarial_dr)
+
+    # 3. Model level performance
     baseline_per_model = detection_rate_per_model(baseline, X_valid, y_valid, benign_id)
     adversarial_per_model = detection_rate_per_model(adversarial, X_valid, y_valid, benign_id)
 
@@ -297,10 +338,10 @@ def evaluate_mutation(
         "mutation":                   mutation_name,
         "n_samples":                  n_total,
         "n_mutation_success":         n_valid,
-        "baseline_detection_rate":    round(baseline_dr, 4),
-        "adversarial_detection_rate": round(adversarial_dr, 4),
         "recovery_delta_pp":          round(delta_pp, 2),
         "meets_25pp_target":          delta_pp >= 25.0,
+        "baseline_metrics":           baseline_metrics,
+        "adversarial_metrics":        adversarial_metrics,
         "baseline_per_model":         baseline_per_model,
         "adversarial_per_model":      adversarial_per_model,
     }
@@ -320,11 +361,16 @@ def evaluate_dataset(dataset: str, rng: np.random.Generator) -> dict:
 
     X_benign_train = X_train[y_train == benign_id].astype(np.float64)
 
+    # Separate benign and attack portions of the test set
+    benign_mask_test = y_test == benign_id
+    X_benign_test = X_test[benign_mask_test].astype(np.float64)
+    y_benign_test = y_test[benign_mask_test]
+
     attack_mask = y_test != benign_id
     X_attack = X_test[attack_mask].astype(np.float64)
     y_attack = y_test[attack_mask]
 
-    ### Benign profile (used by mimic_* and shift_ack_timing) ###
+    ### Benign profile ###
     benign_profile = build_benign_profile(X_benign_train)
     target_iat_ms = build_target_iat_ms(X_benign_train)
 
@@ -335,13 +381,13 @@ def evaluate_dataset(dataset: str, rng: np.random.Generator) -> dict:
     print(f"    Baseline   : {baseline_ens}")
     print(f"    Adversarial: {adversarial_ens}")
 
-    ### Clean detection rate ###
-    print("  Computing clean detection rates...")
-    baseline_clean_dr = detection_rate(
-        baseline_ens,    X_attack.astype(np.float32), y_attack, benign_id
+    ### Clean overarching metrics ###
+    print("  Computing clean overall metrics...")
+    baseline_clean = compute_clean_metrics(
+        baseline_ens, X_test, y_test, benign_id
     )
-    adversarial_clean_dr = detection_rate(
-        adversarial_ens, X_attack.astype(np.float32), y_attack, benign_id
+    adversarial_clean = compute_clean_metrics(
+        adversarial_ens, X_test, y_test, benign_id
     )
 
     ### Build mutation callables ###
@@ -381,6 +427,8 @@ def evaluate_dataset(dataset: str, rng: np.random.Generator) -> dict:
             mutation_name=name,
             X_attack=X_attack,
             y_attack=y_attack,
+            X_benign_test=X_benign_test,
+            y_benign_test=y_benign_test,
             mutate_fn=all_mutation_fns[name],
             baseline=baseline_ens,
             adversarial=adversarial_ens,
@@ -390,8 +438,8 @@ def evaluate_dataset(dataset: str, rng: np.random.Generator) -> dict:
 
         if result.get("recovery_delta_pp") is not None:
             print(
-                f"    baseline={result['baseline_detection_rate']:.3f}  "
-                f"adversarial={result['adversarial_detection_rate']:.3f}  "
+                f"    baseline={result['baseline_metrics']['detection_rate']:.3f}  "
+                f"adversarial={result['adversarial_metrics']['detection_rate']:.3f}  "
                 f"delta={result['recovery_delta_pp']:+.1f}pp  "
                 f"Meets 25pp target: {'Yes' if result['meets_25pp_target'] else 'No'}"
             )
@@ -400,7 +448,6 @@ def evaluate_dataset(dataset: str, rng: np.random.Generator) -> dict:
     evaluated = [r for r in mutation_results if not r.get("skipped")]
     n_meeting = sum(1 for r in evaluated if r.get("meets_25pp_target"))
 
-    # Note for non-CICIDS2017 datasets explaining positional index semantics
     schema_note = None
     if dataset != "cicids2017":
         schema_note = (
@@ -414,12 +461,11 @@ def evaluate_dataset(dataset: str, rng: np.random.Generator) -> dict:
         "n_attack_samples": int(attack_mask.sum()),
         "target_recovery_pp": 25.0,
         "clean_detection": {
-            "baseline_detection_rate": round(baseline_clean_dr, 4),
-            "adversarial_detection_rate": round(adversarial_clean_dr, 4),
             "note": (
-                "Detection rate on unperturbed attack samples. "
-                "Both ensembles should be near 1.0 here."
+                "Metrics on the unperturbed full test set (Binary: Attack vs. Benign). "
             ),
+            "baseline":    baseline_clean,
+            "adversarial": adversarial_clean,
         },
         "n_mutations_evaluated": len(evaluated),
         "n_mutations_skipped": len(mutation_results) - len(evaluated),
@@ -450,8 +496,10 @@ def main():
         )
         print(
             f"  [{dataset}] Clean detection - "
-            f"baseline: {result['clean_detection']['baseline_detection_rate']:.3f}  "
-            f"adversarial: {result['clean_detection']['adversarial_detection_rate']:.3f}"
+            f"baseline: acc={result['clean_detection']['baseline']['accuracy']:.3f}  "
+            f"dr={result['clean_detection']['baseline']['detection_rate']:.3f}  "
+            f"adversarial: acc={result['clean_detection']['adversarial']['accuracy']:.3f}  "
+            f"dr={result['clean_detection']['adversarial']['detection_rate']:.3f}"
         )
 
     output = {
