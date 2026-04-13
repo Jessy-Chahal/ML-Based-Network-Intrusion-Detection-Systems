@@ -78,6 +78,8 @@ def _metric_threshold(metric_key: str) -> float:
         return 0.10
     if "accuracy" in metric_key:
         return 0.05
+    if "precision" in metric_key or "recall" in metric_key or "f1" in metric_key:
+        return 0.10
     if ".esr" in metric_key:
         return 0.20
     if "constraint_satisfaction_rate" in metric_key:
@@ -233,9 +235,13 @@ def _extract_defense_metrics(
     def _extract_one_dataset(ds_blob: Dict[str, Any]) -> Dict[str, Any]:
         ds = str(ds_blob.get("dataset", "unknown"))
         clean = ds_blob.get("clean_detection", {})
+        
+        # Accommodate nested clean_detection structure from new evaluation format
+        clean_base_dict = clean.get("baseline", {})
+        clean_adv_dict = clean.get("adversarial", {})
 
-        baseline_clean = _as_float(clean.get("baseline_detection_rate"))
-        adv_clean = _as_float(clean.get("adversarial_detection_rate"))
+        baseline_clean = _as_float(clean_base_dict.get("detection_rate"))
+        adv_clean = _as_float(clean_adv_dict.get("detection_rate"))
         if baseline_clean is not None:
             metric_store[f"defense.clean.baseline_detection_rate.{ds}"] = baseline_clean
         if adv_clean is not None:
@@ -255,17 +261,19 @@ def _extract_defense_metrics(
             if m.get("skipped"):
                 continue
             mutation = str(m.get("mutation", "unknown"))
-            base_dr = _as_float(m.get("baseline_detection_rate"))
-            adv_dr = _as_float(m.get("adversarial_detection_rate"))
             delta_pp = _as_float(m.get("recovery_delta_pp"))
 
-            if base_dr is not None:
-                metric_store[f"defense.mutation.baseline_detection_rate.{ds}.{mutation}"] = base_dr
-            if adv_dr is not None:
-                metric_store[f"defense.mutation.adversarial_detection_rate.{ds}.{mutation}"] = adv_dr
             if delta_pp is not None:
                 metric_store[f"defense.mutation.recovery_delta_pp.{ds}.{mutation}"] = delta_pp
                 mutation_rows.append({"mutation": mutation, "recovery_delta_pp": delta_pp})
+            
+            # Extract standard metrics (accuracy, precision, recall, f1, detection_rate)
+            for phase, key_prefix in [("baseline_metrics", "baseline"), ("adversarial_metrics", "adversarial")]:
+                phase_dict = m.get(phase, {})
+                for m_key in ["accuracy", "precision", "recall", "f1", "detection_rate"]:
+                    val = _as_float(phase_dict.get(m_key))
+                    if val is not None:
+                        metric_store[f"defense.mutation.{key_prefix}_{m_key}.{ds}.{mutation}"] = val
 
             # Per-model detection rates — baseline
             for model, dr in m.get("baseline_per_model", {}).items():
@@ -327,7 +335,6 @@ def _extract_defense_metrics(
             "worst_mutation_by_recovery": worst,
         }
 
-    # New schema: {"datasets": [ ... ]}
     dataset_entries = payload.get("datasets")
     per_dataset_list: List[Dict[str, Any]] = []
     if isinstance(dataset_entries, list) and dataset_entries:
@@ -335,7 +342,6 @@ def _extract_defense_metrics(
             if isinstance(ds_blob, dict):
                 per_dataset_list.append(_extract_one_dataset(ds_blob))
     else:
-        # Backward compatibility with old single-dataset schema
         if isinstance(payload, dict):
             per_dataset_list.append(_extract_one_dataset(payload))
 
@@ -511,7 +517,7 @@ def _resolve_owner_files(results_dir: Path, owner: str) -> Dict[str, Path]:
     files[f"{owner}_attack_a"] = results_dir / f"{owner}_attack_a_metrics_all_datasets.json"
     files[f"{owner}_attack_b"] = results_dir / f"{owner}_attack_b_metrics_all_datasets.json"
     files[f"{owner}_attack_c"] = results_dir / f"{owner}_attack_c_metrics_all_datasets.json"
-    files[f"{owner}_defense"] = results_dir / f"{owner}_defense_metrics.json"
+    files[f"{owner}_defense"] = results_dir / f"{owner}_new_defense_metrics.json"
     files[f"{owner}_adv_training_clean"] = results_dir / f"{owner}_adv_training_clean_metrics.json"
     files[f"{owner}_retrained_adversarial"] = results_dir / f"{owner}_retrained_adversarial_metrics.json"
     return files
