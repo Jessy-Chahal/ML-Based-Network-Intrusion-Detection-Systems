@@ -20,6 +20,8 @@ from abc import ABC, abstractmethod
 from typing import List
 import numpy as np
 
+from src.dotenv_utils import get_env_int
+
 ###
 # Feature index constants for CICIDS2017 (71 features after preprocessing)
 # These must match the column order produced by src/preprocess.py exactly
@@ -519,10 +521,10 @@ class PlausibilityConstraintValidator(ConstraintValidator):
     See docs/constraint_spec.md — Constraint Type 3: Behavioral Plausibility.
     """
 
-    MAX_IAT_MEAN_US = 60_000_000   # 60 seconds in microseconds (stateful firewall timeout)
-    MAX_FLOW_PKTS_S = 1_000_000    # 1M pps — practical upper bound for a single flow on commodity hardware
-    MIN_AVG_PKT_BYTES = 20
-    MAX_AVG_PKT_BYTES = 1500
+    MAX_IAT_MEAN_US = get_env_int("MAX_IAT_MEAN_US")
+    MAX_FLOW_PKTS_S = get_env_int("MAX_FLOW_PKTS_S")
+    MIN_AVG_PKT_BYTES = get_env_int("MIN_AVG_PKT_BYTES")
+    MAX_AVG_PKT_BYTES = get_env_int("MAX_AVG_PKT_BYTES")
 
     def validate(self, original: np.ndarray, perturbed: np.ndarray) -> bool:
         return len(self.describe_violations(original, perturbed)) == 0
