@@ -30,6 +30,7 @@ import argparse
 from pathlib import Path
 from scipy.stats import mode
 from typing import Optional
+import sys
 
 import numpy as np
 import joblib
@@ -46,6 +47,30 @@ import xgboost as xgb
 from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.callbacks import EarlyStopping
+
+# Allow both:
+# - python -m src.train_adversarial
+# - python src/train_adversarial.py
+if __package__ is None or __package__ == "":
+    repo_root = Path(__file__).resolve().parents[1]
+    if str(repo_root) not in sys.path:
+        sys.path.insert(0, str(repo_root))
+
+from src.dotenv_utils import get_env_int, get_env_str
+
+RF_N_ESTIMATORS = get_env_int("RF_N_ESTIMATORS")
+RF_RANDOM_STATE = get_env_int("RF_RANDOM_STATE")
+RF_N_JOBS = get_env_int("RF_N_JOBS")
+RF_CLASS_WEIGHT = get_env_str("RF_CLASS_WEIGHT")
+XGB_RANDOM_STATE = get_env_int("XGB_RANDOM_STATE")
+XGB_N_JOBS = get_env_int("XGB_N_JOBS")
+MLP_HIDDEN_1 = get_env_int("MLP_HIDDEN_1")
+MLP_HIDDEN_2 = get_env_int("MLP_HIDDEN_2")
+MLP_HIDDEN_3 = get_env_int("MLP_HIDDEN_3")
+MLP_OPTIMIZER = get_env_str("MLP_OPTIMIZER")
+MLP_EARLYSTOP_PATIENCE = get_env_int("MLP_EARLYSTOP_PATIENCE")
+MLP_EPOCHS = get_env_int("MLP_EPOCHS")
+MLP_BATCH_SIZE = get_env_int("MLP_BATCH_SIZE")
 
 # Directory Setup
 SPLITS_DIR = Path("data/splits")
@@ -217,7 +242,10 @@ def compute_metrics(y_true, y_pred, label_map):
 def train_rf(X_train, y_train, X_val, y_val, label_map, dataset_name, prefix: str):
     """Trains and saves a balanced Random Forest classifier."""
     model = RandomForestClassifier(
-        n_estimators=100, random_state=42, n_jobs=-1, class_weight="balanced"
+        n_estimators=RF_N_ESTIMATORS,
+        random_state=RF_RANDOM_STATE,
+        n_jobs=RF_N_JOBS,
+        class_weight=RF_CLASS_WEIGHT,
     )
     model.fit(X_train, y_train)
     joblib.dump(model, MODELS_DIR / f"{prefix}_rf_{dataset_name}.pkl")
@@ -229,7 +257,10 @@ def train_xgb(X_train, y_train, X_val, y_val, label_map, dataset_name, prefix: s
     cw = compute_class_weight("balanced", classes=np.unique(y_train), y=y_train)
     sample_weights = np.array([cw[c] for c in y_train])
 
-    model = xgb.XGBClassifier(random_state=42, n_jobs=-1)
+    model = xgb.XGBClassifier(
+        random_state=XGB_RANDOM_STATE,
+        n_jobs=XGB_N_JOBS,
+    )
     model.fit(X_train, y_train, sample_weight=sample_weights)
     joblib.dump(model, MODELS_DIR / f"{prefix}_xgb_{dataset_name}.pkl")
     return model, compute_metrics(y_val, model.predict(X_val), label_map)
@@ -249,20 +280,26 @@ def train_mlp(X_train, y_train, X_val, y_val, label_map, dataset_name, prefix: s
     class_weights = dict(enumerate(cw))
 
     model = Sequential([
-        Dense(128, activation="relu", input_shape=(X_train_scaled.shape[1],)),
-        Dense(64, activation="relu"),
-        Dense(32, activation="relu"),
+        Dense(MLP_HIDDEN_1, activation="relu", input_shape=(X_train_scaled.shape[1],)),
+        Dense(MLP_HIDDEN_2, activation="relu"),
+        Dense(MLP_HIDDEN_3, activation="relu"),
         Dense(len(label_map), activation="softmax"),
     ])
     model.compile(
-        optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"]
+        optimizer=MLP_OPTIMIZER,
+        loss="sparse_categorical_crossentropy",
+        metrics=["accuracy"],
     )
     early_stop = EarlyStopping(
-        monitor="val_accuracy", patience=3, restore_best_weights=True, verbose=1
+        monitor="val_accuracy",
+        patience=MLP_EARLYSTOP_PATIENCE,
+        restore_best_weights=True,
+        verbose=1,
     )
     model.fit(
         X_train_scaled, y_train,
-        epochs=20, batch_size=256,
+        epochs=MLP_EPOCHS,
+        batch_size=MLP_BATCH_SIZE,
         class_weight=class_weights,
         validation_data=(X_val_scaled, y_val),
         callbacks=[early_stop],

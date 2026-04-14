@@ -70,6 +70,14 @@ from src.attacks.protocol_exploitation import (
     shift_ack_timing,
 )
 from src.constraints import CICIDSFeatures as F
+from src.dotenv_utils import get_env_float, get_env_int
+
+DEFENSE_INJECT_DECOY_K = get_env_int("DEFENSE_INJECT_DECOY_K")
+DEFENSE_COVER_TRAFFIC_RATE = get_env_float("DEFENSE_COVER_TRAFFIC_RATE")
+MIMIC_MAX_DELAY_MS = get_env_float("MIMIC_MAX_DELAY_MS")
+MIMIC_MAX_DURATION_RATIO = get_env_float("MIMIC_MAX_DURATION_RATIO")
+PROTOCOL_N_FRAGMENTS = get_env_int("PROTOCOL_N_FRAGMENTS")
+DEFENSE_RNG_SEED = get_env_int("DEFENSE_RNG_SEED")
 
 SPLITS_DIR = Path("data/splits")
 RESULTS_DIR = Path("results")
@@ -410,16 +418,25 @@ def evaluate_dataset(
     ### Build mutation callables ###
     all_mutation_fns = {
         "inject_decoy_flows": lambda s: inject_decoy_flows(
-            s, X_benign_train, k=5, attack_type="dos", rng=rng
+            s,
+            X_benign_train,
+            k=DEFENSE_INJECT_DECOY_K,
+            attack_type="dos",
+            rng=rng,
         ),
         "dilute_scan_pattern": lambda s: dilute_scan_pattern(
-            s, cover_traffic_rate=1.0, rng=rng
+            s,
+            cover_traffic_rate=DEFENSE_COVER_TRAFFIC_RATE,
+            rng=rng,
         ),
         "mimic_timing": lambda s: mimic_timing(
-            s, benign_profile, max_delay_ms=500.0, maximum_duration_ratio=2.0
+            s,
+            benign_profile,
+            max_delay_ms=MIMIC_MAX_DELAY_MS,
+            maximum_duration_ratio=MIMIC_MAX_DURATION_RATIO,
         ),
         "mimic_packet_size": lambda s: mimic_packet_size(s, benign_profile),
-        "fragment_payload": lambda s: fragment_payload(s, n_fragments=4),
+        "fragment_payload": lambda s: fragment_payload(s, n_fragments=PROTOCOL_N_FRAGMENTS),
         "add_tcp_options": add_tcp_options,
         "shift_ack_timing": lambda s: shift_ack_timing(s, target_iat_ms=target_iat_ms),
     }
@@ -516,7 +533,7 @@ def main():
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     results_path = _results_path(args.attack)
-    rng = np.random.default_rng(42)
+    rng = np.random.default_rng(DEFENSE_RNG_SEED)
 
     adv_label = f"partial (attack {args.attack.upper()} only)" if args.attack else "adversarial (all attacks)"
     all_results = []
