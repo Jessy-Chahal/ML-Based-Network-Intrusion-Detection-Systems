@@ -4,25 +4,31 @@ Majority-vote ensemble defense.
 Loads a set of classifiers and combines their predictions via majority vote.
 Each voter gets one vote per sample - the class that appears most often wins.
 
-Two named constructors are provided:
-    Ensemble.baseline()    - loads the  baseline models
-    Ensemble.adversarial() - loads adversarially retrained models
+Three named constructors are provided:
+    Ensemble.baseline()          - loads the baseline models
+    Ensemble.adversarial()       - loads adversarially retrained models (all attacks)
+    Ensemble.partial_for(d, atk) - loads a model trained on one attack family only
 
-Both expose the same predict(X) interface so evaluation scripts need no
-changes when switching between them.
+All expose the same predict(X) interface.
 
 Model files expected in models/:
     Baseline:
-        rf_cicids2017.pkl
-        xgb_cicids2017.pkl
-        mlp_cicids2017.h5
-        scaler_cicids2017.pkl
+        rf_{dataset}.pkl
+        xgb_{dataset}.pkl
+        mlp_{dataset}.h5
+        scaler_{dataset}.pkl
 
-    Adversarial (needed from adversarial retraining):
-        adv_rf_cicids2017.pkl
-        adv_xgb_cicids2017.pkl
-        adv_mlp_cicids2017.h5
-        scaler_cicids2017.pkl       (same scaler - retraining doesn't change it)
+    Adversarial (all attacks combined):
+        adv_rf_{dataset}.pkl
+        adv_xgb_{dataset}.pkl
+        adv_mlp_{dataset}.h5
+        adv_scaler_{dataset}.pkl
+
+    Partial (single attack family, e.g. attack a):
+        adv_a_only_rf_{dataset}.pkl
+        adv_a_only_xgb_{dataset}.pkl
+        adv_a_only_mlp_{dataset}.h5
+        adv_a_only_scaler_{dataset}.pkl
 """
 
 from __future__ import annotations
@@ -86,7 +92,7 @@ class Ensemble:
     @classmethod
     def adversarial_for(cls, dataset: str, models_dir: Path = MODELS_DIR) -> "Ensemble":
         """
-        Load adversarially retrained models for the specified dataset.
+        Load adversarially retrained models for the specified dataset (all attacks combined).
         """
         rf = joblib.load(models_dir / f"adv_rf_{dataset}.pkl")
         xgb = joblib.load(models_dir / f"adv_xgb_{dataset}.pkl")
@@ -98,6 +104,37 @@ class Ensemble:
         return cls(
             rf=rf, xgb=xgb, mlp=mlp, mlp_scaler=mlp_scaler,
             name=f"adversarial_{dataset}",
+        )
+
+    @classmethod
+    def partial_for(
+        cls, dataset: str, attack: str, models_dir: Path = MODELS_DIR
+    ) -> "Ensemble":
+        """
+        Load models trained on a single attack family only.
+
+        Args:
+            dataset: one of "cicids2017", "nslkdd", "unswnb15"
+            attack:  one of "a", "b", "c"
+
+        Expects files produced by:
+            python src/gen_adversarial_partial.py --attack {attack}
+            python src/train_adversarial.py --all --attack {attack}
+        """
+        if attack not in ("a", "b", "c"):
+            raise ValueError(f"attack must be 'a', 'b', or 'c', got {attack!r}")
+
+        prefix = f"adv_{attack}_only"
+        rf = joblib.load(models_dir / f"{prefix}_rf_{dataset}.pkl")
+        xgb = joblib.load(models_dir / f"{prefix}_xgb_{dataset}.pkl")
+        mlp_scaler = joblib.load(models_dir / f"{prefix}_scaler_{dataset}.pkl")
+        mlp = tf.keras.models.load_model(
+            models_dir / f"{prefix}_mlp_{dataset}.h5", compile=False
+        )
+
+        return cls(
+            rf=rf, xgb=xgb, mlp=mlp, mlp_scaler=mlp_scaler,
+            name=f"partial_attack_{attack}_{dataset}",
         )
 
     ### Prediction ###

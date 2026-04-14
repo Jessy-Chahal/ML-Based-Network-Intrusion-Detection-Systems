@@ -1,9 +1,20 @@
 """
-Defense evaluation script 
+Defense evaluation script
 
-Evaluates the adversarially retrained ensemble across all three datasets (CICIDS2017, NSL-KDD, UNSW-NB15).  
-For each dataset the correct baseline and adversarial model pair is loaded, 
+Evaluates an ensemble across all three datasets (CICIDS2017, NSL-KDD, UNSW-NB15).
+For each dataset the baseline and chosen adversarial model are loaded, 
 compatible mutations are applied to the attack subset of the test split, and recovery delta is reported.
+
+Default mode -- full adversarial ensemble (trained on all attack families):
+    python src/defense/evaluate_defense.py
+
+Partial mode -- ensemble trained on a single attack family, tested against all mutations:
+    python src/defense/evaluate_defense.py --attack a
+    python src/defense/evaluate_defense.py --attack b
+    python src/defense/evaluate_defense.py --attack c
+
+You can also restrict which datasets to run:
+    python src/defense/evaluate_defense.py --attack a --datasets cicids2017 nslkdd
 
 Mutation compatibility per dataset
 -----------------------------------
@@ -11,34 +22,28 @@ CICIDS2017 (70 features):
     All 7 mutations are run.
 
 NSL-KDD (40 features):
-    Only mimic_timing is run.  
+    Only mimic_timing is run.
     All other mutations are structurally incompatible:
       - mimic_packet_size accesses indices 48, 52, 54 which exceed the 40-feature NSL-KDD dimensionality.
       - fragment_payload, add_tcp_options, and shift_ack_timing call TCPConstraintValidator, which requires >=67 features.
       - inject_decoy_flows and dilute_scan_pattern depend on the CICIDS2017-schema benign pool and constraint validators.
 
 UNSW-NB15 (67 features):
-    mimic_timing, mimic_packet_size, fragment_payload, add_tcp_options, and shift_ack_timing are run.  
+    mimic_timing, mimic_packet_size, fragment_payload, add_tcp_options, and shift_ack_timing are run.
     inject_decoy_flows and dilute_scan_pattern are skipped because they require the CICIDS2017-schema benign pool.
 
-    Note: 
-    For UNSW-NB15 and NSL-KDD, mutation functions operate on CICIDS2017-equivalent positional feature indices.  
-    The mutations perturb the feature vector at those positions regardless of what those ositions represent in 
-    the other dataset's schema.  
-    This tests whether adversarial retraining provides general robustness to feature perturbations, 
-    which is the cross-dataset research question.
-
-Writes output to results/defense_metrics.json.
-
-Run from repo root:
-    python src/defense/evaluate_defense.py
+Output files:
+    default    -> results/defense_metrics.json
+    --attack a -> results/defense_attack_a_only_metrics.json
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Optional
 import sys
 
 import numpy as np
@@ -68,7 +73,12 @@ from src.constraints import CICIDSFeatures as F
 
 SPLITS_DIR = Path("data/splits")
 RESULTS_DIR = Path("results")
-RESULTS_PATH = RESULTS_DIR / "defense_metrics.json"
+
+
+def _results_path(attack: Optional[str]) -> Path:
+    if attack:
+        return RESULTS_DIR / f"defense_attack_{attack}_only_metrics.json"
+    return RESULTS_DIR / "defense_metrics.json"
 
 # Normal/benign label name per dataset
 BENIGN_LABEL = {
@@ -349,9 +359,13 @@ def evaluate_mutation(
 
 ### Per-dataset evaluation ###
 
-def evaluate_dataset(dataset: str, rng: np.random.Generator) -> dict:
+def evaluate_dataset(
+    dataset: str, rng: np.random.Generator, attack: Optional[str] = None
+) -> dict:
+    adv_label = f"partial (attack {attack.upper()} only)" if attack else "adversarial (all attacks)"
+
     print(f"\n{'='*60}")
-    print(f"Dataset: {dataset}")
+    print(f"Dataset: {dataset}  |  Defense mode: {adv_label}")
     print(f"{'='*60}")
 
     ### Data ###
@@ -377,9 +391,12 @@ def evaluate_dataset(dataset: str, rng: np.random.Generator) -> dict:
     ### Ensembles ###
     print("  Loading ensembles...")
     baseline_ens = Ensemble.baseline_for(dataset)
-    adversarial_ens = Ensemble.adversarial_for(dataset)
+    if attack:
+        adversarial_ens = Ensemble.partial_for(dataset, attack)
+    else:
+        adversarial_ens = Ensemble.adversarial_for(dataset)
     print(f"    Baseline   : {baseline_ens}")
-    print(f"    Adversarial: {adversarial_ens}")
+    print(f"    Defense    : {adversarial_ens}")
 
     ### Clean overarching metrics ###
     print("  Computing clean overall metrics...")
@@ -478,14 +495,34 @@ def evaluate_dataset(dataset: str, rng: np.random.Generator) -> dict:
 ### Main ###
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Evaluate NIDS defense ensembles against adversarial mutations."
+    )
+    parser.add_argument(
+        "--attack", type=str, choices=["a", "b", "c"], default=None,
+        help=(
+            "Evaluate the partially-trained ensemble for this attack family "
+            "(a=feature obfuscation, b=behavioral mimicry, c=protocol exploitation). "
+            "Omit to evaluate the fully adversarially-trained ensemble (default)."
+        ),
+    )
+    parser.add_argument(
+        "--datasets", nargs="+",
+        choices=["cicids2017", "nslkdd", "unswnb15"],
+        default=["cicids2017", "nslkdd", "unswnb15"],
+        help="Datasets to evaluate (default: all three).",
+    )
+    args = parser.parse_args()
+
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    results_path = _results_path(args.attack)
     rng = np.random.default_rng(42)
 
-    datasets = ["cicids2017", "nslkdd", "unswnb15"]
+    adv_label = f"partial (attack {args.attack.upper()} only)" if args.attack else "adversarial (all attacks)"
     all_results = []
 
-    for dataset in datasets:
-        result = evaluate_dataset(dataset, rng)
+    for dataset in args.datasets:
+        result = evaluate_dataset(dataset, rng, attack=args.attack)
         all_results.append(result)
 
         n_meet = result["n_mutations_meeting_target"]
@@ -498,19 +535,20 @@ def main():
             f"  [{dataset}] Clean detection - "
             f"baseline: acc={result['clean_detection']['baseline']['accuracy']:.3f}  "
             f"dr={result['clean_detection']['baseline']['detection_rate']:.3f}  "
-            f"adversarial: acc={result['clean_detection']['adversarial']['accuracy']:.3f}  "
+            f"{adv_label}: acc={result['clean_detection']['adversarial']['accuracy']:.3f}  "
             f"dr={result['clean_detection']['adversarial']['detection_rate']:.3f}"
         )
 
     output = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "defense_mode": adv_label,
         "datasets": all_results,
     }
 
-    with open(RESULTS_PATH, "w") as f:
+    with open(results_path, "w") as f:
         json.dump(output, f, indent=2)
 
-    print(f"\nSaved {RESULTS_PATH}")
+    print(f"\nSaved {results_path}")
 
 
 if __name__ == "__main__":

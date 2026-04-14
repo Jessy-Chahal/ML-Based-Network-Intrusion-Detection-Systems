@@ -20,6 +20,7 @@ DEFAULT_OWNERS = ["shad", "alyssa", "jessy"]
 DEFAULT_RESULTS_DIR = Path("results")
 DEFAULT_OUTPUT = DEFAULT_RESULTS_DIR / "team_metrics_summary.json"
 DEFAULT_MAX_WARNINGS = 20
+DATASETS = ["cicids2017", "nslkdd", "unswnb15"]
 
 
 def _as_float(value: Any) -> Optional[float]:
@@ -135,6 +136,12 @@ def _compute_skew_warnings(team_metrics: Dict[str, Dict[str, Any]], owners: List
 def _load_json(path: Path) -> Any:
     with open(path, encoding="utf-8") as f:
         return json.load(f)
+
+
+def _default_output_path(results_dir: Path, attack: Optional[str]) -> Path:
+    if attack:
+        return results_dir / f"team_metrics_summary_attack_{attack}_only.json"
+    return results_dir / "team_metrics_summary.json"
 
 
 def _extract_attack(
@@ -511,16 +518,48 @@ def _extract_retrained_adv(
     }
 
 
-def _resolve_owner_files(results_dir: Path, owner: str) -> Dict[str, Path]:
+def _resolve_owner_files(results_dir: Path, owner: str, attack: Optional[str]) -> Dict[str, Path]:
     files: Dict[str, Path] = {}
 
     files[f"{owner}_attack_a"] = results_dir / f"{owner}_attack_a_metrics_all_datasets.json"
     files[f"{owner}_attack_b"] = results_dir / f"{owner}_attack_b_metrics_all_datasets.json"
     files[f"{owner}_attack_c"] = results_dir / f"{owner}_attack_c_metrics_all_datasets.json"
-    files[f"{owner}_defense"] = results_dir / f"{owner}_new_defense_metrics.json"
+    if attack:
+        files[f"{owner}_defense"] = results_dir / f"{owner}_defense_attack_{attack}_only_metrics.json"
+        files[f"{owner}_retrained_adversarial"] = (
+            results_dir / f"{owner}_retrained_adversarial_attack_{attack}_only_metrics.json"
+        )
+    else:
+        files[f"{owner}_defense"] = results_dir / f"{owner}_new_defense_metrics.json"
+        files[f"{owner}_retrained_adversarial"] = (
+            results_dir / f"{owner}_retrained_adversarial_metrics.json"
+        )
     files[f"{owner}_adv_training_clean"] = results_dir / f"{owner}_adv_training_clean_metrics.json"
-    files[f"{owner}_retrained_adversarial"] = results_dir / f"{owner}_retrained_adversarial_metrics.json"
     return files
+
+
+def _load_retrained_adv_attack_fallback(
+    results_dir: Path,
+    owner: str,
+    attack: str,
+) -> tuple[Optional[Dict[str, Any]], List[str]]:
+    """
+    Fallback for cases where combined retrained-adv attack-only JSON is missing,
+    but per-dataset files exist.
+    """
+    payload: Dict[str, Any] = {}
+    used_paths: List[str] = []
+    for dataset in DATASETS:
+        p = results_dir / f"{owner}_retrained_adversarial_attack_{attack}_only_metrics_{dataset}.json"
+        if not p.exists():
+            continue
+        data = _load_json(p)
+        if isinstance(data, dict):
+            payload[dataset] = data
+            used_paths.append(str(p))
+    if payload:
+        return payload, used_paths
+    return None, []
 
 
 def _print_terminal_summary(
@@ -626,10 +665,24 @@ def main():
         help="Owner prefixes to include (default: shad alyssa jessy).",
     )
     parser.add_argument(
+        "--attack",
+        type=str,
+        choices=["a", "b", "c"],
+        default=None,
+        help=(
+            "Summarize attack-specific defense/retrained-adversarial metrics "
+            "(a, b, or c). If omitted, uses full-mode files."
+        ),
+    )
+    parser.add_argument(
         "--output",
         type=str,
-        default=str(DEFAULT_OUTPUT),
-        help="Output JSON path for summary report.",
+        default=None,
+        help=(
+            "Output JSON path for summary report. "
+            "Default is results/team_metrics_summary.json, or "
+            "results/team_metrics_summary_attack_<a|b|c>_only.json when --attack is used."
+        ),
     )
     parser.add_argument(
         "--max-warnings",
@@ -640,7 +693,7 @@ def main():
     args = parser.parse_args()
 
     results_dir = Path(args.results_dir)
-    output_path = Path(args.output)
+    output_path = Path(args.output) if args.output else _default_output_path(results_dir, args.attack)
     owners = [str(o).strip().lower() for o in args.owners if str(o).strip()]
 
     if not results_dir.exists():
@@ -660,13 +713,27 @@ def main():
             "missing_files": [],
         }
 
-        paths = _resolve_owner_files(results_dir, owner)
+        paths = _resolve_owner_files(results_dir, owner, args.attack)
         file_report: Dict[str, Any] = {}
 
         for file_key, path in paths.items():
             exists = path.exists()
             file_report[file_key] = {"path": str(path), "exists": exists}
             if not exists:
+                if file_key.endswith("_retrained_adversarial") and args.attack:
+                    fb_payload, fb_paths = _load_retrained_adv_attack_fallback(
+                        results_dir=results_dir,
+                        owner=owner,
+                        attack=args.attack,
+                    )
+                    if fb_payload:
+                        file_report[file_key]["used_fallback"] = True
+                        file_report[file_key]["fallback_paths"] = fb_paths
+                        owner_summary["retrained_adversarial"] = _extract_retrained_adv(
+                            payload=fb_payload,
+                            metric_store=owner_metrics,
+                        )
+                        continue
                 owner_summary["missing_files"].append(str(path))
                 continue
 
@@ -740,6 +807,7 @@ def main():
 
     output = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "attack_mode": args.attack if args.attack else "all",
         "results_dir": str(results_dir),
         "owners": owners,
         "files_by_owner": files_by_owner,
