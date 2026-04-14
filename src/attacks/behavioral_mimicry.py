@@ -11,10 +11,11 @@ from pathlib import Path
 from typing import Dict
 
 from src.constraints import CICIDSFeatures as Features
+from src.dotenv_utils import get_env_float, get_env_int
 
-MAX_TRANSMISSION_UNIT_BYTES = 1500  # The physical speed limit for packet sizes
-MINIMUM_HEADER_BYTES = 40           # 20 bytes for IP + 20 bytes for TCP
-SECONDS_TO_MICROSECONDS = 1_000_000.0
+MAX_TRANSMISSION_UNIT_BYTES = get_env_int("MAX_TRANSMISSION_UNIT_BYTES")
+MINIMUM_HEADER_BYTES = get_env_int("MINIMUM_HEADER_BYTES")
+SECONDS_TO_MICROSECONDS = get_env_float("SECONDS_TO_MICROSECONDS")
 
 
 # Helper function

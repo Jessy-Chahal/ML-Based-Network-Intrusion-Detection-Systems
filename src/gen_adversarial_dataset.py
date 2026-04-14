@@ -43,7 +43,7 @@ from src.attacks.protocol_exploitation import (
 from src.constraints import CICIDSFeatures as F
 from src.mutations import blend_with_benign
 
-SECONDS_TO_MICROSECONDS = 1_000_000.0
+SECONDS_TO_MICROSECONDS = get_env_float("SECONDS_TO_MICROSECONDS")
 INJECT_DECOY_K = get_env_int("ADV_INJECT_DECOY_K")
 DILUTE_COVER_TRAFFIC_RATE = get_env_float("ADV_DILUTE_COVER_TRAFFIC_RATE")
 ADV_BLEND_WITH_BENIGN_K_SAMPLES = get_env_int("ADV_BLEND_WITH_BENIGN_K_SAMPLES")

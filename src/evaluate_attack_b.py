@@ -40,6 +40,7 @@ from src.attacks.behavioral_mimicry import (
 )
 from src.constraints import CICIDSFeatures as F
 from src.constraints import TCPConstraintValidator
+from src.dotenv_utils import get_env_float
 
 SPLITS_DIR = Path("data/splits")
 MODELS_DIR = Path("models")
@@ -49,7 +50,7 @@ RESULTS_PATH = RESULTS_DIR / "attack_b_metrics_all_datasets.json"
 DATASETS = ["cicids2017", "nslkdd", "unswnb15"]
 CONSTRAINT_VALIDATION_DATASETS = {"cicids2017"}
 BENIGN_LABEL_CANDIDATES = {"BENIGN", "Normal", "normal"}
-SECONDS_TO_MICROSECONDS = 1_000_000.0
+SECONDS_TO_MICROSECONDS = get_env_float("SECONDS_TO_MICROSECONDS")
 
 
 def load_dataset_data(dataset: str):
