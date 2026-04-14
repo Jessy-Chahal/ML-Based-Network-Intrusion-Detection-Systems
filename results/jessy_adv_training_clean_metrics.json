@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-25T03:45:46.257688+00:00",
+  "generated_at_utc": "2026-04-04T04:48:56.571223+00:00",
   "comparison_mode": "Baseline and retrained accuracies are both computed directly from model files on the same clean X_test split.",
   "datasets": {
     "cicids2017": {
@@ -9,24 +9,24 @@
       "models": {
         "random_forest": {
           "baseline_accuracy": 0.9981313845462595,
-          "retrained_clean_test_accuracy": 0.9980705950760529,
-          "accuracy_drop_pp": 0.0060789470206601415,
+          "retrained_clean_test_accuracy": 0.9980996683009343,
+          "accuracy_drop_pp": 0.003171624532516404,
           "within_3pp_target": true,
           "baseline_model_path": "models/rf_cicids2017.pkl",
           "model_path": "models/adv_rf_cicids2017.pkl"
         },
         "xgboost": {
           "baseline_accuracy": 0.9985542678172615,
-          "retrained_clean_test_accuracy": 0.9983163959773229,
-          "accuracy_drop_pp": 0.023787183993861927,
+          "retrained_clean_test_accuracy": 0.9985859840625867,
+          "accuracy_drop_pp": -0.003171624532516404,
           "within_3pp_target": true,
           "baseline_model_path": "models/xgb_cicids2017.pkl",
           "model_path": "models/adv_xgb_cicids2017.pkl"
         },
         "mlp": {
           "baseline_accuracy": 0.912116927224432,
-          "retrained_clean_test_accuracy": 0.8068454229493465,
-          "accuracy_drop_pp": 10.527150427508559,
+          "retrained_clean_test_accuracy": 0.7075022135296216,
+          "accuracy_drop_pp": 20.461471369481043,
           "within_3pp_target": false,
           "baseline_model_path": "models/mlp_cicids2017.h5",
           "baseline_scaler_path": "models/scaler_cicids2017.pkl",
@@ -35,8 +35,8 @@
         },
         "lstm": {
           "baseline_accuracy": 0.9392078867730042,
-          "retrained_clean_test_accuracy": 0.9320955187588376,
-          "accuracy_drop_pp": 0.7112368014166592,
+          "retrained_clean_test_accuracy": 0.9332663768154247,
+          "accuracy_drop_pp": 0.5941509957579472,
           "within_3pp_target": true,
           "baseline_model_path": "models/lstm_cicids2017.h5",
           "baseline_scaler_path": "models/scaler_lstm_cicids2017.pkl",
@@ -45,8 +45,8 @@
         },
         "majority_voting": {
           "baseline_accuracy": 0.9984115447132984,
-          "retrained_clean_test_accuracy": 0.9983163959773229,
-          "accuracy_drop_pp": 0.009514873597549212,
+          "retrained_clean_test_accuracy": 0.9984141877337421,
+          "accuracy_drop_pp": -0.00026430204437266624,
           "within_3pp_target": true,
           "member_models": [
             "random_forest",
@@ -60,29 +60,29 @@
     "nslkdd": {
       "n_test_samples": 22278,
       "target_max_drop_pp": 3.0,
-      "overall_pass": false,
+      "overall_pass": true,
       "models": {
         "random_forest": {
           "baseline_accuracy": 0.9954214920549421,
-          "retrained_clean_test_accuracy": 0.9938953227399228,
-          "accuracy_drop_pp": 0.15261693150193656,
+          "retrained_clean_test_accuracy": 0.995152168058174,
+          "accuracy_drop_pp": 0.0269323996768156,
           "within_3pp_target": true,
           "baseline_model_path": "models/rf_nslkdd.pkl",
           "model_path": "models/adv_rf_nslkdd.pkl"
         },
         "xgboost": {
           "baseline_accuracy": 0.995286830056558,
-          "retrained_clean_test_accuracy": 0.9926833647544663,
-          "accuracy_drop_pp": 0.26034653020917675,
+          "retrained_clean_test_accuracy": 0.9944339707334591,
+          "accuracy_drop_pp": 0.08528593230989756,
           "within_3pp_target": true,
           "baseline_model_path": "models/xgb_nslkdd.pkl",
           "model_path": "models/adv_xgb_nslkdd.pkl"
         },
         "mlp": {
           "baseline_accuracy": 0.9633719364395368,
-          "retrained_clean_test_accuracy": 0.8692431995690816,
-          "accuracy_drop_pp": 9.41287368704552,
-          "within_3pp_target": false,
+          "retrained_clean_test_accuracy": 0.9660651764072179,
+          "accuracy_drop_pp": -0.2693239967681116,
+          "within_3pp_target": true,
           "baseline_model_path": "models/mlp_nslkdd.h5",
           "baseline_scaler_path": "models/scaler_nslkdd.pkl",
           "model_path": "models/adv_mlp_nslkdd.h5",
@@ -99,8 +99,8 @@
         },
         "majority_voting": {
           "baseline_accuracy": 0.9949277313942005,
-          "retrained_clean_test_accuracy": 0.9929526887512344,
-          "accuracy_drop_pp": 0.19750426429661072,
+          "retrained_clean_test_accuracy": 0.9942544214022803,
+          "accuracy_drop_pp": 0.0673309991920279,
           "within_3pp_target": true,
           "member_models": [
             "random_forest",
@@ -114,29 +114,29 @@
     "unswnb15": {
       "n_test_samples": 45926,
       "target_max_drop_pp": 3.0,
-      "overall_pass": false,
+      "overall_pass": true,
       "models": {
         "random_forest": {
           "baseline_accuracy": 0.9037146714279493,
-          "retrained_clean_test_accuracy": 0.9013630623176414,
-          "accuracy_drop_pp": 0.23516091103078507,
+          "retrained_clean_test_accuracy": 0.9038017680616645,
+          "accuracy_drop_pp": -0.008709663371520016,
           "within_3pp_target": true,
           "baseline_model_path": "models/rf_unswnb15.pkl",
           "model_path": "models/adv_rf_unswnb15.pkl"
         },
         "xgboost": {
           "baseline_accuracy": 0.8874493750816531,
-          "retrained_clean_test_accuracy": 0.877607455471846,
-          "accuracy_drop_pp": 0.984191960980707,
+          "retrained_clean_test_accuracy": 0.8852719592387754,
+          "accuracy_drop_pp": 0.21774158428776724,
           "within_3pp_target": true,
           "baseline_model_path": "models/xgb_unswnb15.pkl",
           "model_path": "models/adv_xgb_unswnb15.pkl"
         },
         "mlp": {
           "baseline_accuracy": 0.8418325131733658,
-          "retrained_clean_test_accuracy": 0.8063841832513173,
-          "accuracy_drop_pp": 3.5448329922048494,
-          "within_3pp_target": false,
+          "retrained_clean_test_accuracy": 0.8360841353481688,
+          "accuracy_drop_pp": 0.5748377825196993,
+          "within_3pp_target": true,
           "baseline_model_path": "models/mlp_unswnb15.h5",
           "baseline_scaler_path": "models/scaler_unswnb15.pkl",
           "model_path": "models/adv_mlp_unswnb15.h5",
@@ -153,8 +153,8 @@
         },
         "majority_voting": {
           "baseline_accuracy": 0.8921308191438401,
-          "retrained_clean_test_accuracy": 0.8854026041893481,
-          "accuracy_drop_pp": 0.672821495449194,
+          "retrained_clean_test_accuracy": 0.8915864651831207,
+          "accuracy_drop_pp": 0.054435396071939035,
           "within_3pp_target": true,
           "member_models": [
             "random_forest",

@@ -1,6 +1,6 @@
 {
   "attack": "Attack C - Protocol Exploitation",
-  "generated_at_utc": "2026-03-24T05:08:58.778452+00:00",
+  "generated_at_utc": "2026-04-05T23:52:18.068920+00:00",
   "datasets_evaluated": [
     "cicids2017",
     "nslkdd",
@@ -31,26 +31,26 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 63556,
+              "n_originally_detected": 63548,
               "n_originally_detected_and_valid": 25617,
-              "n_evaded": 57,
-              "esr": 0.0008968468751966769,
-              "esr_on_valid": 0.0022250849045555685
+              "n_evaded": 26,
+              "esr": 0.00040913954805816074,
+              "esr_on_valid": 0.0010149510090955226
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 63876,
+              "n_originally_detected": 63875,
               "n_originally_detected_and_valid": 25628,
-              "n_evaded": 9,
-              "esr": 0.00014089798985534473,
-              "esr_on_valid": 0.00035117839862650225
+              "n_evaded": 10,
+              "esr": 0.00015655577299412916,
+              "esr_on_valid": 0.00039019822069611364
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 63759,
-              "n_originally_detected_and_valid": 25615,
-              "n_evaded": 25615,
-              "esr": 0.4017472043162534,
+              "n_originally_detected": 62412,
+              "n_originally_detected_and_valid": 25562,
+              "n_evaded": 25562,
+              "esr": 0.40956867269114916,
               "esr_on_valid": 1.0
             }
           }
@@ -63,7 +63,7 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 63556,
+              "n_originally_detected": 63548,
               "n_originally_detected_and_valid": 25617,
               "n_evaded": 0,
               "esr": 0.0,
@@ -71,7 +71,7 @@
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 63876,
+              "n_originally_detected": 63875,
               "n_originally_detected_and_valid": 25629,
               "n_evaded": 0,
               "esr": 0.0,
@@ -79,8 +79,8 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 63759,
-              "n_originally_detected_and_valid": 25616,
+              "n_originally_detected": 62412,
+              "n_originally_detected_and_valid": 25563,
               "n_evaded": 0,
               "esr": 0.0,
               "esr_on_valid": 0.0
@@ -95,27 +95,27 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 63556,
+              "n_originally_detected": 63548,
               "n_originally_detected_and_valid": 25617,
-              "n_evaded": 3029,
-              "esr": 0.047658757631065515,
-              "esr_on_valid": 0.11824179255962837
+              "n_evaded": 2502,
+              "esr": 0.039371813432366086,
+              "esr_on_valid": 0.0976695163368076
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 63876,
+              "n_originally_detected": 63875,
               "n_originally_detected_and_valid": 25629,
-              "n_evaded": 1268,
-              "esr": 0.019850961237397456,
-              "esr_on_valid": 0.04947520387061532
+              "n_evaded": 1143,
+              "esr": 0.017894324853228963,
+              "esr_on_valid": 0.044597916422802295
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 63759,
-              "n_originally_detected_and_valid": 25616,
-              "n_evaded": 151,
-              "esr": 0.002368293103718691,
-              "esr_on_valid": 0.0058947532792004995
+              "n_originally_detected": 62412,
+              "n_originally_detected_and_valid": 25563,
+              "n_evaded": 934,
+              "esr": 0.014965070819714158,
+              "esr_on_valid": 0.036537182646794196
             }
           }
         }
@@ -145,7 +145,7 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 10673,
+              "n_originally_detected": 10668,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -161,7 +161,7 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 10672,
+              "n_originally_detected": 10683,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -177,7 +177,7 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 10673,
+              "n_originally_detected": 10668,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -193,7 +193,7 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 10672,
+              "n_originally_detected": 10683,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -209,7 +209,7 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 10673,
+              "n_originally_detected": 10668,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -225,7 +225,7 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 10672,
+              "n_originally_detected": 10683,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -259,7 +259,7 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 11742,
+              "n_originally_detected": 11749,
               "n_originally_detected_and_valid": 1,
               "n_evaded": 0,
               "esr": 0.0,
@@ -267,7 +267,7 @@
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 12156,
+              "n_originally_detected": 12155,
               "n_originally_detected_and_valid": 1,
               "n_evaded": 0,
               "esr": 0.0,
@@ -275,10 +275,10 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 12171,
+              "n_originally_detected": 12169,
               "n_originally_detected_and_valid": 1,
               "n_evaded": 1,
-              "esr": 8.216251745953496e-05,
+              "esr": 8.217602103706138e-05,
               "esr_on_valid": 1.0
             }
           }
@@ -291,27 +291,27 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 11742,
-              "n_originally_detected_and_valid": 2971,
+              "n_originally_detected": 11749,
+              "n_originally_detected_and_valid": 2975,
+              "n_evaded": 3,
+              "esr": 0.0002553408800749,
+              "esr_on_valid": 0.0010084033613445378
+            },
+            "xgboost": {
+              "model": "xgboost",
+              "n_originally_detected": 12155,
+              "n_originally_detected_and_valid": 2999,
               "n_evaded": 0,
               "esr": 0.0,
               "esr_on_valid": 0.0
             },
-            "xgboost": {
-              "model": "xgboost",
-              "n_originally_detected": 12156,
-              "n_originally_detected_and_valid": 2999,
-              "n_evaded": 1,
-              "esr": 8.226390259953932e-05,
-              "esr_on_valid": 0.00033344448149383126
-            },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 12171,
-              "n_originally_detected_and_valid": 2996,
-              "n_evaded": 2671,
-              "esr": 0.2194560841344179,
-              "esr_on_valid": 0.8915220293724967
+              "n_originally_detected": 12169,
+              "n_originally_detected_and_valid": 2997,
+              "n_evaded": 2649,
+              "esr": 0.2176842797271756,
+              "esr_on_valid": 0.8838838838838838
             }
           }
         },
@@ -323,15 +323,15 @@
           "models": {
             "random_forest": {
               "model": "random_forest",
-              "n_originally_detected": 11742,
+              "n_originally_detected": 11749,
               "n_originally_detected_and_valid": 3,
-              "n_evaded": 0,
-              "esr": 0.0,
-              "esr_on_valid": 0.0
+              "n_evaded": 1,
+              "esr": 8.511362669163333e-05,
+              "esr_on_valid": 0.3333333333333333
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 12156,
+              "n_originally_detected": 12155,
               "n_originally_detected_and_valid": 3,
               "n_evaded": 0,
               "esr": 0.0,
@@ -339,11 +339,11 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 12171,
-              "n_originally_detected_and_valid": 1,
-              "n_evaded": 0,
-              "esr": 0.0,
-              "esr_on_valid": 0.0
+              "n_originally_detected": 12169,
+              "n_originally_detected_and_valid": 2,
+              "n_evaded": 2,
+              "esr": 0.00016435204207412277,
+              "esr_on_valid": 1.0
             }
           }
         }

@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-25T05:40:50.193039+00:00",
+  "generated_at_utc": "2026-04-04T04:26:00.587613+00:00",
   "comparison_mode": "Baseline and retrained accuracies are both computed directly from model files on the same clean X_test split.",
   "datasets": {
     "cicids2017": {
@@ -9,8 +9,8 @@
       "models": {
         "random_forest": {
           "baseline_accuracy": 0.9981631007915847,
-          "retrained_clean_test_accuracy": 0.998046807892059,
-          "accuracy_drop_pp": 0.011629289952563848,
+          "retrained_clean_test_accuracy": 0.9980653090351654,
+          "accuracy_drop_pp": 0.009779175641921878,
           "within_3pp_target": true,
           "baseline_model_path": "models/rf_cicids2017.pkl",
           "model_path": "models/adv_rf_cicids2017.pkl"
@@ -25,8 +25,8 @@
         },
         "mlp": {
           "baseline_accuracy": 0.8347187165492725,
-          "retrained_clean_test_accuracy": 0.821389964451375,
-          "accuracy_drop_pp": 1.3328752097897523,
+          "retrained_clean_test_accuracy": 0.8504869765167633,
+          "accuracy_drop_pp": -1.576825996749076,
           "within_3pp_target": true,
           "baseline_model_path": "models/mlp_cicids2017.h5",
           "baseline_scaler_path": "models/scaler_cicids2017.pkl",
@@ -45,8 +45,8 @@
         },
         "majority_voting": {
           "baseline_accuracy": 0.9984617621017299,
-          "retrained_clean_test_accuracy": 0.9983454692022042,
-          "accuracy_drop_pp": 0.011629289952563848,
+          "retrained_clean_test_accuracy": 0.9983481122226481,
+          "accuracy_drop_pp": 0.01136498790818008,
           "within_3pp_target": true,
           "member_models": [
             "random_forest",
@@ -64,8 +64,8 @@
       "models": {
         "random_forest": {
           "baseline_accuracy": 0.9956459287189156,
-          "retrained_clean_test_accuracy": 0.9937606607415388,
-          "accuracy_drop_pp": 0.1885267977376759,
+          "retrained_clean_test_accuracy": 0.9936708860759493,
+          "accuracy_drop_pp": 0.19750426429662182,
           "within_3pp_target": true,
           "baseline_model_path": "models/rf_nslkdd.pkl",
           "model_path": "models/adv_rf_nslkdd.pkl"
@@ -99,8 +99,8 @@
         },
         "majority_voting": {
           "baseline_accuracy": 0.9952419427237633,
-          "retrained_clean_test_accuracy": 0.9931322380824131,
-          "accuracy_drop_pp": 0.21097046413501852,
+          "retrained_clean_test_accuracy": 0.992997576084029,
+          "accuracy_drop_pp": 0.22443666397342632,
           "within_3pp_target": true,
           "member_models": [
             "random_forest",

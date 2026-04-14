@@ -17,13 +17,14 @@ from src.constraints import (
     PlausibilityConstraintValidator,
     CompositeConstraintValidator,
 )
+from src.dotenv_utils import get_env_float, get_env_int
 
-# Constants
-SECONDS_TO_MICROSECONDS = 1_000_000.0
-MILLISECONDS_TO_MICROSECONDS = 1000.0
-IP_HEADER_LENGTH_BYTES = 20
-MAX_TCP_HEADER_BYTES = 60
-DEFAULT_TCP_OPTION_BYTES = 12
+# Constants (values from .env)
+SECONDS_TO_MICROSECONDS = get_env_float("SECONDS_TO_MICROSECONDS")
+MILLISECONDS_TO_MICROSECONDS = get_env_float("MILLISECONDS_TO_MICROSECONDS")
+IP_HEADER_LENGTH_BYTES = get_env_int("IP_HEADER_LENGTH_BYTES")
+MAX_TCP_HEADER_BYTES = get_env_int("MAX_TCP_HEADER_BYTES")
+DEFAULT_TCP_OPTION_BYTES = get_env_int("DEFAULT_TCP_OPTION_BYTES")
 
 class Direction(str, Enum):
     FORWARD = "fwd"

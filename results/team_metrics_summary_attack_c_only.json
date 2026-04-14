@@ -1,0 +1,5432 @@
+{
+  "generated_at_utc": "2026-04-14T02:26:26.020654+00:00",
+  "attack_mode": "c",
+  "results_dir": "results",
+  "owners": [
+    "shad",
+    "alyssa",
+    "jessy"
+  ],
+  "files_by_owner": {
+    "shad": {
+      "shad_attack_a": {
+        "path": "results/shad_attack_a_metrics_all_datasets.json",
+        "exists": true
+      },
+      "shad_attack_b": {
+        "path": "results/shad_attack_b_metrics_all_datasets.json",
+        "exists": true
+      },
+      "shad_attack_c": {
+        "path": "results/shad_attack_c_metrics_all_datasets.json",
+        "exists": true
+      },
+      "shad_defense": {
+        "path": "results/shad_defense_attack_c_only_metrics.json",
+        "exists": true
+      },
+      "shad_retrained_adversarial": {
+        "path": "results/shad_retrained_adversarial_attack_c_only_metrics.json",
+        "exists": true
+      },
+      "shad_adv_training_clean": {
+        "path": "results/shad_adv_training_clean_metrics.json",
+        "exists": true
+      }
+    },
+    "alyssa": {
+      "alyssa_attack_a": {
+        "path": "results/alyssa_attack_a_metrics_all_datasets.json",
+        "exists": true
+      },
+      "alyssa_attack_b": {
+        "path": "results/alyssa_attack_b_metrics_all_datasets.json",
+        "exists": true
+      },
+      "alyssa_attack_c": {
+        "path": "results/alyssa_attack_c_metrics_all_datasets.json",
+        "exists": true
+      },
+      "alyssa_defense": {
+        "path": "results/alyssa_defense_attack_c_only_metrics.json",
+        "exists": true
+      },
+      "alyssa_retrained_adversarial": {
+        "path": "results/alyssa_retrained_adversarial_attack_c_only_metrics.json",
+        "exists": false,
+        "used_fallback": true,
+        "fallback_paths": [
+          "results/alyssa_retrained_adversarial_attack_c_only_metrics_cicids2017.json",
+          "results/alyssa_retrained_adversarial_attack_c_only_metrics_nslkdd.json"
+        ]
+      },
+      "alyssa_adv_training_clean": {
+        "path": "results/alyssa_adv_training_clean_metrics.json",
+        "exists": true
+      }
+    },
+    "jessy": {
+      "jessy_attack_a": {
+        "path": "results/jessy_attack_a_metrics_all_datasets.json",
+        "exists": true
+      },
+      "jessy_attack_b": {
+        "path": "results/jessy_attack_b_metrics_all_datasets.json",
+        "exists": true
+      },
+      "jessy_attack_c": {
+        "path": "results/jessy_attack_c_metrics_all_datasets.json",
+        "exists": true
+      },
+      "jessy_defense": {
+        "path": "results/jessy_defense_attack_c_only_metrics.json",
+        "exists": true
+      },
+      "jessy_retrained_adversarial": {
+        "path": "results/jessy_retrained_adversarial_attack_c_only_metrics.json",
+        "exists": true
+      },
+      "jessy_adv_training_clean": {
+        "path": "results/jessy_adv_training_clean_metrics.json",
+        "exists": true
+      }
+    }
+  },
+  "per_person_summary": {
+    "shad": {
+      "attacks": {
+        "attack_a": {
+          "owner": "shad",
+          "attack": "attack_a",
+          "n_esr_points": 18,
+          "overall_mean_esr": 0.283044,
+          "dataset_mean_esr": {
+            "cicids2017": 0.758033,
+            "nslkdd": 0.0,
+            "unswnb15": 0.0911
+          },
+          "model_mean_esr": {
+            "mlp": 0.275617,
+            "random_forest": 0.33615,
+            "xgboost": 0.237367
+          },
+          "mutation_mean_esr": {
+            "dilute_scan_pattern": 0.279433,
+            "inject_decoy_flows": 0.286656
+          },
+          "overall_mean_constraint_satisfaction_rate": 0.9082,
+          "overall_mean_success_rate": 0.34638,
+          "n_zero_success_mutation_entries": 2,
+          "compatibility_notes_count": 2,
+          "compatibility_notes": [
+            "Attack A mutations reference CICIDS2017-specific feature indices (minimum 67 features required). NSL-KDD has 40 features \u2014 mutations are structurally incompatible with this dataset."
+          ]
+        },
+        "attack_b": {
+          "owner": "shad",
+          "attack": "attack_b",
+          "n_esr_points": 18,
+          "overall_mean_esr": 0.126699,
+          "dataset_mean_esr": {
+            "cicids2017": 0.250648,
+            "nslkdd": 0.027548,
+            "unswnb15": 0.101901
+          },
+          "model_mean_esr": {
+            "mlp": 0.265092,
+            "random_forest": 0.102382,
+            "xgboost": 0.012623
+          },
+          "mutation_mean_esr": {
+            "mimic_packet_size": 0.216925,
+            "mimic_timing": 0.036473
+          },
+          "overall_mean_constraint_satisfaction_rate": 0.700604,
+          "overall_mean_success_rate": 0.733535,
+          "n_zero_success_mutation_entries": 1,
+          "compatibility_notes_count": 0,
+          "compatibility_notes": []
+        },
+        "attack_c": {
+          "owner": "shad",
+          "attack": "attack_c",
+          "n_esr_points": 27,
+          "overall_mean_esr": 0.02595,
+          "dataset_mean_esr": {
+            "cicids2017": 0.053596,
+            "nslkdd": 0.0,
+            "unswnb15": 0.024252
+          },
+          "model_mean_esr": {
+            "mlp": 0.071385,
+            "random_forest": 0.004458,
+            "xgboost": 0.002006
+          },
+          "mutation_mean_esr": {
+            "add_tcp_options": 0.024216,
+            "fragment_payload": 0.04558,
+            "shift_ack_timing": 0.008053
+          },
+          "overall_mean_constraint_satisfaction_rate": 0.401203,
+          "overall_mean_success_rate": 0.16114,
+          "n_zero_success_mutation_entries": 3,
+          "compatibility_notes_count": 0,
+          "compatibility_notes": []
+        }
+      },
+      "defense": {
+        "n_datasets": 3,
+        "per_dataset": {
+          "cicids2017": {
+            "dataset": "cicids2017",
+            "target_recovery_pp": 25.0,
+            "n_attack_samples": 63882,
+            "n_mutations_evaluated": 7,
+            "n_mutations_skipped": 0,
+            "n_mutations_meeting_target": 1,
+            "target_hit_rate": 0.142857,
+            "clean_baseline_detection_rate": 0.9979,
+            "clean_adversarial_detection_rate": 0.9978,
+            "mean_recovery_delta_pp": 8.3543,
+            "median_recovery_delta_pp": 2.64,
+            "best_mutation_by_recovery": {
+              "mutation": "mimic_packet_size",
+              "recovery_delta_pp": 34.59
+            },
+            "worst_mutation_by_recovery": {
+              "mutation": "inject_decoy_flows",
+              "recovery_delta_pp": -0.0
+            }
+          },
+          "nslkdd": {
+            "dataset": "nslkdd",
+            "target_recovery_pp": 25.0,
+            "n_attack_samples": 10719,
+            "n_mutations_evaluated": 1,
+            "n_mutations_skipped": 6,
+            "n_mutations_meeting_target": 0,
+            "target_hit_rate": 0.0,
+            "clean_baseline_detection_rate": 0.9974,
+            "clean_adversarial_detection_rate": 0.9982,
+            "mean_recovery_delta_pp": -0.13,
+            "median_recovery_delta_pp": -0.13,
+            "best_mutation_by_recovery": {
+              "mutation": "mimic_timing",
+              "recovery_delta_pp": -0.13
+            },
+            "worst_mutation_by_recovery": {
+              "mutation": "mimic_timing",
+              "recovery_delta_pp": -0.13
+            }
+          },
+          "unswnb15": {
+            "dataset": "unswnb15",
+            "target_recovery_pp": 25.0,
+            "n_attack_samples": 12175,
+            "n_mutations_evaluated": 5,
+            "n_mutations_skipped": 2,
+            "n_mutations_meeting_target": 0,
+            "target_hit_rate": 0.0,
+            "clean_baseline_detection_rate": 0.9969,
+            "clean_adversarial_detection_rate": 0.9962,
+            "mean_recovery_delta_pp": 0.232,
+            "median_recovery_delta_pp": 0.0,
+            "best_mutation_by_recovery": {
+              "mutation": "mimic_timing",
+              "recovery_delta_pp": 1.06
+            },
+            "worst_mutation_by_recovery": {
+              "mutation": "mimic_packet_size",
+              "recovery_delta_pp": 0.0
+            }
+          }
+        },
+        "overall": {
+          "n_mutations_evaluated_total": 13,
+          "n_mutations_meeting_target_total": 1,
+          "target_hit_rate_overall": 0.076923,
+          "mean_clean_baseline_detection_rate": 0.9974,
+          "mean_clean_adversarial_detection_rate": 0.9974,
+          "mean_recovery_delta_pp": 2.8188,
+          "median_recovery_delta_pp": 0.232
+        }
+      },
+      "adv_training_clean": {
+        "overall_pass": true,
+        "mean_accuracy_drop_pp": 0.2705,
+        "median_accuracy_drop_pp": 0.2244,
+        "worst_accuracy_drop_entry": {
+          "dataset": "unswnb15",
+          "model": "mlp",
+          "accuracy_drop_pp": 1.7223359317162346
+        },
+        "n_within_target_violations": 0,
+        "n_missing_baseline_model_entries": 2,
+        "dataset_mean_retrained_accuracy": {
+          "cicids2017": 0.954993,
+          "nslkdd": 0.984649,
+          "unswnb15": 0.873786
+        }
+      },
+      "retrained_adversarial": {
+        "n_accuracy_entries": 12,
+        "overall_mean_accuracy": 0.942988,
+        "dataset_mean_accuracy": {
+          "cicids2017": 0.964353,
+          "nslkdd": 0.98622,
+          "unswnb15": 0.878391
+        },
+        "model_mean_accuracy": {
+          "majority_voting": 0.961774,
+          "mlp": 0.883652,
+          "random_forest": 0.966295,
+          "xgboost": 0.960231
+        }
+      },
+      "missing_files": []
+    },
+    "alyssa": {
+      "attacks": {
+        "attack_a": {
+          "owner": "alyssa",
+          "attack": "attack_a",
+          "n_esr_points": 18,
+          "overall_mean_esr": 0.283044,
+          "dataset_mean_esr": {
+            "cicids2017": 0.758033,
+            "nslkdd": 0.0,
+            "unswnb15": 0.0911
+          },
+          "model_mean_esr": {
+            "mlp": 0.275617,
+            "random_forest": 0.33615,
+            "xgboost": 0.237367
+          },
+          "mutation_mean_esr": {
+            "dilute_scan_pattern": 0.279433,
+            "inject_decoy_flows": 0.286656
+          },
+          "overall_mean_constraint_satisfaction_rate": 0.9082,
+          "overall_mean_success_rate": 0.34638,
+          "n_zero_success_mutation_entries": 2,
+          "compatibility_notes_count": 2,
+          "compatibility_notes": [
+            "Attack A mutations reference CICIDS2017-specific feature indices (minimum 67 features required). NSL-KDD has 40 features \u2014 mutations are structurally incompatible with this dataset."
+          ]
+        },
+        "attack_b": {
+          "owner": "alyssa",
+          "attack": "attack_b",
+          "n_esr_points": 18,
+          "overall_mean_esr": 0.126699,
+          "dataset_mean_esr": {
+            "cicids2017": 0.250648,
+            "nslkdd": 0.027548,
+            "unswnb15": 0.101901
+          },
+          "model_mean_esr": {
+            "mlp": 0.265092,
+            "random_forest": 0.102382,
+            "xgboost": 0.012623
+          },
+          "mutation_mean_esr": {
+            "mimic_packet_size": 0.216925,
+            "mimic_timing": 0.036473
+          },
+          "overall_mean_constraint_satisfaction_rate": 0.700604,
+          "overall_mean_success_rate": 0.733535,
+          "n_zero_success_mutation_entries": 1,
+          "compatibility_notes_count": 0,
+          "compatibility_notes": []
+        },
+        "attack_c": {
+          "owner": "alyssa",
+          "attack": "attack_c",
+          "n_esr_points": 27,
+          "overall_mean_esr": 0.02595,
+          "dataset_mean_esr": {
+            "cicids2017": 0.053596,
+            "nslkdd": 0.0,
+            "unswnb15": 0.024252
+          },
+          "model_mean_esr": {
+            "mlp": 0.071385,
+            "random_forest": 0.004458,
+            "xgboost": 0.002006
+          },
+          "mutation_mean_esr": {
+            "add_tcp_options": 0.024216,
+            "fragment_payload": 0.04558,
+            "shift_ack_timing": 0.008053
+          },
+          "overall_mean_constraint_satisfaction_rate": 0.401203,
+          "overall_mean_success_rate": 0.16114,
+          "n_zero_success_mutation_entries": 3,
+          "compatibility_notes_count": 0,
+          "compatibility_notes": []
+        }
+      },
+      "defense": {
+        "n_datasets": 3,
+        "per_dataset": {
+          "cicids2017": {
+            "dataset": "cicids2017",
+            "target_recovery_pp": 25.0,
+            "n_attack_samples": 63882,
+            "n_mutations_evaluated": 7,
+            "n_mutations_skipped": 0,
+            "n_mutations_meeting_target": 1,
+            "target_hit_rate": 0.142857,
+            "clean_baseline_detection_rate": 0.9979,
+            "clean_adversarial_detection_rate": 0.9993,
+            "mean_recovery_delta_pp": 8.64,
+            "median_recovery_delta_pp": 3.05,
+            "best_mutation_by_recovery": {
+              "mutation": "mimic_packet_size",
+              "recovery_delta_pp": 36.36
+            },
+            "worst_mutation_by_recovery": {
+              "mutation": "inject_decoy_flows",
+              "recovery_delta_pp": -0.0
+            }
+          },
+          "nslkdd": {
+            "dataset": "nslkdd",
+            "target_recovery_pp": 25.0,
+            "n_attack_samples": 10719,
+            "n_mutations_evaluated": 1,
+            "n_mutations_skipped": 6,
+            "n_mutations_meeting_target": 0,
+            "target_hit_rate": 0.0,
+            "clean_baseline_detection_rate": 0.9974,
+            "clean_adversarial_detection_rate": 0.9985,
+            "mean_recovery_delta_pp": 2.56,
+            "median_recovery_delta_pp": 2.56,
+            "best_mutation_by_recovery": {
+              "mutation": "mimic_timing",
+              "recovery_delta_pp": 2.56
+            },
+            "worst_mutation_by_recovery": {
+              "mutation": "mimic_timing",
+              "recovery_delta_pp": 2.56
+            }
+          },
+          "unswnb15": {
+            "dataset": "unswnb15",
+            "target_recovery_pp": 25.0,
+            "n_attack_samples": 12175,
+            "n_mutations_evaluated": 5,
+            "n_mutations_skipped": 2,
+            "n_mutations_meeting_target": 1,
+            "target_hit_rate": 0.2,
+            "clean_baseline_detection_rate": 0.9969,
+            "clean_adversarial_detection_rate": 0.9966,
+            "mean_recovery_delta_pp": 6.9,
+            "median_recovery_delta_pp": 0.1,
+            "best_mutation_by_recovery": {
+              "mutation": "shift_ack_timing",
+              "recovery_delta_pp": 33.33
+            },
+            "worst_mutation_by_recovery": {
+              "mutation": "mimic_packet_size",
+              "recovery_delta_pp": -0.01
+            }
+          }
+        },
+        "overall": {
+          "n_mutations_evaluated_total": 13,
+          "n_mutations_meeting_target_total": 2,
+          "target_hit_rate_overall": 0.153846,
+          "mean_clean_baseline_detection_rate": 0.9974,
+          "mean_clean_adversarial_detection_rate": 0.998133,
+          "mean_recovery_delta_pp": 6.0333,
+          "median_recovery_delta_pp": 6.9
+        }
+      },
+      "adv_training_clean": {
+        "overall_pass": true,
+        "mean_accuracy_drop_pp": -0.0837,
+        "median_accuracy_drop_pp": 0.1571,
+        "worst_accuracy_drop_entry": {
+          "dataset": "cicids2017",
+          "model": "lstm",
+          "accuracy_drop_pp": 2.1302744776730775
+        },
+        "n_within_target_violations": 0,
+        "n_missing_baseline_model_entries": 2,
+        "dataset_mean_retrained_accuracy": {
+          "cicids2017": 0.955323,
+          "nslkdd": 0.985535,
+          "unswnb15": 0.869099
+        }
+      },
+      "retrained_adversarial": {
+        "n_accuracy_entries": 8,
+        "overall_mean_accuracy": 0.97311,
+        "dataset_mean_accuracy": {
+          "cicids2017": 0.95861,
+          "nslkdd": 0.987611
+        },
+        "model_mean_accuracy": {
+          "majority_voting": 0.996895,
+          "mlp": 0.901568,
+          "random_forest": 0.996845,
+          "xgboost": 0.997133
+        }
+      },
+      "missing_files": []
+    },
+    "jessy": {
+      "attacks": {
+        "attack_a": {
+          "owner": "jessy",
+          "attack": "attack_a",
+          "n_esr_points": 18,
+          "overall_mean_esr": 0.283044,
+          "dataset_mean_esr": {
+            "cicids2017": 0.758033,
+            "nslkdd": 0.0,
+            "unswnb15": 0.0911
+          },
+          "model_mean_esr": {
+            "mlp": 0.275617,
+            "random_forest": 0.33615,
+            "xgboost": 0.237367
+          },
+          "mutation_mean_esr": {
+            "dilute_scan_pattern": 0.279433,
+            "inject_decoy_flows": 0.286656
+          },
+          "overall_mean_constraint_satisfaction_rate": 0.9082,
+          "overall_mean_success_rate": 0.34638,
+          "n_zero_success_mutation_entries": 2,
+          "compatibility_notes_count": 2,
+          "compatibility_notes": [
+            "Attack A mutations reference CICIDS2017-specific feature indices (minimum 67 features required). NSL-KDD has 40 features \u2014 mutations are structurally incompatible with this dataset."
+          ]
+        },
+        "attack_b": {
+          "owner": "jessy",
+          "attack": "attack_b",
+          "n_esr_points": 18,
+          "overall_mean_esr": 0.126699,
+          "dataset_mean_esr": {
+            "cicids2017": 0.250648,
+            "nslkdd": 0.027548,
+            "unswnb15": 0.101901
+          },
+          "model_mean_esr": {
+            "mlp": 0.265092,
+            "random_forest": 0.102382,
+            "xgboost": 0.012623
+          },
+          "mutation_mean_esr": {
+            "mimic_packet_size": 0.216925,
+            "mimic_timing": 0.036473
+          },
+          "overall_mean_constraint_satisfaction_rate": 0.700604,
+          "overall_mean_success_rate": 0.733535,
+          "n_zero_success_mutation_entries": 1,
+          "compatibility_notes_count": 0,
+          "compatibility_notes": []
+        },
+        "attack_c": {
+          "owner": "jessy",
+          "attack": "attack_c",
+          "n_esr_points": 27,
+          "overall_mean_esr": 0.02595,
+          "dataset_mean_esr": {
+            "cicids2017": 0.053596,
+            "nslkdd": 0.0,
+            "unswnb15": 0.024252
+          },
+          "model_mean_esr": {
+            "mlp": 0.071385,
+            "random_forest": 0.004458,
+            "xgboost": 0.002006
+          },
+          "mutation_mean_esr": {
+            "add_tcp_options": 0.024216,
+            "fragment_payload": 0.04558,
+            "shift_ack_timing": 0.008053
+          },
+          "overall_mean_constraint_satisfaction_rate": 0.401203,
+          "overall_mean_success_rate": 0.16114,
+          "n_zero_success_mutation_entries": 3,
+          "compatibility_notes_count": 0,
+          "compatibility_notes": []
+        }
+      },
+      "defense": {
+        "n_datasets": 3,
+        "per_dataset": {
+          "cicids2017": {
+            "dataset": "cicids2017",
+            "target_recovery_pp": 25.0,
+            "n_attack_samples": 63882,
+            "n_mutations_evaluated": 7,
+            "n_mutations_skipped": 0,
+            "n_mutations_meeting_target": 1,
+            "target_hit_rate": 0.142857,
+            "clean_baseline_detection_rate": 0.9979,
+            "clean_adversarial_detection_rate": 0.9993,
+            "mean_recovery_delta_pp": 8.5657,
+            "median_recovery_delta_pp": 3.04,
+            "best_mutation_by_recovery": {
+              "mutation": "mimic_packet_size",
+              "recovery_delta_pp": 35.74
+            },
+            "worst_mutation_by_recovery": {
+              "mutation": "inject_decoy_flows",
+              "recovery_delta_pp": -0.0
+            }
+          },
+          "nslkdd": {
+            "dataset": "nslkdd",
+            "target_recovery_pp": 25.0,
+            "n_attack_samples": 10719,
+            "n_mutations_evaluated": 1,
+            "n_mutations_skipped": 6,
+            "n_mutations_meeting_target": 0,
+            "target_hit_rate": 0.0,
+            "clean_baseline_detection_rate": 0.9974,
+            "clean_adversarial_detection_rate": 0.9986,
+            "mean_recovery_delta_pp": 2.16,
+            "median_recovery_delta_pp": 2.16,
+            "best_mutation_by_recovery": {
+              "mutation": "mimic_timing",
+              "recovery_delta_pp": 2.16
+            },
+            "worst_mutation_by_recovery": {
+              "mutation": "mimic_timing",
+              "recovery_delta_pp": 2.16
+            }
+          },
+          "unswnb15": {
+            "dataset": "unswnb15",
+            "target_recovery_pp": 25.0,
+            "n_attack_samples": 12175,
+            "n_mutations_evaluated": 5,
+            "n_mutations_skipped": 2,
+            "n_mutations_meeting_target": 1,
+            "target_hit_rate": 0.2,
+            "clean_baseline_detection_rate": 0.9969,
+            "clean_adversarial_detection_rate": 0.9974,
+            "mean_recovery_delta_pp": 6.886,
+            "median_recovery_delta_pp": 0.1,
+            "best_mutation_by_recovery": {
+              "mutation": "shift_ack_timing",
+              "recovery_delta_pp": 33.33
+            },
+            "worst_mutation_by_recovery": {
+              "mutation": "mimic_packet_size",
+              "recovery_delta_pp": -0.07
+            }
+          }
+        },
+        "overall": {
+          "n_mutations_evaluated_total": 13,
+          "n_mutations_meeting_target_total": 2,
+          "target_hit_rate_overall": 0.153846,
+          "mean_clean_baseline_detection_rate": 0.9974,
+          "mean_clean_adversarial_detection_rate": 0.998433,
+          "mean_recovery_delta_pp": 5.8706,
+          "median_recovery_delta_pp": 6.886
+        }
+      },
+      "adv_training_clean": {
+        "overall_pass": false,
+        "mean_accuracy_drop_pp": 1.6772,
+        "median_accuracy_drop_pp": 0.0544,
+        "worst_accuracy_drop_entry": {
+          "dataset": "cicids2017",
+          "model": "mlp",
+          "accuracy_drop_pp": 20.461471369481043
+        },
+        "n_within_target_violations": 1,
+        "n_missing_baseline_model_entries": 2,
+        "dataset_mean_retrained_accuracy": {
+          "cicids2017": 0.927174,
+          "nslkdd": 0.987476,
+          "unswnb15": 0.879186
+        }
+      },
+      "retrained_adversarial": {
+        "n_accuracy_entries": 12,
+        "overall_mean_accuracy": 0.940579,
+        "dataset_mean_accuracy": {
+          "cicids2017": 0.955428,
+          "nslkdd": 0.987274,
+          "unswnb15": 0.879034
+        },
+        "model_mean_accuracy": {
+          "majority_voting": 0.964042,
+          "mlp": 0.871466,
+          "random_forest": 0.966379,
+          "xgboost": 0.960427
+        }
+      },
+      "missing_files": []
+    }
+  },
+  "team_average": {
+    "n_metric_keys_all_owners": 485,
+    "n_metric_keys_missing_owners": 4,
+    "metrics_all_owners": {
+      "adv_training_clean.accuracy_drop_pp.cicids2017.lstm": {
+        "average": 0.730883,
+        "values_by_owner": {
+          "alyssa": 2.130274,
+          "jessy": 0.594151,
+          "shad": -0.531776
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.cicids2017.majority_voting": {
+        "average": 0.007841,
+        "values_by_owner": {
+          "alyssa": 0.012422,
+          "jessy": -0.000264,
+          "shad": 0.011365
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.cicids2017.mlp": {
+        "average": 3.730183,
+        "values_by_owner": {
+          "alyssa": -7.694097,
+          "jessy": 20.461471,
+          "shad": -1.576826
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.cicids2017.random_forest": {
+        "average": 0.007048,
+        "values_by_owner": {
+          "alyssa": 0.008193,
+          "jessy": 0.003172,
+          "shad": 0.009779
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.cicids2017.xgboost": {
+        "average": 0.017796,
+        "values_by_owner": {
+          "alyssa": 0.02828,
+          "jessy": -0.003172,
+          "shad": 0.02828
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.nslkdd.majority_voting": {
+        "average": 0.142143,
+        "values_by_owner": {
+          "alyssa": 0.134662,
+          "jessy": 0.067331,
+          "shad": 0.224437
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.nslkdd.mlp": {
+        "average": 0.237903,
+        "values_by_owner": {
+          "alyssa": 0.112218,
+          "jessy": -0.269324,
+          "shad": 0.870814
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.nslkdd.random_forest": {
+        "average": 0.127181,
+        "values_by_owner": {
+          "alyssa": 0.157106,
+          "jessy": 0.026932,
+          "shad": 0.197504
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.nslkdd.xgboost": {
+        "average": 0.21097,
+        "values_by_owner": {
+          "alyssa": 0.273813,
+          "jessy": 0.085286,
+          "shad": 0.273813
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.unswnb15.majority_voting": {
+        "average": 0.573386,
+        "values_by_owner": {
+          "alyssa": 0.661934,
+          "jessy": 0.054435,
+          "shad": 1.003789
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.unswnb15.mlp": {
+        "average": 1.390643,
+        "values_by_owner": {
+          "alyssa": 1.874755,
+          "jessy": 0.574838,
+          "shad": 1.722336
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.unswnb15.random_forest": {
+        "average": 0.177096,
+        "values_by_owner": {
+          "alyssa": 0.235161,
+          "jessy": -0.00871,
+          "shad": 0.304838
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.accuracy_drop_pp.unswnb15.xgboost": {
+        "average": 0.724354,
+        "values_by_owner": {
+          "alyssa": 0.97766,
+          "jessy": 0.217742,
+          "shad": 0.97766
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.cicids2017.lstm": {
+        "average": 0.939766,
+        "values_by_owner": {
+          "alyssa": 0.955679,
+          "jessy": 0.939208,
+          "shad": 0.924412
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.cicids2017.majority_voting": {
+        "average": 0.998412,
+        "values_by_owner": {
+          "alyssa": 0.998364,
+          "jessy": 0.998412,
+          "shad": 0.998462
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.cicids2017.mlp": {
+        "average": 0.83917,
+        "values_by_owner": {
+          "alyssa": 0.770676,
+          "jessy": 0.912117,
+          "shad": 0.834719
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.cicids2017.random_forest": {
+        "average": 0.998142,
+        "values_by_owner": {
+          "alyssa": 0.998131,
+          "jessy": 0.998131,
+          "shad": 0.998163
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.cicids2017.xgboost": {
+        "average": 0.998595,
+        "values_by_owner": {
+          "alyssa": 0.998615,
+          "jessy": 0.998554,
+          "shad": 0.998615
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.nslkdd.majority_voting": {
+        "average": 0.994943,
+        "values_by_owner": {
+          "alyssa": 0.994658,
+          "jessy": 0.994928,
+          "shad": 0.995242
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.nslkdd.mlp": {
+        "average": 0.965003,
+        "values_by_owner": {
+          "alyssa": 0.963551,
+          "jessy": 0.963372,
+          "shad": 0.968085
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.nslkdd.random_forest": {
+        "average": 0.995496,
+        "values_by_owner": {
+          "alyssa": 0.995421,
+          "jessy": 0.995421,
+          "shad": 0.995646
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.nslkdd.xgboost": {
+        "average": 0.995287,
+        "values_by_owner": {
+          "alyssa": 0.995287,
+          "jessy": 0.995287,
+          "shad": 0.995287
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.unswnb15.majority_voting": {
+        "average": 0.894642,
+        "values_by_owner": {
+          "alyssa": 0.892545,
+          "jessy": 0.892131,
+          "shad": 0.899251
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.unswnb15.mlp": {
+        "average": 0.839009,
+        "values_by_owner": {
+          "alyssa": 0.830445,
+          "jessy": 0.841833,
+          "shad": 0.84475
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.unswnb15.random_forest": {
+        "average": 0.903824,
+        "values_by_owner": {
+          "alyssa": 0.903715,
+          "jessy": 0.903715,
+          "shad": 0.904041
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.baseline_accuracy.unswnb15.xgboost": {
+        "average": 0.887275,
+        "values_by_owner": {
+          "alyssa": 0.887188,
+          "jessy": 0.887449,
+          "shad": 0.887188
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.dataset.overall_pass.cicids2017": {
+        "average": 0.666667,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 0.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.dataset.overall_pass.nslkdd": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.dataset.overall_pass.unswnb15": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.cicids2017.lstm": {
+        "average": 0.932458,
+        "values_by_owner": {
+          "alyssa": 0.934376,
+          "jessy": 0.933266,
+          "shad": 0.92973
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.cicids2017.majority_voting": {
+        "average": 0.998334,
+        "values_by_owner": {
+          "alyssa": 0.99824,
+          "jessy": 0.998414,
+          "shad": 0.998348
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.cicids2017.mlp": {
+        "average": 0.801869,
+        "values_by_owner": {
+          "alyssa": 0.847617,
+          "jessy": 0.707502,
+          "shad": 0.850487
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.cicids2017.random_forest": {
+        "average": 0.998071,
+        "values_by_owner": {
+          "alyssa": 0.998049,
+          "jessy": 0.9981,
+          "shad": 0.998065
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.cicids2017.xgboost": {
+        "average": 0.998417,
+        "values_by_owner": {
+          "alyssa": 0.998332,
+          "jessy": 0.998586,
+          "shad": 0.998332
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.nslkdd.majority_voting": {
+        "average": 0.993521,
+        "values_by_owner": {
+          "alyssa": 0.993312,
+          "jessy": 0.994254,
+          "shad": 0.992998
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.nslkdd.mlp": {
+        "average": 0.962624,
+        "values_by_owner": {
+          "alyssa": 0.962429,
+          "jessy": 0.966065,
+          "shad": 0.959377
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.nslkdd.random_forest": {
+        "average": 0.994224,
+        "values_by_owner": {
+          "alyssa": 0.99385,
+          "jessy": 0.995152,
+          "shad": 0.993671
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.nslkdd.xgboost": {
+        "average": 0.993177,
+        "values_by_owner": {
+          "alyssa": 0.992549,
+          "jessy": 0.994434,
+          "shad": 0.992549
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.unswnb15.majority_voting": {
+        "average": 0.888908,
+        "values_by_owner": {
+          "alyssa": 0.885925,
+          "jessy": 0.891586,
+          "shad": 0.889213
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.unswnb15.mlp": {
+        "average": 0.825103,
+        "values_by_owner": {
+          "alyssa": 0.811697,
+          "jessy": 0.836084,
+          "shad": 0.827527
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.unswnb15.random_forest": {
+        "average": 0.902053,
+        "values_by_owner": {
+          "alyssa": 0.901363,
+          "jessy": 0.903802,
+          "shad": 0.900993
+        },
+        "n_owners_present": 3
+      },
+      "adv_training_clean.retrained_accuracy.unswnb15.xgboost": {
+        "average": 0.880032,
+        "values_by_owner": {
+          "alyssa": 0.877411,
+          "jessy": 0.885272,
+          "shad": 0.877411
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.constraint_satisfaction_rate.cicids2017.dilute_scan_pattern": {
+        "average": 0.9833,
+        "values_by_owner": {
+          "alyssa": 0.9833,
+          "jessy": 0.9833,
+          "shad": 0.9833
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.constraint_satisfaction_rate.cicids2017.inject_decoy_flows": {
+        "average": 0.8331,
+        "values_by_owner": {
+          "alyssa": 0.8331,
+          "jessy": 0.8331,
+          "shad": 0.8331
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.cicids2017.dilute_scan_pattern.mlp": {
+        "average": 0.9841,
+        "values_by_owner": {
+          "alyssa": 0.9841,
+          "jessy": 0.9841,
+          "shad": 0.9841
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.cicids2017.dilute_scan_pattern.random_forest": {
+        "average": 0.9801,
+        "values_by_owner": {
+          "alyssa": 0.9801,
+          "jessy": 0.9801,
+          "shad": 0.9801
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.cicids2017.dilute_scan_pattern.xgboost": {
+        "average": 0.4959,
+        "values_by_owner": {
+          "alyssa": 0.4959,
+          "jessy": 0.4959,
+          "shad": 0.4959
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.cicids2017.inject_decoy_flows.mlp": {
+        "average": 0.4198,
+        "values_by_owner": {
+          "alyssa": 0.4198,
+          "jessy": 0.4198,
+          "shad": 0.4198
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.cicids2017.inject_decoy_flows.random_forest": {
+        "average": 0.8358,
+        "values_by_owner": {
+          "alyssa": 0.8358,
+          "jessy": 0.8358,
+          "shad": 0.8358
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.cicids2017.inject_decoy_flows.xgboost": {
+        "average": 0.8325,
+        "values_by_owner": {
+          "alyssa": 0.8325,
+          "jessy": 0.8325,
+          "shad": 0.8325
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.nslkdd.dilute_scan_pattern.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.nslkdd.dilute_scan_pattern.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.nslkdd.dilute_scan_pattern.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.nslkdd.inject_decoy_flows.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.nslkdd.inject_decoy_flows.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.nslkdd.inject_decoy_flows.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.unswnb15.dilute_scan_pattern.mlp": {
+        "average": 0.0534,
+        "values_by_owner": {
+          "alyssa": 0.0534,
+          "jessy": 0.0534,
+          "shad": 0.0534
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.unswnb15.dilute_scan_pattern.random_forest": {
+        "average": 0.0014,
+        "values_by_owner": {
+          "alyssa": 0.0014,
+          "jessy": 0.0014,
+          "shad": 0.0014
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.unswnb15.dilute_scan_pattern.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.unswnb15.inject_decoy_flows.mlp": {
+        "average": 0.1964,
+        "values_by_owner": {
+          "alyssa": 0.1964,
+          "jessy": 0.1964,
+          "shad": 0.1964
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.unswnb15.inject_decoy_flows.random_forest": {
+        "average": 0.1996,
+        "values_by_owner": {
+          "alyssa": 0.1996,
+          "jessy": 0.1996,
+          "shad": 0.1996
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr.unswnb15.inject_decoy_flows.xgboost": {
+        "average": 0.0958,
+        "values_by_owner": {
+          "alyssa": 0.0958,
+          "jessy": 0.0958,
+          "shad": 0.0958
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.cicids2017.dilute_scan_pattern.mlp": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.cicids2017.dilute_scan_pattern.random_forest": {
+        "average": 0.9969,
+        "values_by_owner": {
+          "alyssa": 0.9969,
+          "jessy": 0.9969,
+          "shad": 0.9969
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.cicids2017.dilute_scan_pattern.xgboost": {
+        "average": 0.5043,
+        "values_by_owner": {
+          "alyssa": 0.5043,
+          "jessy": 0.5043,
+          "shad": 0.5043
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.cicids2017.inject_decoy_flows.mlp": {
+        "average": 0.4813,
+        "values_by_owner": {
+          "alyssa": 0.4813,
+          "jessy": 0.4813,
+          "shad": 0.4813
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.cicids2017.inject_decoy_flows.random_forest": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.cicids2017.inject_decoy_flows.xgboost": {
+        "average": 0.9993,
+        "values_by_owner": {
+          "alyssa": 0.9993,
+          "jessy": 0.9993,
+          "shad": 0.9993
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.nslkdd.dilute_scan_pattern.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.nslkdd.dilute_scan_pattern.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.nslkdd.dilute_scan_pattern.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.nslkdd.inject_decoy_flows.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.nslkdd.inject_decoy_flows.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.nslkdd.inject_decoy_flows.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.unswnb15.dilute_scan_pattern.mlp": {
+        "average": 0.9819,
+        "values_by_owner": {
+          "alyssa": 0.9819,
+          "jessy": 0.9819,
+          "shad": 0.9819
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.unswnb15.dilute_scan_pattern.random_forest": {
+        "average": 0.0267,
+        "values_by_owner": {
+          "alyssa": 0.0267,
+          "jessy": 0.0267,
+          "shad": 0.0267
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.unswnb15.dilute_scan_pattern.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.unswnb15.inject_decoy_flows.mlp": {
+        "average": 0.9469,
+        "values_by_owner": {
+          "alyssa": 0.9469,
+          "jessy": 0.9469,
+          "shad": 0.9469
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.unswnb15.inject_decoy_flows.random_forest": {
+        "average": 0.9911,
+        "values_by_owner": {
+          "alyssa": 0.9911,
+          "jessy": 0.9911,
+          "shad": 0.9911
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.esr_on_valid.unswnb15.inject_decoy_flows.xgboost": {
+        "average": 0.4628,
+        "values_by_owner": {
+          "alyssa": 0.4628,
+          "jessy": 0.4628,
+          "shad": 0.4628
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.success_rate.cicids2017.dilute_scan_pattern": {
+        "average": 0.983264,
+        "values_by_owner": {
+          "alyssa": 0.983264,
+          "jessy": 0.983264,
+          "shad": 0.983264
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.success_rate.cicids2017.inject_decoy_flows": {
+        "average": 0.833087,
+        "values_by_owner": {
+          "alyssa": 0.833087,
+          "jessy": 0.833087,
+          "shad": 0.833087
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.success_rate.nslkdd.dilute_scan_pattern": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.success_rate.nslkdd.inject_decoy_flows": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.success_rate.unswnb15.dilute_scan_pattern": {
+        "average": 0.054456,
+        "values_by_owner": {
+          "alyssa": 0.054456,
+          "jessy": 0.054456,
+          "shad": 0.054456
+        },
+        "n_owners_present": 3
+      },
+      "attack_a.success_rate.unswnb15.inject_decoy_flows": {
+        "average": 0.207474,
+        "values_by_owner": {
+          "alyssa": 0.207474,
+          "jessy": 0.207474,
+          "shad": 0.207474
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.constraint_satisfaction_rate.cicids2017.mimic_packet_size": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.constraint_satisfaction_rate.cicids2017.mimic_timing": {
+        "average": 0.401208,
+        "values_by_owner": {
+          "alyssa": 0.401208,
+          "jessy": 0.401208,
+          "shad": 0.401208
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.cicids2017.mimic_packet_size.mlp": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.cicids2017.mimic_packet_size.random_forest": {
+        "average": 0.384843,
+        "values_by_owner": {
+          "alyssa": 0.384843,
+          "jessy": 0.384843,
+          "shad": 0.384843
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.cicids2017.mimic_packet_size.xgboost": {
+        "average": 0.041769,
+        "values_by_owner": {
+          "alyssa": 0.041769,
+          "jessy": 0.041769,
+          "shad": 0.041769
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.cicids2017.mimic_timing.mlp": {
+        "average": 0.014965,
+        "values_by_owner": {
+          "alyssa": 0.014965,
+          "jessy": 0.014965,
+          "shad": 0.014965
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.cicids2017.mimic_timing.random_forest": {
+        "average": 0.036901,
+        "values_by_owner": {
+          "alyssa": 0.036901,
+          "jessy": 0.036901,
+          "shad": 0.036901
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.cicids2017.mimic_timing.xgboost": {
+        "average": 0.025409,
+        "values_by_owner": {
+          "alyssa": 0.025409,
+          "jessy": 0.025409,
+          "shad": 0.025409
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.nslkdd.mimic_packet_size.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.nslkdd.mimic_packet_size.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.nslkdd.mimic_packet_size.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.nslkdd.mimic_timing.mlp": {
+        "average": 0.091079,
+        "values_by_owner": {
+          "alyssa": 0.091079,
+          "jessy": 0.091079,
+          "shad": 0.091079
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.nslkdd.mimic_timing.random_forest": {
+        "average": 0.065898,
+        "values_by_owner": {
+          "alyssa": 0.065898,
+          "jessy": 0.065898,
+          "shad": 0.065898
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.nslkdd.mimic_timing.xgboost": {
+        "average": 0.008312,
+        "values_by_owner": {
+          "alyssa": 0.008312,
+          "jessy": 0.008312,
+          "shad": 0.008312
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.unswnb15.mimic_packet_size.mlp": {
+        "average": 0.479251,
+        "values_by_owner": {
+          "alyssa": 0.479251,
+          "jessy": 0.479251,
+          "shad": 0.479251
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.unswnb15.mimic_packet_size.random_forest": {
+        "average": 0.046217,
+        "values_by_owner": {
+          "alyssa": 0.046217,
+          "jessy": 0.046217,
+          "shad": 0.046217
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.unswnb15.mimic_packet_size.xgboost": {
+        "average": 0.000247,
+        "values_by_owner": {
+          "alyssa": 0.000247,
+          "jessy": 0.000247,
+          "shad": 0.000247
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.unswnb15.mimic_timing.mlp": {
+        "average": 0.005259,
+        "values_by_owner": {
+          "alyssa": 0.005259,
+          "jessy": 0.005259,
+          "shad": 0.005259
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.unswnb15.mimic_timing.random_forest": {
+        "average": 0.080432,
+        "values_by_owner": {
+          "alyssa": 0.080432,
+          "jessy": 0.080432,
+          "shad": 0.080432
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr.unswnb15.mimic_timing.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.cicids2017.mimic_packet_size.mlp": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.cicids2017.mimic_packet_size.random_forest": {
+        "average": 0.384843,
+        "values_by_owner": {
+          "alyssa": 0.384843,
+          "jessy": 0.384843,
+          "shad": 0.384843
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.cicids2017.mimic_packet_size.xgboost": {
+        "average": 0.041769,
+        "values_by_owner": {
+          "alyssa": 0.041769,
+          "jessy": 0.041769,
+          "shad": 0.041769
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.cicids2017.mimic_timing.mlp": {
+        "average": 0.036537,
+        "values_by_owner": {
+          "alyssa": 0.036537,
+          "jessy": 0.036537,
+          "shad": 0.036537
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.cicids2017.mimic_timing.random_forest": {
+        "average": 0.091541,
+        "values_by_owner": {
+          "alyssa": 0.091541,
+          "jessy": 0.091541,
+          "shad": 0.091541
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.cicids2017.mimic_timing.xgboost": {
+        "average": 0.063327,
+        "values_by_owner": {
+          "alyssa": 0.063327,
+          "jessy": 0.063327,
+          "shad": 0.063327
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.nslkdd.mimic_packet_size.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.nslkdd.mimic_packet_size.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.nslkdd.mimic_packet_size.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.nslkdd.mimic_timing.mlp": {
+        "average": 0.091079,
+        "values_by_owner": {
+          "alyssa": 0.091079,
+          "jessy": 0.091079,
+          "shad": 0.091079
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.nslkdd.mimic_timing.random_forest": {
+        "average": 0.065898,
+        "values_by_owner": {
+          "alyssa": 0.065898,
+          "jessy": 0.065898,
+          "shad": 0.065898
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.nslkdd.mimic_timing.xgboost": {
+        "average": 0.008312,
+        "values_by_owner": {
+          "alyssa": 0.008312,
+          "jessy": 0.008312,
+          "shad": 0.008312
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.unswnb15.mimic_packet_size.mlp": {
+        "average": 0.479251,
+        "values_by_owner": {
+          "alyssa": 0.479251,
+          "jessy": 0.479251,
+          "shad": 0.479251
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.unswnb15.mimic_packet_size.random_forest": {
+        "average": 0.046217,
+        "values_by_owner": {
+          "alyssa": 0.046217,
+          "jessy": 0.046217,
+          "shad": 0.046217
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.unswnb15.mimic_packet_size.xgboost": {
+        "average": 0.000247,
+        "values_by_owner": {
+          "alyssa": 0.000247,
+          "jessy": 0.000247,
+          "shad": 0.000247
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.unswnb15.mimic_timing.mlp": {
+        "average": 0.005259,
+        "values_by_owner": {
+          "alyssa": 0.005259,
+          "jessy": 0.005259,
+          "shad": 0.005259
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.unswnb15.mimic_timing.random_forest": {
+        "average": 0.080432,
+        "values_by_owner": {
+          "alyssa": 0.080432,
+          "jessy": 0.080432,
+          "shad": 0.080432
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.esr_on_valid.unswnb15.mimic_timing.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.success_rate.cicids2017.mimic_packet_size": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.success_rate.cicids2017.mimic_timing": {
+        "average": 0.401208,
+        "values_by_owner": {
+          "alyssa": 0.401208,
+          "jessy": 0.401208,
+          "shad": 0.401208
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.success_rate.nslkdd.mimic_packet_size": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.success_rate.nslkdd.mimic_timing": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.success_rate.unswnb15.mimic_packet_size": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_b.success_rate.unswnb15.mimic_timing": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.constraint_satisfaction_rate.cicids2017.add_tcp_options": {
+        "average": 0.401208,
+        "values_by_owner": {
+          "alyssa": 0.401208,
+          "jessy": 0.401208,
+          "shad": 0.401208
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.constraint_satisfaction_rate.cicids2017.fragment_payload": {
+        "average": 0.401193,
+        "values_by_owner": {
+          "alyssa": 0.401193,
+          "jessy": 0.401193,
+          "shad": 0.401193
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.constraint_satisfaction_rate.cicids2017.shift_ack_timing": {
+        "average": 0.401208,
+        "values_by_owner": {
+          "alyssa": 0.401208,
+          "jessy": 0.401208,
+          "shad": 0.401208
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.cicids2017.add_tcp_options.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.cicids2017.add_tcp_options.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.cicids2017.add_tcp_options.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.cicids2017.fragment_payload.mlp": {
+        "average": 0.409569,
+        "values_by_owner": {
+          "alyssa": 0.409569,
+          "jessy": 0.409569,
+          "shad": 0.409569
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.cicids2017.fragment_payload.random_forest": {
+        "average": 0.000409,
+        "values_by_owner": {
+          "alyssa": 0.000409,
+          "jessy": 0.000409,
+          "shad": 0.000409
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.cicids2017.fragment_payload.xgboost": {
+        "average": 0.000157,
+        "values_by_owner": {
+          "alyssa": 0.000157,
+          "jessy": 0.000157,
+          "shad": 0.000157
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.cicids2017.shift_ack_timing.mlp": {
+        "average": 0.014965,
+        "values_by_owner": {
+          "alyssa": 0.014965,
+          "jessy": 0.014965,
+          "shad": 0.014965
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.cicids2017.shift_ack_timing.random_forest": {
+        "average": 0.039372,
+        "values_by_owner": {
+          "alyssa": 0.039372,
+          "jessy": 0.039372,
+          "shad": 0.039372
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.cicids2017.shift_ack_timing.xgboost": {
+        "average": 0.017894,
+        "values_by_owner": {
+          "alyssa": 0.017894,
+          "jessy": 0.017894,
+          "shad": 0.017894
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.nslkdd.add_tcp_options.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.nslkdd.add_tcp_options.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.nslkdd.add_tcp_options.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.nslkdd.fragment_payload.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.nslkdd.fragment_payload.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.nslkdd.fragment_payload.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.nslkdd.shift_ack_timing.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.nslkdd.shift_ack_timing.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.nslkdd.shift_ack_timing.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.unswnb15.add_tcp_options.mlp": {
+        "average": 0.217684,
+        "values_by_owner": {
+          "alyssa": 0.217684,
+          "jessy": 0.217684,
+          "shad": 0.217684
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.unswnb15.add_tcp_options.random_forest": {
+        "average": 0.000255,
+        "values_by_owner": {
+          "alyssa": 0.000255,
+          "jessy": 0.000255,
+          "shad": 0.000255
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.unswnb15.add_tcp_options.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.unswnb15.fragment_payload.mlp": {
+        "average": 8.2e-05,
+        "values_by_owner": {
+          "alyssa": 8.2e-05,
+          "jessy": 8.2e-05,
+          "shad": 8.2e-05
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.unswnb15.fragment_payload.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.unswnb15.fragment_payload.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.unswnb15.shift_ack_timing.mlp": {
+        "average": 0.000164,
+        "values_by_owner": {
+          "alyssa": 0.000164,
+          "jessy": 0.000164,
+          "shad": 0.000164
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.unswnb15.shift_ack_timing.random_forest": {
+        "average": 8.5e-05,
+        "values_by_owner": {
+          "alyssa": 8.5e-05,
+          "jessy": 8.5e-05,
+          "shad": 8.5e-05
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr.unswnb15.shift_ack_timing.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.cicids2017.add_tcp_options.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.cicids2017.add_tcp_options.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.cicids2017.add_tcp_options.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.cicids2017.fragment_payload.mlp": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.cicids2017.fragment_payload.random_forest": {
+        "average": 0.001015,
+        "values_by_owner": {
+          "alyssa": 0.001015,
+          "jessy": 0.001015,
+          "shad": 0.001015
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.cicids2017.fragment_payload.xgboost": {
+        "average": 0.00039,
+        "values_by_owner": {
+          "alyssa": 0.00039,
+          "jessy": 0.00039,
+          "shad": 0.00039
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.cicids2017.shift_ack_timing.mlp": {
+        "average": 0.036537,
+        "values_by_owner": {
+          "alyssa": 0.036537,
+          "jessy": 0.036537,
+          "shad": 0.036537
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.cicids2017.shift_ack_timing.random_forest": {
+        "average": 0.09767,
+        "values_by_owner": {
+          "alyssa": 0.09767,
+          "jessy": 0.09767,
+          "shad": 0.09767
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.cicids2017.shift_ack_timing.xgboost": {
+        "average": 0.044598,
+        "values_by_owner": {
+          "alyssa": 0.044598,
+          "jessy": 0.044598,
+          "shad": 0.044598
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.nslkdd.add_tcp_options.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.nslkdd.add_tcp_options.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.nslkdd.add_tcp_options.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.nslkdd.fragment_payload.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.nslkdd.fragment_payload.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.nslkdd.fragment_payload.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.nslkdd.shift_ack_timing.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.nslkdd.shift_ack_timing.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.nslkdd.shift_ack_timing.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.unswnb15.add_tcp_options.mlp": {
+        "average": 0.883884,
+        "values_by_owner": {
+          "alyssa": 0.883884,
+          "jessy": 0.883884,
+          "shad": 0.883884
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.unswnb15.add_tcp_options.random_forest": {
+        "average": 0.001008,
+        "values_by_owner": {
+          "alyssa": 0.001008,
+          "jessy": 0.001008,
+          "shad": 0.001008
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.unswnb15.add_tcp_options.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.unswnb15.fragment_payload.mlp": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.unswnb15.fragment_payload.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.unswnb15.fragment_payload.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.unswnb15.shift_ack_timing.mlp": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.unswnb15.shift_ack_timing.random_forest": {
+        "average": 0.333333,
+        "values_by_owner": {
+          "alyssa": 0.333333,
+          "jessy": 0.333333,
+          "shad": 0.333333
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.esr_on_valid.unswnb15.shift_ack_timing.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.success_rate.cicids2017.add_tcp_options": {
+        "average": 0.401208,
+        "values_by_owner": {
+          "alyssa": 0.401208,
+          "jessy": 0.401208,
+          "shad": 0.401208
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.success_rate.cicids2017.fragment_payload": {
+        "average": 0.401193,
+        "values_by_owner": {
+          "alyssa": 0.401193,
+          "jessy": 0.401193,
+          "shad": 0.401193
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.success_rate.cicids2017.shift_ack_timing": {
+        "average": 0.401208,
+        "values_by_owner": {
+          "alyssa": 0.401208,
+          "jessy": 0.401208,
+          "shad": 0.401208
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.success_rate.nslkdd.add_tcp_options": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.success_rate.nslkdd.fragment_payload": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.success_rate.nslkdd.shift_ack_timing": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.success_rate.unswnb15.add_tcp_options": {
+        "average": 0.246324,
+        "values_by_owner": {
+          "alyssa": 0.246324,
+          "jessy": 0.246324,
+          "shad": 0.246324
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.success_rate.unswnb15.fragment_payload": {
+        "average": 8.2e-05,
+        "values_by_owner": {
+          "alyssa": 8.2e-05,
+          "jessy": 8.2e-05,
+          "shad": 8.2e-05
+        },
+        "n_owners_present": 3
+      },
+      "attack_c.success_rate.unswnb15.shift_ack_timing": {
+        "average": 0.000246,
+        "values_by_owner": {
+          "alyssa": 0.000246,
+          "jessy": 0.000246,
+          "shad": 0.000246
+        },
+        "n_owners_present": 3
+      },
+      "defense.clean.adversarial_detection_rate.cicids2017": {
+        "average": 0.9988,
+        "values_by_owner": {
+          "alyssa": 0.9993,
+          "jessy": 0.9993,
+          "shad": 0.9978
+        },
+        "n_owners_present": 3
+      },
+      "defense.clean.adversarial_detection_rate.nslkdd": {
+        "average": 0.998433,
+        "values_by_owner": {
+          "alyssa": 0.9985,
+          "jessy": 0.9986,
+          "shad": 0.9982
+        },
+        "n_owners_present": 3
+      },
+      "defense.clean.adversarial_detection_rate.overall": {
+        "average": 0.997989,
+        "values_by_owner": {
+          "alyssa": 0.998133,
+          "jessy": 0.998433,
+          "shad": 0.9974
+        },
+        "n_owners_present": 3
+      },
+      "defense.clean.adversarial_detection_rate.unswnb15": {
+        "average": 0.996733,
+        "values_by_owner": {
+          "alyssa": 0.9966,
+          "jessy": 0.9974,
+          "shad": 0.9962
+        },
+        "n_owners_present": 3
+      },
+      "defense.clean.baseline_detection_rate.cicids2017": {
+        "average": 0.9979,
+        "values_by_owner": {
+          "alyssa": 0.9979,
+          "jessy": 0.9979,
+          "shad": 0.9979
+        },
+        "n_owners_present": 3
+      },
+      "defense.clean.baseline_detection_rate.nslkdd": {
+        "average": 0.9974,
+        "values_by_owner": {
+          "alyssa": 0.9974,
+          "jessy": 0.9974,
+          "shad": 0.9974
+        },
+        "n_owners_present": 3
+      },
+      "defense.clean.baseline_detection_rate.overall": {
+        "average": 0.9974,
+        "values_by_owner": {
+          "alyssa": 0.9974,
+          "jessy": 0.9974,
+          "shad": 0.9974
+        },
+        "n_owners_present": 3
+      },
+      "defense.clean.baseline_detection_rate.unswnb15": {
+        "average": 0.9969,
+        "values_by_owner": {
+          "alyssa": 0.9969,
+          "jessy": 0.9969,
+          "shad": 0.9969
+        },
+        "n_owners_present": 3
+      },
+      "defense.mean_recovery_delta_pp.overall": {
+        "average": 4.907556,
+        "values_by_owner": {
+          "alyssa": 6.033333,
+          "jessy": 5.870567,
+          "shad": 2.818767
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.cicids2017.add_tcp_options": {
+        "average": 0.998833,
+        "values_by_owner": {
+          "alyssa": 0.9989,
+          "jessy": 0.9989,
+          "shad": 0.9987
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.cicids2017.dilute_scan_pattern": {
+        "average": 0.979033,
+        "values_by_owner": {
+          "alyssa": 0.979,
+          "jessy": 0.9791,
+          "shad": 0.979
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.cicids2017.fragment_payload": {
+        "average": 0.998833,
+        "values_by_owner": {
+          "alyssa": 0.9989,
+          "jessy": 0.9989,
+          "shad": 0.9987
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.cicids2017.inject_decoy_flows": {
+        "average": 0.903667,
+        "values_by_owner": {
+          "alyssa": 0.9037,
+          "jessy": 0.9037,
+          "shad": 0.9036
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.cicids2017.mimic_packet_size": {
+        "average": 0.9906,
+        "values_by_owner": {
+          "alyssa": 0.9919,
+          "jessy": 0.9909,
+          "shad": 0.989
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.cicids2017.mimic_timing": {
+        "average": 0.9938,
+        "values_by_owner": {
+          "alyssa": 0.994,
+          "jessy": 0.994,
+          "shad": 0.9934
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.cicids2017.shift_ack_timing": {
+        "average": 0.9988,
+        "values_by_owner": {
+          "alyssa": 0.9988,
+          "jessy": 0.9989,
+          "shad": 0.9987
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.nslkdd.mimic_timing": {
+        "average": 0.984767,
+        "values_by_owner": {
+          "alyssa": 0.9897,
+          "jessy": 0.9878,
+          "shad": 0.9768
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.unswnb15.add_tcp_options": {
+        "average": 0.974633,
+        "values_by_owner": {
+          "alyssa": 0.9746,
+          "jessy": 0.9746,
+          "shad": 0.9747
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.unswnb15.fragment_payload": {
+        "average": 0.974633,
+        "values_by_owner": {
+          "alyssa": 0.9746,
+          "jessy": 0.9746,
+          "shad": 0.9747
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.unswnb15.mimic_packet_size": {
+        "average": 0.975233,
+        "values_by_owner": {
+          "alyssa": 0.9753,
+          "jessy": 0.9749,
+          "shad": 0.9755
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.unswnb15.mimic_timing": {
+        "average": 0.9755,
+        "values_by_owner": {
+          "alyssa": 0.9755,
+          "jessy": 0.9753,
+          "shad": 0.9757
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_accuracy.unswnb15.shift_ack_timing": {
+        "average": 0.974633,
+        "values_by_owner": {
+          "alyssa": 0.9746,
+          "jessy": 0.9746,
+          "shad": 0.9747
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.cicids2017.add_tcp_options": {
+        "average": 0.9998,
+        "values_by_owner": {
+          "alyssa": 0.9998,
+          "jessy": 0.9998,
+          "shad": 0.9998
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.cicids2017.dilute_scan_pattern": {
+        "average": 0.843867,
+        "values_by_owner": {
+          "alyssa": 0.8429,
+          "jessy": 0.8441,
+          "shad": 0.8446
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.cicids2017.fragment_payload": {
+        "average": 0.9998,
+        "values_by_owner": {
+          "alyssa": 0.9998,
+          "jessy": 0.9998,
+          "shad": 0.9998
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.cicids2017.inject_decoy_flows": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.cicids2017.mimic_packet_size": {
+        "average": 0.950133,
+        "values_by_owner": {
+          "alyssa": 0.9581,
+          "jessy": 0.9519,
+          "shad": 0.9404
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.cicids2017.mimic_timing": {
+        "average": 0.9691,
+        "values_by_owner": {
+          "alyssa": 0.9705,
+          "jessy": 0.9704,
+          "shad": 0.9664
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.cicids2017.shift_ack_timing": {
+        "average": 0.9995,
+        "values_by_owner": {
+          "alyssa": 0.9995,
+          "jessy": 0.9995,
+          "shad": 0.9995
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.nslkdd.mimic_timing": {
+        "average": 0.976967,
+        "values_by_owner": {
+          "alyssa": 0.9872,
+          "jessy": 0.9833,
+          "shad": 0.9604
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.unswnb15.add_tcp_options": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.unswnb15.fragment_payload": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.unswnb15.mimic_packet_size": {
+        "average": 0.9989,
+        "values_by_owner": {
+          "alyssa": 0.9991,
+          "jessy": 0.9984,
+          "shad": 0.9992
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.unswnb15.mimic_timing": {
+        "average": 0.9999,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 0.9999,
+          "shad": 0.9998
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate.unswnb15.shift_ack_timing": {
+        "average": 0.8889,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 0.6667
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.add_tcp_options.mlp": {
+        "average": 0.9993,
+        "values_by_owner": {
+          "alyssa": 0.9994,
+          "jessy": 0.9995,
+          "shad": 0.999
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.add_tcp_options.random_forest": {
+        "average": 0.9996,
+        "values_by_owner": {
+          "alyssa": 0.9996,
+          "jessy": 0.9996,
+          "shad": 0.9996
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.add_tcp_options.xgboost": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.dilute_scan_pattern.mlp": {
+        "average": 0.985067,
+        "values_by_owner": {
+          "alyssa": 0.9946,
+          "jessy": 0.999,
+          "shad": 0.9616
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.dilute_scan_pattern.random_forest": {
+        "average": 0.6953,
+        "values_by_owner": {
+          "alyssa": 0.697,
+          "jessy": 0.6974,
+          "shad": 0.6915
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.dilute_scan_pattern.xgboost": {
+        "average": 0.852533,
+        "values_by_owner": {
+          "alyssa": 0.8525,
+          "jessy": 0.8526,
+          "shad": 0.8525
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.fragment_payload.mlp": {
+        "average": 0.9999,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 0.9998,
+          "shad": 0.9999
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.fragment_payload.random_forest": {
+        "average": 0.999633,
+        "values_by_owner": {
+          "alyssa": 0.9996,
+          "jessy": 0.9997,
+          "shad": 0.9996
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.fragment_payload.xgboost": {
+        "average": 0.999967,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 0.9999,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.inject_decoy_flows.mlp": {
+        "average": 0.403367,
+        "values_by_owner": {
+          "alyssa": 0.4108,
+          "jessy": 0.449,
+          "shad": 0.3503
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.inject_decoy_flows.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.inject_decoy_flows.xgboost": {
+        "average": 3.3e-05,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0001,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_packet_size.mlp": {
+        "average": 0.983033,
+        "values_by_owner": {
+          "alyssa": 0.9783,
+          "jessy": 0.9831,
+          "shad": 0.9877
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_packet_size.random_forest": {
+        "average": 0.6277,
+        "values_by_owner": {
+          "alyssa": 0.6342,
+          "jessy": 0.6304,
+          "shad": 0.6185
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_packet_size.xgboost": {
+        "average": 0.965433,
+        "values_by_owner": {
+          "alyssa": 0.9673,
+          "jessy": 0.9617,
+          "shad": 0.9673
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_timing.mlp": {
+        "average": 0.9921,
+        "values_by_owner": {
+          "alyssa": 0.9963,
+          "jessy": 0.9948,
+          "shad": 0.9852
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_timing.random_forest": {
+        "average": 0.9067,
+        "values_by_owner": {
+          "alyssa": 0.9401,
+          "jessy": 0.9184,
+          "shad": 0.8616
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_timing.xgboost": {
+        "average": 0.976933,
+        "values_by_owner": {
+          "alyssa": 0.9768,
+          "jessy": 0.9772,
+          "shad": 0.9768
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.shift_ack_timing.mlp": {
+        "average": 0.9963,
+        "values_by_owner": {
+          "alyssa": 0.9956,
+          "jessy": 0.9986,
+          "shad": 0.9947
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.shift_ack_timing.random_forest": {
+        "average": 0.9996,
+        "values_by_owner": {
+          "alyssa": 0.9996,
+          "jessy": 0.9996,
+          "shad": 0.9996
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.cicids2017.shift_ack_timing.xgboost": {
+        "average": 0.9997,
+        "values_by_owner": {
+          "alyssa": 0.9997,
+          "jessy": 0.9997,
+          "shad": 0.9997
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.nslkdd.mimic_timing.mlp": {
+        "average": 0.845033,
+        "values_by_owner": {
+          "alyssa": 0.6675,
+          "jessy": 0.9678,
+          "shad": 0.8998
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.nslkdd.mimic_timing.random_forest": {
+        "average": 0.918433,
+        "values_by_owner": {
+          "alyssa": 0.9201,
+          "jessy": 0.9201,
+          "shad": 0.9151
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.nslkdd.mimic_timing.xgboost": {
+        "average": 0.9994,
+        "values_by_owner": {
+          "alyssa": 0.9994,
+          "jessy": 0.9994,
+          "shad": 0.9994
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.add_tcp_options.mlp": {
+        "average": 0.380567,
+        "values_by_owner": {
+          "alyssa": 0.0133,
+          "jessy": 0.1397,
+          "shad": 0.9887
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.add_tcp_options.random_forest": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.add_tcp_options.xgboost": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.fragment_payload.mlp": {
+        "average": 0.333333,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.fragment_payload.random_forest": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.fragment_payload.xgboost": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_packet_size.mlp": {
+        "average": 0.813067,
+        "values_by_owner": {
+          "alyssa": 0.9998,
+          "jessy": 0.4397,
+          "shad": 0.9997
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_packet_size.random_forest": {
+        "average": 0.9782,
+        "values_by_owner": {
+          "alyssa": 0.9782,
+          "jessy": 0.9782,
+          "shad": 0.9782
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_packet_size.xgboost": {
+        "average": 0.999133,
+        "values_by_owner": {
+          "alyssa": 0.9992,
+          "jessy": 0.999,
+          "shad": 0.9992
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_timing.mlp": {
+        "average": 0.999933,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 0.9998,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_timing.random_forest": {
+        "average": 0.9155,
+        "values_by_owner": {
+          "alyssa": 0.9868,
+          "jessy": 0.9868,
+          "shad": 0.7729
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_timing.xgboost": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.mlp": {
+        "average": 0.666667,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.random_forest": {
+        "average": 0.8889,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 0.6667
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.xgboost": {
+        "average": 0.7778,
+        "values_by_owner": {
+          "alyssa": 0.6667,
+          "jessy": 1.0,
+          "shad": 0.6667
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.cicids2017.add_tcp_options": {
+        "average": 0.9965,
+        "values_by_owner": {
+          "alyssa": 0.9966,
+          "jessy": 0.9967,
+          "shad": 0.9962
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.cicids2017.dilute_scan_pattern": {
+        "average": 0.9342,
+        "values_by_owner": {
+          "alyssa": 0.934,
+          "jessy": 0.9345,
+          "shad": 0.9341
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.cicids2017.fragment_payload": {
+        "average": 0.9965,
+        "values_by_owner": {
+          "alyssa": 0.9966,
+          "jessy": 0.9967,
+          "shad": 0.9962
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.cicids2017.inject_decoy_flows": {
+        "average": 0.6042,
+        "values_by_owner": {
+          "alyssa": 0.6046,
+          "jessy": 0.6046,
+          "shad": 0.6034
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.cicids2017.mimic_packet_size": {
+        "average": 0.971533,
+        "values_by_owner": {
+          "alyssa": 0.9756,
+          "jessy": 0.9724,
+          "shad": 0.9666
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.cicids2017.mimic_timing": {
+        "average": 0.9814,
+        "values_by_owner": {
+          "alyssa": 0.982,
+          "jessy": 0.982,
+          "shad": 0.9802
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.cicids2017.shift_ack_timing": {
+        "average": 0.996433,
+        "values_by_owner": {
+          "alyssa": 0.9966,
+          "jessy": 0.9966,
+          "shad": 0.9961
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.nslkdd.mimic_timing": {
+        "average": 0.984033,
+        "values_by_owner": {
+          "alyssa": 0.9893,
+          "jessy": 0.9873,
+          "shad": 0.9755
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.unswnb15.add_tcp_options": {
+        "average": 0.954233,
+        "values_by_owner": {
+          "alyssa": 0.9542,
+          "jessy": 0.9542,
+          "shad": 0.9543
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.unswnb15.fragment_payload": {
+        "average": 0.954233,
+        "values_by_owner": {
+          "alyssa": 0.9542,
+          "jessy": 0.9542,
+          "shad": 0.9543
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.unswnb15.mimic_packet_size": {
+        "average": 0.9553,
+        "values_by_owner": {
+          "alyssa": 0.9554,
+          "jessy": 0.9547,
+          "shad": 0.9558
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.unswnb15.mimic_timing": {
+        "average": 0.9558,
+        "values_by_owner": {
+          "alyssa": 0.9559,
+          "jessy": 0.9554,
+          "shad": 0.9561
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.unswnb15.shift_ack_timing": {
+        "average": 0.9542,
+        "values_by_owner": {
+          "alyssa": 0.9542,
+          "jessy": 0.9542,
+          "shad": 0.9542
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.cicids2017.add_tcp_options": {
+        "average": 0.994233,
+        "values_by_owner": {
+          "alyssa": 0.994,
+          "jessy": 0.9941,
+          "shad": 0.9946
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.cicids2017.dilute_scan_pattern": {
+        "average": 0.993467,
+        "values_by_owner": {
+          "alyssa": 0.9932,
+          "jessy": 0.9933,
+          "shad": 0.9939
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.cicids2017.fragment_payload": {
+        "average": 0.994233,
+        "values_by_owner": {
+          "alyssa": 0.994,
+          "jessy": 0.9941,
+          "shad": 0.9946
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.cicids2017.inject_decoy_flows": {
+        "average": 0.986867,
+        "values_by_owner": {
+          "alyssa": 0.9863,
+          "jessy": 0.9866,
+          "shad": 0.9877
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.cicids2017.mimic_packet_size": {
+        "average": 0.993933,
+        "values_by_owner": {
+          "alyssa": 0.9937,
+          "jessy": 0.9938,
+          "shad": 0.9943
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.cicids2017.mimic_timing": {
+        "average": 0.994033,
+        "values_by_owner": {
+          "alyssa": 0.9938,
+          "jessy": 0.9939,
+          "shad": 0.9944
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.cicids2017.shift_ack_timing": {
+        "average": 0.994233,
+        "values_by_owner": {
+          "alyssa": 0.994,
+          "jessy": 0.9941,
+          "shad": 0.9946
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.nslkdd.mimic_timing": {
+        "average": 0.9913,
+        "values_by_owner": {
+          "alyssa": 0.9914,
+          "jessy": 0.9913,
+          "shad": 0.9912
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.unswnb15.add_tcp_options": {
+        "average": 0.915133,
+        "values_by_owner": {
+          "alyssa": 0.9152,
+          "jessy": 0.9145,
+          "shad": 0.9157
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.unswnb15.fragment_payload": {
+        "average": 0.915133,
+        "values_by_owner": {
+          "alyssa": 0.9152,
+          "jessy": 0.9145,
+          "shad": 0.9157
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.unswnb15.mimic_packet_size": {
+        "average": 0.915333,
+        "values_by_owner": {
+          "alyssa": 0.9154,
+          "jessy": 0.9146,
+          "shad": 0.916
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.unswnb15.mimic_timing": {
+        "average": 0.9154,
+        "values_by_owner": {
+          "alyssa": 0.9155,
+          "jessy": 0.9147,
+          "shad": 0.916
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_precision.unswnb15.shift_ack_timing": {
+        "average": 0.915133,
+        "values_by_owner": {
+          "alyssa": 0.9152,
+          "jessy": 0.9145,
+          "shad": 0.9157
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.cicids2017.add_tcp_options": {
+        "average": 0.9988,
+        "values_by_owner": {
+          "alyssa": 0.9993,
+          "jessy": 0.9993,
+          "shad": 0.9978
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.cicids2017.dilute_scan_pattern": {
+        "average": 0.881633,
+        "values_by_owner": {
+          "alyssa": 0.8815,
+          "jessy": 0.8823,
+          "shad": 0.8811
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.cicids2017.fragment_payload": {
+        "average": 0.9988,
+        "values_by_owner": {
+          "alyssa": 0.9993,
+          "jessy": 0.9993,
+          "shad": 0.9978
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.cicids2017.inject_decoy_flows": {
+        "average": 0.4354,
+        "values_by_owner": {
+          "alyssa": 0.4359,
+          "jessy": 0.4359,
+          "shad": 0.4344
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.cicids2017.mimic_packet_size": {
+        "average": 0.950133,
+        "values_by_owner": {
+          "alyssa": 0.9581,
+          "jessy": 0.9519,
+          "shad": 0.9404
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.cicids2017.mimic_timing": {
+        "average": 0.9691,
+        "values_by_owner": {
+          "alyssa": 0.9705,
+          "jessy": 0.9704,
+          "shad": 0.9664
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.cicids2017.shift_ack_timing": {
+        "average": 0.9987,
+        "values_by_owner": {
+          "alyssa": 0.9992,
+          "jessy": 0.9992,
+          "shad": 0.9977
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.nslkdd.mimic_timing": {
+        "average": 0.976967,
+        "values_by_owner": {
+          "alyssa": 0.9872,
+          "jessy": 0.9833,
+          "shad": 0.9604
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.unswnb15.add_tcp_options": {
+        "average": 0.996733,
+        "values_by_owner": {
+          "alyssa": 0.9966,
+          "jessy": 0.9974,
+          "shad": 0.9962
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.unswnb15.fragment_payload": {
+        "average": 0.996733,
+        "values_by_owner": {
+          "alyssa": 0.9966,
+          "jessy": 0.9974,
+          "shad": 0.9962
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.unswnb15.mimic_packet_size": {
+        "average": 0.9989,
+        "values_by_owner": {
+          "alyssa": 0.9991,
+          "jessy": 0.9984,
+          "shad": 0.9992
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.unswnb15.mimic_timing": {
+        "average": 0.9999,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 0.9999,
+          "shad": 0.9998
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_recall.unswnb15.shift_ack_timing": {
+        "average": 0.9967,
+        "values_by_owner": {
+          "alyssa": 0.9966,
+          "jessy": 0.9974,
+          "shad": 0.9961
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.cicids2017.add_tcp_options": {
+        "average": 0.9988,
+        "values_by_owner": {
+          "alyssa": 0.9988,
+          "jessy": 0.9988,
+          "shad": 0.9988
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.cicids2017.dilute_scan_pattern": {
+        "average": 0.9595,
+        "values_by_owner": {
+          "alyssa": 0.9595,
+          "jessy": 0.9595,
+          "shad": 0.9595
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.cicids2017.fragment_payload": {
+        "average": 0.9986,
+        "values_by_owner": {
+          "alyssa": 0.9986,
+          "jessy": 0.9986,
+          "shad": 0.9986
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.cicids2017.inject_decoy_flows": {
+        "average": 0.9036,
+        "values_by_owner": {
+          "alyssa": 0.9036,
+          "jessy": 0.9036,
+          "shad": 0.9036
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.cicids2017.mimic_packet_size": {
+        "average": 0.9307,
+        "values_by_owner": {
+          "alyssa": 0.9307,
+          "jessy": 0.9307,
+          "shad": 0.9307
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.cicids2017.mimic_timing": {
+        "average": 0.989,
+        "values_by_owner": {
+          "alyssa": 0.989,
+          "jessy": 0.989,
+          "shad": 0.989
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.cicids2017.shift_ack_timing": {
+        "average": 0.9949,
+        "values_by_owner": {
+          "alyssa": 0.9949,
+          "jessy": 0.9949,
+          "shad": 0.9949
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.nslkdd.mimic_timing": {
+        "average": 0.9779,
+        "values_by_owner": {
+          "alyssa": 0.9779,
+          "jessy": 0.9779,
+          "shad": 0.9779
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.unswnb15.add_tcp_options": {
+        "average": 0.9746,
+        "values_by_owner": {
+          "alyssa": 0.9746,
+          "jessy": 0.9746,
+          "shad": 0.9746
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.unswnb15.fragment_payload": {
+        "average": 0.9747,
+        "values_by_owner": {
+          "alyssa": 0.9747,
+          "jessy": 0.9747,
+          "shad": 0.9747
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.unswnb15.mimic_packet_size": {
+        "average": 0.9753,
+        "values_by_owner": {
+          "alyssa": 0.9753,
+          "jessy": 0.9753,
+          "shad": 0.9753
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.unswnb15.mimic_timing": {
+        "average": 0.9727,
+        "values_by_owner": {
+          "alyssa": 0.9727,
+          "jessy": 0.9727,
+          "shad": 0.9727
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_accuracy.unswnb15.shift_ack_timing": {
+        "average": 0.9747,
+        "values_by_owner": {
+          "alyssa": 0.9747,
+          "jessy": 0.9747,
+          "shad": 0.9747
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.cicids2017.add_tcp_options": {
+        "average": 0.9998,
+        "values_by_owner": {
+          "alyssa": 0.9998,
+          "jessy": 0.9998,
+          "shad": 0.9998
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.cicids2017.dilute_scan_pattern": {
+        "average": 0.6911,
+        "values_by_owner": {
+          "alyssa": 0.6911,
+          "jessy": 0.6911,
+          "shad": 0.6911
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.cicids2017.fragment_payload": {
+        "average": 0.9977,
+        "values_by_owner": {
+          "alyssa": 0.9977,
+          "jessy": 0.9977,
+          "shad": 0.9977
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.cicids2017.inject_decoy_flows": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.cicids2017.mimic_packet_size": {
+        "average": 0.5945,
+        "values_by_owner": {
+          "alyssa": 0.5945,
+          "jessy": 0.5945,
+          "shad": 0.5945
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.cicids2017.mimic_timing": {
+        "average": 0.94,
+        "values_by_owner": {
+          "alyssa": 0.94,
+          "jessy": 0.94,
+          "shad": 0.94
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.cicids2017.shift_ack_timing": {
+        "average": 0.9426,
+        "values_by_owner": {
+          "alyssa": 0.9426,
+          "jessy": 0.9426,
+          "shad": 0.9426
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.nslkdd.mimic_timing": {
+        "average": 0.9617,
+        "values_by_owner": {
+          "alyssa": 0.9617,
+          "jessy": 0.9617,
+          "shad": 0.9617
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.unswnb15.add_tcp_options": {
+        "average": 0.999,
+        "values_by_owner": {
+          "alyssa": 0.999,
+          "jessy": 0.999,
+          "shad": 0.999
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.unswnb15.fragment_payload": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.unswnb15.mimic_packet_size": {
+        "average": 0.9992,
+        "values_by_owner": {
+          "alyssa": 0.9992,
+          "jessy": 0.9992,
+          "shad": 0.9992
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.unswnb15.mimic_timing": {
+        "average": 0.9892,
+        "values_by_owner": {
+          "alyssa": 0.9892,
+          "jessy": 0.9892,
+          "shad": 0.9892
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate.unswnb15.shift_ack_timing": {
+        "average": 0.6667,
+        "values_by_owner": {
+          "alyssa": 0.6667,
+          "jessy": 0.6667,
+          "shad": 0.6667
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.add_tcp_options.mlp": {
+        "average": 0.9974,
+        "values_by_owner": {
+          "alyssa": 0.9974,
+          "jessy": 0.9974,
+          "shad": 0.9974
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.add_tcp_options.random_forest": {
+        "average": 0.9995,
+        "values_by_owner": {
+          "alyssa": 0.9995,
+          "jessy": 0.9995,
+          "shad": 0.9995
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.add_tcp_options.xgboost": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.dilute_scan_pattern.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.dilute_scan_pattern.random_forest": {
+        "average": 0.6927,
+        "values_by_owner": {
+          "alyssa": 0.6927,
+          "jessy": 0.6927,
+          "shad": 0.6927
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.dilute_scan_pattern.xgboost": {
+        "average": 0.859,
+        "values_by_owner": {
+          "alyssa": 0.859,
+          "jessy": 0.859,
+          "shad": 0.859
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.fragment_payload.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.fragment_payload.random_forest": {
+        "average": 0.9986,
+        "values_by_owner": {
+          "alyssa": 0.9986,
+          "jessy": 0.9986,
+          "shad": 0.9986
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.fragment_payload.xgboost": {
+        "average": 0.9996,
+        "values_by_owner": {
+          "alyssa": 0.9996,
+          "jessy": 0.9996,
+          "shad": 0.9996
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.inject_decoy_flows.mlp": {
+        "average": 0.4656,
+        "values_by_owner": {
+          "alyssa": 0.4656,
+          "jessy": 0.4656,
+          "shad": 0.4656
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.inject_decoy_flows.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.inject_decoy_flows.xgboost": {
+        "average": 0.0003,
+        "values_by_owner": {
+          "alyssa": 0.0003,
+          "jessy": 0.0003,
+          "shad": 0.0003
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.mimic_packet_size.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.mimic_packet_size.random_forest": {
+        "average": 0.6289,
+        "values_by_owner": {
+          "alyssa": 0.6289,
+          "jessy": 0.6289,
+          "shad": 0.6289
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.mimic_packet_size.xgboost": {
+        "average": 0.9583,
+        "values_by_owner": {
+          "alyssa": 0.9583,
+          "jessy": 0.9583,
+          "shad": 0.9583
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.mimic_timing.mlp": {
+        "average": 0.9518,
+        "values_by_owner": {
+          "alyssa": 0.9518,
+          "jessy": 0.9518,
+          "shad": 0.9518
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.mimic_timing.random_forest": {
+        "average": 0.8149,
+        "values_by_owner": {
+          "alyssa": 0.8149,
+          "jessy": 0.8149,
+          "shad": 0.8149
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.mimic_timing.xgboost": {
+        "average": 0.9473,
+        "values_by_owner": {
+          "alyssa": 0.9473,
+          "jessy": 0.9473,
+          "shad": 0.9473
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.shift_ack_timing.mlp": {
+        "average": 0.9609,
+        "values_by_owner": {
+          "alyssa": 0.9609,
+          "jessy": 0.9609,
+          "shad": 0.9609
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.shift_ack_timing.random_forest": {
+        "average": 0.9019,
+        "values_by_owner": {
+          "alyssa": 0.9019,
+          "jessy": 0.9019,
+          "shad": 0.9019
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.cicids2017.shift_ack_timing.xgboost": {
+        "average": 0.9554,
+        "values_by_owner": {
+          "alyssa": 0.9554,
+          "jessy": 0.9554,
+          "shad": 0.9554
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.nslkdd.mimic_timing.mlp": {
+        "average": 0.9075,
+        "values_by_owner": {
+          "alyssa": 0.9075,
+          "jessy": 0.9075,
+          "shad": 0.9075
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.nslkdd.mimic_timing.random_forest": {
+        "average": 0.9302,
+        "values_by_owner": {
+          "alyssa": 0.9302,
+          "jessy": 0.9302,
+          "shad": 0.9302
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.nslkdd.mimic_timing.xgboost": {
+        "average": 0.9908,
+        "values_by_owner": {
+          "alyssa": 0.9908,
+          "jessy": 0.9908,
+          "shad": 0.9908
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.add_tcp_options.mlp": {
+        "average": 0.116,
+        "values_by_owner": {
+          "alyssa": 0.116,
+          "jessy": 0.116,
+          "shad": 0.116
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.add_tcp_options.random_forest": {
+        "average": 0.999,
+        "values_by_owner": {
+          "alyssa": 0.999,
+          "jessy": 0.999,
+          "shad": 0.999
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.add_tcp_options.xgboost": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.fragment_payload.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.fragment_payload.random_forest": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.fragment_payload.xgboost": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.mimic_packet_size.mlp": {
+        "average": 0.9999,
+        "values_by_owner": {
+          "alyssa": 0.9999,
+          "jessy": 0.9999,
+          "shad": 0.9999
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.mimic_packet_size.random_forest": {
+        "average": 0.9743,
+        "values_by_owner": {
+          "alyssa": 0.9743,
+          "jessy": 0.9743,
+          "shad": 0.9743
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.mimic_packet_size.xgboost": {
+        "average": 0.9988,
+        "values_by_owner": {
+          "alyssa": 0.9988,
+          "jessy": 0.9988,
+          "shad": 0.9988
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.mimic_timing.mlp": {
+        "average": 0.9947,
+        "values_by_owner": {
+          "alyssa": 0.9947,
+          "jessy": 0.9947,
+          "shad": 0.9947
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.mimic_timing.random_forest": {
+        "average": 0.9198,
+        "values_by_owner": {
+          "alyssa": 0.9198,
+          "jessy": 0.9198,
+          "shad": 0.9198
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.mimic_timing.xgboost": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.shift_ack_timing.mlp": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.shift_ack_timing.random_forest": {
+        "average": 0.6667,
+        "values_by_owner": {
+          "alyssa": 0.6667,
+          "jessy": 0.6667,
+          "shad": 0.6667
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_detection_rate_per_model.unswnb15.shift_ack_timing.xgboost": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.cicids2017.add_tcp_options": {
+        "average": 0.9964,
+        "values_by_owner": {
+          "alyssa": 0.9964,
+          "jessy": 0.9964,
+          "shad": 0.9964
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.cicids2017.dilute_scan_pattern": {
+        "average": 0.8647,
+        "values_by_owner": {
+          "alyssa": 0.8647,
+          "jessy": 0.8647,
+          "shad": 0.8647
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.cicids2017.fragment_payload": {
+        "average": 0.9959,
+        "values_by_owner": {
+          "alyssa": 0.9959,
+          "jessy": 0.9959,
+          "shad": 0.9959
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.cicids2017.inject_decoy_flows": {
+        "average": 0.6036,
+        "values_by_owner": {
+          "alyssa": 0.6036,
+          "jessy": 0.6036,
+          "shad": 0.6036
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.cicids2017.mimic_packet_size": {
+        "average": 0.7433,
+        "values_by_owner": {
+          "alyssa": 0.7433,
+          "jessy": 0.7433,
+          "shad": 0.7433
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.cicids2017.mimic_timing": {
+        "average": 0.9665,
+        "values_by_owner": {
+          "alyssa": 0.9665,
+          "jessy": 0.9665,
+          "shad": 0.9665
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.cicids2017.shift_ack_timing": {
+        "average": 0.9847,
+        "values_by_owner": {
+          "alyssa": 0.9847,
+          "jessy": 0.9847,
+          "shad": 0.9847
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.nslkdd.mimic_timing": {
+        "average": 0.9766,
+        "values_by_owner": {
+          "alyssa": 0.9766,
+          "jessy": 0.9766,
+          "shad": 0.9766
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.unswnb15.add_tcp_options": {
+        "average": 0.9542,
+        "values_by_owner": {
+          "alyssa": 0.9542,
+          "jessy": 0.9542,
+          "shad": 0.9542
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.unswnb15.fragment_payload": {
+        "average": 0.9543,
+        "values_by_owner": {
+          "alyssa": 0.9543,
+          "jessy": 0.9543,
+          "shad": 0.9543
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.unswnb15.mimic_packet_size": {
+        "average": 0.9555,
+        "values_by_owner": {
+          "alyssa": 0.9555,
+          "jessy": 0.9555,
+          "shad": 0.9555
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.unswnb15.mimic_timing": {
+        "average": 0.9505,
+        "values_by_owner": {
+          "alyssa": 0.9505,
+          "jessy": 0.9505,
+          "shad": 0.9505
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_f1.unswnb15.shift_ack_timing": {
+        "average": 0.9543,
+        "values_by_owner": {
+          "alyssa": 0.9543,
+          "jessy": 0.9543,
+          "shad": 0.9543
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.cicids2017.add_tcp_options": {
+        "average": 0.9948,
+        "values_by_owner": {
+          "alyssa": 0.9948,
+          "jessy": 0.9948,
+          "shad": 0.9948
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.cicids2017.dilute_scan_pattern": {
+        "average": 0.9932,
+        "values_by_owner": {
+          "alyssa": 0.9932,
+          "jessy": 0.9932,
+          "shad": 0.9932
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.cicids2017.fragment_payload": {
+        "average": 0.9948,
+        "values_by_owner": {
+          "alyssa": 0.9948,
+          "jessy": 0.9948,
+          "shad": 0.9948
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.cicids2017.inject_decoy_flows": {
+        "average": 0.9881,
+        "values_by_owner": {
+          "alyssa": 0.9881,
+          "jessy": 0.9881,
+          "shad": 0.9881
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.cicids2017.mimic_packet_size": {
+        "average": 0.9913,
+        "values_by_owner": {
+          "alyssa": 0.9913,
+          "jessy": 0.9913,
+          "shad": 0.9913
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.cicids2017.mimic_timing": {
+        "average": 0.9945,
+        "values_by_owner": {
+          "alyssa": 0.9945,
+          "jessy": 0.9945,
+          "shad": 0.9945
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.cicids2017.shift_ack_timing": {
+        "average": 0.9947,
+        "values_by_owner": {
+          "alyssa": 0.9947,
+          "jessy": 0.9947,
+          "shad": 0.9947
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.nslkdd.mimic_timing": {
+        "average": 0.9921,
+        "values_by_owner": {
+          "alyssa": 0.9921,
+          "jessy": 0.9921,
+          "shad": 0.9921
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.unswnb15.add_tcp_options": {
+        "average": 0.9152,
+        "values_by_owner": {
+          "alyssa": 0.9152,
+          "jessy": 0.9152,
+          "shad": 0.9152
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.unswnb15.fragment_payload": {
+        "average": 0.9152,
+        "values_by_owner": {
+          "alyssa": 0.9152,
+          "jessy": 0.9152,
+          "shad": 0.9152
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.unswnb15.mimic_packet_size": {
+        "average": 0.9154,
+        "values_by_owner": {
+          "alyssa": 0.9154,
+          "jessy": 0.9154,
+          "shad": 0.9154
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.unswnb15.mimic_timing": {
+        "average": 0.9146,
+        "values_by_owner": {
+          "alyssa": 0.9146,
+          "jessy": 0.9146,
+          "shad": 0.9146
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_precision.unswnb15.shift_ack_timing": {
+        "average": 0.9152,
+        "values_by_owner": {
+          "alyssa": 0.9152,
+          "jessy": 0.9152,
+          "shad": 0.9152
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.cicids2017.add_tcp_options": {
+        "average": 0.9979,
+        "values_by_owner": {
+          "alyssa": 0.9979,
+          "jessy": 0.9979,
+          "shad": 0.9979
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.cicids2017.dilute_scan_pattern": {
+        "average": 0.7656,
+        "values_by_owner": {
+          "alyssa": 0.7656,
+          "jessy": 0.7656,
+          "shad": 0.7656
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.cicids2017.fragment_payload": {
+        "average": 0.9971,
+        "values_by_owner": {
+          "alyssa": 0.9971,
+          "jessy": 0.9971,
+          "shad": 0.9971
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.cicids2017.inject_decoy_flows": {
+        "average": 0.4345,
+        "values_by_owner": {
+          "alyssa": 0.4345,
+          "jessy": 0.4345,
+          "shad": 0.4345
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.cicids2017.mimic_packet_size": {
+        "average": 0.5945,
+        "values_by_owner": {
+          "alyssa": 0.5945,
+          "jessy": 0.5945,
+          "shad": 0.5945
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.cicids2017.mimic_timing": {
+        "average": 0.94,
+        "values_by_owner": {
+          "alyssa": 0.94,
+          "jessy": 0.94,
+          "shad": 0.94
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.cicids2017.shift_ack_timing": {
+        "average": 0.975,
+        "values_by_owner": {
+          "alyssa": 0.975,
+          "jessy": 0.975,
+          "shad": 0.975
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.nslkdd.mimic_timing": {
+        "average": 0.9617,
+        "values_by_owner": {
+          "alyssa": 0.9617,
+          "jessy": 0.9617,
+          "shad": 0.9617
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.unswnb15.add_tcp_options": {
+        "average": 0.9966,
+        "values_by_owner": {
+          "alyssa": 0.9966,
+          "jessy": 0.9966,
+          "shad": 0.9966
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.unswnb15.fragment_payload": {
+        "average": 0.9969,
+        "values_by_owner": {
+          "alyssa": 0.9969,
+          "jessy": 0.9969,
+          "shad": 0.9969
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.unswnb15.mimic_packet_size": {
+        "average": 0.9992,
+        "values_by_owner": {
+          "alyssa": 0.9992,
+          "jessy": 0.9992,
+          "shad": 0.9992
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.unswnb15.mimic_timing": {
+        "average": 0.9892,
+        "values_by_owner": {
+          "alyssa": 0.9892,
+          "jessy": 0.9892,
+          "shad": 0.9892
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.baseline_recall.unswnb15.shift_ack_timing": {
+        "average": 0.9968,
+        "values_by_owner": {
+          "alyssa": 0.9968,
+          "jessy": 0.9968,
+          "shad": 0.9968
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.cicids2017.add_tcp_options": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.cicids2017.dilute_scan_pattern": {
+        "average": 15.273333,
+        "values_by_owner": {
+          "alyssa": 15.18,
+          "jessy": 15.29,
+          "shad": 15.35
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.cicids2017.fragment_payload": {
+        "average": 0.206667,
+        "values_by_owner": {
+          "alyssa": 0.2,
+          "jessy": 0.21,
+          "shad": 0.21
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.cicids2017.inject_decoy_flows": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": -0.0,
+          "jessy": -0.0,
+          "shad": -0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.cicids2017.mimic_packet_size": {
+        "average": 35.563333,
+        "values_by_owner": {
+          "alyssa": 36.36,
+          "jessy": 35.74,
+          "shad": 34.59
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.cicids2017.mimic_timing": {
+        "average": 2.91,
+        "values_by_owner": {
+          "alyssa": 3.05,
+          "jessy": 3.04,
+          "shad": 2.64
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.cicids2017.shift_ack_timing": {
+        "average": 5.686667,
+        "values_by_owner": {
+          "alyssa": 5.69,
+          "jessy": 5.68,
+          "shad": 5.69
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.nslkdd.mimic_timing": {
+        "average": 1.53,
+        "values_by_owner": {
+          "alyssa": 2.56,
+          "jessy": 2.16,
+          "shad": -0.13
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.unswnb15.add_tcp_options": {
+        "average": 0.1,
+        "values_by_owner": {
+          "alyssa": 0.1,
+          "jessy": 0.1,
+          "shad": 0.1
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.unswnb15.fragment_payload": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.unswnb15.mimic_packet_size": {
+        "average": -0.026667,
+        "values_by_owner": {
+          "alyssa": -0.01,
+          "jessy": -0.07,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.unswnb15.mimic_timing": {
+        "average": 1.07,
+        "values_by_owner": {
+          "alyssa": 1.08,
+          "jessy": 1.07,
+          "shad": 1.06
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp.unswnb15.shift_ack_timing": {
+        "average": 22.22,
+        "values_by_owner": {
+          "alyssa": 33.33,
+          "jessy": 33.33,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.add_tcp_options.mlp": {
+        "average": 0.19,
+        "values_by_owner": {
+          "alyssa": 0.2,
+          "jessy": 0.21,
+          "shad": 0.16
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.add_tcp_options.random_forest": {
+        "average": 0.01,
+        "values_by_owner": {
+          "alyssa": 0.01,
+          "jessy": 0.01,
+          "shad": 0.01
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.add_tcp_options.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.dilute_scan_pattern.mlp": {
+        "average": 98.506667,
+        "values_by_owner": {
+          "alyssa": 99.46,
+          "jessy": 99.9,
+          "shad": 96.16
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.dilute_scan_pattern.random_forest": {
+        "average": 0.26,
+        "values_by_owner": {
+          "alyssa": 0.43,
+          "jessy": 0.47,
+          "shad": -0.12
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.dilute_scan_pattern.xgboost": {
+        "average": -0.646667,
+        "values_by_owner": {
+          "alyssa": -0.65,
+          "jessy": -0.64,
+          "shad": -0.65
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.fragment_payload.mlp": {
+        "average": 99.99,
+        "values_by_owner": {
+          "alyssa": 100.0,
+          "jessy": 99.98,
+          "shad": 99.99
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.fragment_payload.random_forest": {
+        "average": 0.103333,
+        "values_by_owner": {
+          "alyssa": 0.1,
+          "jessy": 0.11,
+          "shad": 0.1
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.fragment_payload.xgboost": {
+        "average": 0.036667,
+        "values_by_owner": {
+          "alyssa": 0.04,
+          "jessy": 0.03,
+          "shad": 0.04
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.inject_decoy_flows.mlp": {
+        "average": -6.223333,
+        "values_by_owner": {
+          "alyssa": -5.48,
+          "jessy": -1.66,
+          "shad": -11.53
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.inject_decoy_flows.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.inject_decoy_flows.xgboost": {
+        "average": -0.026667,
+        "values_by_owner": {
+          "alyssa": -0.03,
+          "jessy": -0.02,
+          "shad": -0.03
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_packet_size.mlp": {
+        "average": 98.303333,
+        "values_by_owner": {
+          "alyssa": 97.83,
+          "jessy": 98.31,
+          "shad": 98.77
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_packet_size.random_forest": {
+        "average": -0.12,
+        "values_by_owner": {
+          "alyssa": 0.53,
+          "jessy": 0.15,
+          "shad": -1.04
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_packet_size.xgboost": {
+        "average": 0.713333,
+        "values_by_owner": {
+          "alyssa": 0.9,
+          "jessy": 0.34,
+          "shad": 0.9
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_timing.mlp": {
+        "average": 4.03,
+        "values_by_owner": {
+          "alyssa": 4.45,
+          "jessy": 4.3,
+          "shad": 3.34
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_timing.random_forest": {
+        "average": 9.18,
+        "values_by_owner": {
+          "alyssa": 12.52,
+          "jessy": 10.35,
+          "shad": 4.67
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_timing.xgboost": {
+        "average": 2.963333,
+        "values_by_owner": {
+          "alyssa": 2.95,
+          "jessy": 2.99,
+          "shad": 2.95
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.shift_ack_timing.mlp": {
+        "average": 3.54,
+        "values_by_owner": {
+          "alyssa": 3.47,
+          "jessy": 3.77,
+          "shad": 3.38
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.shift_ack_timing.random_forest": {
+        "average": 9.77,
+        "values_by_owner": {
+          "alyssa": 9.77,
+          "jessy": 9.77,
+          "shad": 9.77
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.cicids2017.shift_ack_timing.xgboost": {
+        "average": 4.43,
+        "values_by_owner": {
+          "alyssa": 4.43,
+          "jessy": 4.43,
+          "shad": 4.43
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.nslkdd.mimic_timing.mlp": {
+        "average": -6.246667,
+        "values_by_owner": {
+          "alyssa": -24.0,
+          "jessy": 6.03,
+          "shad": -0.77
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.nslkdd.mimic_timing.random_forest": {
+        "average": -1.176667,
+        "values_by_owner": {
+          "alyssa": -1.01,
+          "jessy": -1.01,
+          "shad": -1.51
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.nslkdd.mimic_timing.xgboost": {
+        "average": 0.86,
+        "values_by_owner": {
+          "alyssa": 0.86,
+          "jessy": 0.86,
+          "shad": 0.86
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.add_tcp_options.mlp": {
+        "average": 26.456667,
+        "values_by_owner": {
+          "alyssa": -10.27,
+          "jessy": 2.37,
+          "shad": 87.27
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.add_tcp_options.random_forest": {
+        "average": 0.1,
+        "values_by_owner": {
+          "alyssa": 0.1,
+          "jessy": 0.1,
+          "shad": 0.1
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.add_tcp_options.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.fragment_payload.mlp": {
+        "average": 33.333333,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 100.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.fragment_payload.random_forest": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.fragment_payload.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_packet_size.mlp": {
+        "average": -18.683333,
+        "values_by_owner": {
+          "alyssa": -0.01,
+          "jessy": -56.02,
+          "shad": -0.02
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_packet_size.random_forest": {
+        "average": 0.39,
+        "values_by_owner": {
+          "alyssa": 0.39,
+          "jessy": 0.39,
+          "shad": 0.39
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_packet_size.xgboost": {
+        "average": 0.033333,
+        "values_by_owner": {
+          "alyssa": 0.04,
+          "jessy": 0.02,
+          "shad": 0.04
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_timing.mlp": {
+        "average": 0.523333,
+        "values_by_owner": {
+          "alyssa": 0.53,
+          "jessy": 0.51,
+          "shad": 0.53
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_timing.random_forest": {
+        "average": -0.43,
+        "values_by_owner": {
+          "alyssa": 6.7,
+          "jessy": 6.7,
+          "shad": -14.69
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_timing.xgboost": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.mlp": {
+        "average": 66.666667,
+        "values_by_owner": {
+          "alyssa": 100.0,
+          "jessy": 100.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.random_forest": {
+        "average": 22.22,
+        "values_by_owner": {
+          "alyssa": 33.33,
+          "jessy": 33.33,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.xgboost": {
+        "average": -22.22,
+        "values_by_owner": {
+          "alyssa": -33.33,
+          "jessy": 0.0,
+          "shad": -33.33
+        },
+        "n_owners_present": 3
+      },
+      "defense.n_mutations_evaluated.cicids2017": {
+        "average": 7.0,
+        "values_by_owner": {
+          "alyssa": 7.0,
+          "jessy": 7.0,
+          "shad": 7.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.n_mutations_evaluated.nslkdd": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.n_mutations_evaluated.overall": {
+        "average": 13.0,
+        "values_by_owner": {
+          "alyssa": 13.0,
+          "jessy": 13.0,
+          "shad": 13.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.n_mutations_evaluated.unswnb15": {
+        "average": 5.0,
+        "values_by_owner": {
+          "alyssa": 5.0,
+          "jessy": 5.0,
+          "shad": 5.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.n_mutations_meeting_target.cicids2017": {
+        "average": 1.0,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.n_mutations_meeting_target.nslkdd": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.n_mutations_meeting_target.overall": {
+        "average": 1.666667,
+        "values_by_owner": {
+          "alyssa": 2.0,
+          "jessy": 2.0,
+          "shad": 1.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.n_mutations_meeting_target.unswnb15": {
+        "average": 0.666667,
+        "values_by_owner": {
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.target_hit_rate.cicids2017": {
+        "average": 0.142857,
+        "values_by_owner": {
+          "alyssa": 0.142857,
+          "jessy": 0.142857,
+          "shad": 0.142857
+        },
+        "n_owners_present": 3
+      },
+      "defense.target_hit_rate.nslkdd": {
+        "average": 0.0,
+        "values_by_owner": {
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "defense.target_hit_rate.overall": {
+        "average": 0.128205,
+        "values_by_owner": {
+          "alyssa": 0.153846,
+          "jessy": 0.153846,
+          "shad": 0.076923
+        },
+        "n_owners_present": 3
+      },
+      "defense.target_hit_rate.unswnb15": {
+        "average": 0.133333,
+        "values_by_owner": {
+          "alyssa": 0.2,
+          "jessy": 0.2,
+          "shad": 0.0
+        },
+        "n_owners_present": 3
+      },
+      "retrained_adversarial.accuracy.cicids2017.majority_voting": {
+        "average": 0.998529,
+        "values_by_owner": {
+          "alyssa": 0.998549,
+          "jessy": 0.998544,
+          "shad": 0.998493
+        },
+        "n_owners_present": 3
+      },
+      "retrained_adversarial.accuracy.cicids2017.mlp": {
+        "average": 0.842493,
+        "values_by_owner": {
+          "alyssa": 0.839045,
+          "jessy": 0.826332,
+          "shad": 0.862103
+        },
+        "n_owners_present": 3
+      },
+      "retrained_adversarial.accuracy.cicids2017.random_forest": {
+        "average": 0.998219,
+        "values_by_owner": {
+          "alyssa": 0.998224,
+          "jessy": 0.998237,
+          "shad": 0.998195
+        },
+        "n_owners_present": 3
+      },
+      "retrained_adversarial.accuracy.cicids2017.xgboost": {
+        "average": 0.998613,
+        "values_by_owner": {
+          "alyssa": 0.99862,
+          "jessy": 0.998599,
+          "shad": 0.99862
+        },
+        "n_owners_present": 3
+      },
+      "retrained_adversarial.accuracy.nslkdd.majority_voting": {
+        "average": 0.995272,
+        "values_by_owner": {
+          "alyssa": 0.995242,
+          "jessy": 0.995377,
+          "shad": 0.995197
+        },
+        "n_owners_present": 3
+      },
+      "retrained_adversarial.accuracy.nslkdd.mlp": {
+        "average": 0.961681,
+        "values_by_owner": {
+          "alyssa": 0.96409,
+          "jessy": 0.962609,
+          "shad": 0.958345
+        },
+        "n_owners_present": 3
+      },
+      "retrained_adversarial.accuracy.nslkdd.random_forest": {
+        "average": 0.995541,
+        "values_by_owner": {
+          "alyssa": 0.995466,
+          "jessy": 0.995466,
+          "shad": 0.995691
+        },
+        "n_owners_present": 3
+      },
+      "retrained_adversarial.accuracy.nslkdd.xgboost": {
+        "average": 0.995646,
+        "values_by_owner": {
+          "alyssa": 0.995646,
+          "jessy": 0.995646,
+          "shad": 0.995646
+        },
+        "n_owners_present": 3
+      }
+    },
+    "metrics_missing_owners": {
+      "retrained_adversarial.accuracy.unswnb15.majority_voting": {
+        "average": 0.894918,
+        "values_by_owner": {
+          "jessy": 0.898206,
+          "shad": 0.89163
+        },
+        "n_owners_present": 2
+      },
+      "retrained_adversarial.accuracy.unswnb15.mlp": {
+        "average": 0.827984,
+        "values_by_owner": {
+          "jessy": 0.825458,
+          "shad": 0.83051
+        },
+        "n_owners_present": 2
+      },
+      "retrained_adversarial.accuracy.unswnb15.random_forest": {
+        "average": 0.905217,
+        "values_by_owner": {
+          "jessy": 0.905435,
+          "shad": 0.904999
+        },
+        "n_owners_present": 2
+      },
+      "retrained_adversarial.accuracy.unswnb15.xgboost": {
+        "average": 0.886731,
+        "values_by_owner": {
+          "jessy": 0.887036,
+          "shad": 0.886426
+        },
+        "n_owners_present": 2
+      }
+    }
+  },
+  "skew_analysis": {
+    "n_warnings": 23,
+    "warning_counts_by_owner": {
+      "alyssa": 2,
+      "jessy": 8,
+      "shad": 13
+    },
+    "warnings": [
+      {
+        "severity": "high",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.fragment_payload.mlp",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 100.0,
+        "team_median": 0.0,
+        "absolute_deviation": 100.0,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": 100.0,
+          "alyssa": 0.0,
+          "jessy": 0.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.mlp",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.0,
+        "team_median": 100.0,
+        "absolute_deviation": 100.0,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": 0.0,
+          "alyssa": 100.0,
+          "jessy": 100.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.add_tcp_options.mlp",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 87.27,
+        "team_median": 2.37,
+        "absolute_deviation": 84.9,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": 87.27,
+          "alyssa": -10.27,
+          "jessy": 2.37
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_packet_size.mlp",
+        "owner_with_max_deviation": "jessy",
+        "owner_value": -56.02,
+        "team_median": -0.02,
+        "absolute_deviation": 56.0,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": -0.02,
+          "alyssa": -0.01,
+          "jessy": -56.02
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.recovery_delta_pp.unswnb15.shift_ack_timing",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.0,
+        "team_median": 33.33,
+        "absolute_deviation": 33.33,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": 0.0,
+          "alyssa": 33.33,
+          "jessy": 33.33
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.random_forest",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.0,
+        "team_median": 33.33,
+        "absolute_deviation": 33.33,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": 0.0,
+          "alyssa": 33.33,
+          "jessy": 33.33
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.xgboost",
+        "owner_with_max_deviation": "jessy",
+        "owner_value": 0.0,
+        "team_median": -33.33,
+        "absolute_deviation": 33.33,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": -33.33,
+          "alyssa": -33.33,
+          "jessy": 0.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "adv_training_clean.accuracy_drop_pp.cicids2017.mlp",
+        "owner_with_max_deviation": "jessy",
+        "owner_value": 20.461471,
+        "team_median": -1.576826,
+        "absolute_deviation": 22.038297,
+        "threshold": 2.0,
+        "values_by_owner": {
+          "shad": -1.576826,
+          "alyssa": -7.694097,
+          "jessy": 20.461471
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.fragment_payload.mlp",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 1.0,
+        "team_median": 0.0,
+        "absolute_deviation": 1.0,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 1.0,
+          "alyssa": 0.0,
+          "jessy": 0.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.mlp",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.0,
+        "team_median": 1.0,
+        "absolute_deviation": 1.0,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 0.0,
+          "alyssa": 1.0,
+          "jessy": 1.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.add_tcp_options.mlp",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.9887,
+        "team_median": 0.1397,
+        "absolute_deviation": 0.849,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 0.9887,
+          "alyssa": 0.0133,
+          "jessy": 0.1397
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_packet_size.mlp",
+        "owner_with_max_deviation": "jessy",
+        "owner_value": 0.4397,
+        "team_median": 0.9997,
+        "absolute_deviation": 0.56,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 0.9997,
+          "alyssa": 0.9998,
+          "jessy": 0.4397
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate.unswnb15.shift_ack_timing",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.6667,
+        "team_median": 1.0,
+        "absolute_deviation": 0.3333,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 0.6667,
+          "alyssa": 1.0,
+          "jessy": 1.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.random_forest",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.6667,
+        "team_median": 1.0,
+        "absolute_deviation": 0.3333,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 0.6667,
+          "alyssa": 1.0,
+          "jessy": 1.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.xgboost",
+        "owner_with_max_deviation": "jessy",
+        "owner_value": 1.0,
+        "team_median": 0.6667,
+        "absolute_deviation": 0.3333,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 0.6667,
+          "alyssa": 0.6667,
+          "jessy": 1.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.nslkdd.mimic_timing.mlp",
+        "owner_with_max_deviation": "alyssa",
+        "owner_value": 0.6675,
+        "team_median": 0.8998,
+        "absolute_deviation": 0.2323,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 0.8998,
+          "alyssa": 0.6675,
+          "jessy": 0.9678
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_timing.random_forest",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.7729,
+        "team_median": 0.9868,
+        "absolute_deviation": 0.2139,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 0.7729,
+          "alyssa": 0.9868,
+          "jessy": 0.9868
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "adv_training_clean.retrained_accuracy.cicids2017.mlp",
+        "owner_with_max_deviation": "jessy",
+        "owner_value": 0.707502,
+        "team_median": 0.847617,
+        "absolute_deviation": 0.140115,
+        "threshold": 0.05,
+        "values_by_owner": {
+          "shad": 0.850487,
+          "alyssa": 0.847617,
+          "jessy": 0.707502
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "medium",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.nslkdd.mimic_timing.mlp",
+        "owner_with_max_deviation": "alyssa",
+        "owner_value": -24.0,
+        "team_median": -0.77,
+        "absolute_deviation": 23.23,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": -0.77,
+          "alyssa": -24.0,
+          "jessy": 6.03
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "medium",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_timing.random_forest",
+        "owner_with_max_deviation": "shad",
+        "owner_value": -14.69,
+        "team_median": 6.7,
+        "absolute_deviation": 21.39,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": -14.69,
+          "alyssa": 6.7,
+          "jessy": 6.7
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "medium",
+        "metric": "adv_training_clean.dataset.overall_pass.cicids2017",
+        "owner_with_max_deviation": "jessy",
+        "owner_value": 0.0,
+        "team_median": 1.0,
+        "absolute_deviation": 1.0,
+        "threshold": 0.75,
+        "values_by_owner": {
+          "shad": 1.0,
+          "alyssa": 1.0,
+          "jessy": 0.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "medium",
+        "metric": "defense.target_hit_rate.unswnb15",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.0,
+        "team_median": 0.2,
+        "absolute_deviation": 0.2,
+        "threshold": 0.15,
+        "values_by_owner": {
+          "shad": 0.0,
+          "alyssa": 0.2,
+          "jessy": 0.2
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "medium",
+        "metric": "adv_training_clean.baseline_accuracy.cicids2017.mlp",
+        "owner_with_max_deviation": "jessy",
+        "owner_value": 0.912117,
+        "team_median": 0.834719,
+        "absolute_deviation": 0.077398,
+        "threshold": 0.05,
+        "values_by_owner": {
+          "shad": 0.834719,
+          "alyssa": 0.770676,
+          "jessy": 0.912117
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      }
+    ]
+  }
+}

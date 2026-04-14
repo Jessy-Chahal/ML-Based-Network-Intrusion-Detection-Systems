@@ -1,6 +1,6 @@
 {
   "attack": "Attack A - Feature Obfuscation",
-  "generated_at_utc": "2026-03-25T01:46:35.374216+00:00",
+  "generated_at_utc": "2026-04-05T23:25:45.414884+00:00",
   "datasets_evaluated": [
     "cicids2017",
     "nslkdd",
@@ -49,17 +49,17 @@
               "model": "xgboost",
               "n_originally_detected": 29062,
               "n_originally_detected_and_valid": 24211,
-              "n_evaded": 24206,
-              "esr": 0.8329,
-              "esr_on_valid": 0.9998
+              "n_evaded": 24195,
+              "esr": 0.8325,
+              "esr_on_valid": 0.9993
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 28998,
-              "n_originally_detected_and_valid": 24201,
-              "n_evaded": 11515,
-              "esr": 0.3971,
-              "esr_on_valid": 0.4758
+              "n_originally_detected": 27698,
+              "n_originally_detected_and_valid": 24162,
+              "n_evaded": 11628,
+              "esr": 0.4198,
+              "esr_on_valid": 0.4813
             }
           }
         },
@@ -92,17 +92,17 @@
               "model": "xgboost",
               "n_originally_detected": 13623,
               "n_originally_detected_and_valid": 13395,
-              "n_evaded": 6649,
-              "esr": 0.4881,
-              "esr_on_valid": 0.4964
+              "n_evaded": 6755,
+              "esr": 0.4959,
+              "esr_on_valid": 0.5043
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 13537,
+              "n_originally_detected": 13611,
               "n_originally_detected_and_valid": 13394,
-              "n_evaded": 0,
-              "esr": 0.0,
-              "esr_on_valid": 0.0
+              "n_evaded": 13394,
+              "esr": 0.9841,
+              "esr_on_valid": 1.0
             }
           }
         }
@@ -151,7 +151,7 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 10674,
+              "n_originally_detected": 10683,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -190,7 +190,7 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 10674,
+              "n_originally_detected": 10683,
               "n_originally_detected_and_valid": 0,
               "n_evaded": 0,
               "esr": 0.0,
@@ -236,19 +236,19 @@
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 12156,
-              "n_originally_detected_and_valid": 2516,
-              "n_evaded": 1406,
-              "esr": 0.1157,
-              "esr_on_valid": 0.5588
+              "n_originally_detected": 12155,
+              "n_originally_detected_and_valid": 2515,
+              "n_evaded": 1164,
+              "esr": 0.0958,
+              "esr_on_valid": 0.4628
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 12163,
+              "n_originally_detected": 12169,
               "n_originally_detected_and_valid": 2524,
-              "n_evaded": 2448,
-              "esr": 0.2013,
-              "esr_on_valid": 0.9699
+              "n_evaded": 2390,
+              "esr": 0.1964,
+              "esr_on_valid": 0.9469
             }
           }
         },
@@ -274,7 +274,7 @@
             },
             "xgboost": {
               "model": "xgboost",
-              "n_originally_detected": 12156,
+              "n_originally_detected": 12155,
               "n_originally_detected_and_valid": 662,
               "n_evaded": 0,
               "esr": 0.0,
@@ -282,11 +282,11 @@
             },
             "mlp": {
               "model": "mlp",
-              "n_originally_detected": 12163,
+              "n_originally_detected": 12169,
               "n_originally_detected_and_valid": 662,
-              "n_evaded": 661,
-              "esr": 0.0543,
-              "esr_on_valid": 0.9985
+              "n_evaded": 650,
+              "esr": 0.0534,
+              "esr_on_valid": 0.9819
             }
           }
         }
