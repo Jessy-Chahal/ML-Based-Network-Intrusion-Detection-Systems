@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-04-14T02:19:17.558732+00:00",
-  "attack_mode": "all",
+  "generated_at_utc": "2026-04-14T02:26:26.020654+00:00",
+  "attack_mode": "c",
   "results_dir": "results",
   "owners": [
     "shad",
@@ -22,11 +22,11 @@
         "exists": true
       },
       "shad_defense": {
-        "path": "results/shad_new_defense_metrics.json",
+        "path": "results/shad_defense_attack_c_only_metrics.json",
         "exists": true
       },
       "shad_retrained_adversarial": {
-        "path": "results/shad_retrained_adversarial_metrics.json",
+        "path": "results/shad_retrained_adversarial_attack_c_only_metrics.json",
         "exists": true
       },
       "shad_adv_training_clean": {
@@ -48,12 +48,17 @@
         "exists": true
       },
       "alyssa_defense": {
-        "path": "results/alyssa_new_defense_metrics.json",
+        "path": "results/alyssa_defense_attack_c_only_metrics.json",
         "exists": true
       },
       "alyssa_retrained_adversarial": {
-        "path": "results/alyssa_retrained_adversarial_metrics.json",
-        "exists": true
+        "path": "results/alyssa_retrained_adversarial_attack_c_only_metrics.json",
+        "exists": false,
+        "used_fallback": true,
+        "fallback_paths": [
+          "results/alyssa_retrained_adversarial_attack_c_only_metrics_cicids2017.json",
+          "results/alyssa_retrained_adversarial_attack_c_only_metrics_nslkdd.json"
+        ]
       },
       "alyssa_adv_training_clean": {
         "path": "results/alyssa_adv_training_clean_metrics.json",
@@ -74,11 +79,11 @@
         "exists": true
       },
       "jessy_defense": {
-        "path": "results/jessy_new_defense_metrics.json",
+        "path": "results/jessy_defense_attack_c_only_metrics.json",
         "exists": true
       },
       "jessy_retrained_adversarial": {
-        "path": "results/jessy_retrained_adversarial_metrics.json",
+        "path": "results/jessy_retrained_adversarial_attack_c_only_metrics.json",
         "exists": true
       },
       "jessy_adv_training_clean": {
@@ -178,19 +183,19 @@
             "n_attack_samples": 63882,
             "n_mutations_evaluated": 7,
             "n_mutations_skipped": 0,
-            "n_mutations_meeting_target": 2,
-            "target_hit_rate": 0.285714,
+            "n_mutations_meeting_target": 1,
+            "target_hit_rate": 0.142857,
             "clean_baseline_detection_rate": 0.9979,
-            "clean_adversarial_detection_rate": 0.9994,
-            "mean_recovery_delta_pp": 13.4343,
-            "median_recovery_delta_pp": 5.25,
+            "clean_adversarial_detection_rate": 0.9978,
+            "mean_recovery_delta_pp": 8.3543,
+            "median_recovery_delta_pp": 2.64,
             "best_mutation_by_recovery": {
-              "mutation": "inject_decoy_flows",
-              "recovery_delta_pp": 44.09
+              "mutation": "mimic_packet_size",
+              "recovery_delta_pp": 34.59
             },
             "worst_mutation_by_recovery": {
-              "mutation": "add_tcp_options",
-              "recovery_delta_pp": -0.02
+              "mutation": "inject_decoy_flows",
+              "recovery_delta_pp": -0.0
             }
           },
           "nslkdd": {
@@ -202,16 +207,16 @@
             "n_mutations_meeting_target": 0,
             "target_hit_rate": 0.0,
             "clean_baseline_detection_rate": 0.9974,
-            "clean_adversarial_detection_rate": 0.9974,
-            "mean_recovery_delta_pp": 0.7,
-            "median_recovery_delta_pp": 0.7,
+            "clean_adversarial_detection_rate": 0.9982,
+            "mean_recovery_delta_pp": -0.13,
+            "median_recovery_delta_pp": -0.13,
             "best_mutation_by_recovery": {
               "mutation": "mimic_timing",
-              "recovery_delta_pp": 0.7
+              "recovery_delta_pp": -0.13
             },
             "worst_mutation_by_recovery": {
               "mutation": "mimic_timing",
-              "recovery_delta_pp": 0.7
+              "recovery_delta_pp": -0.13
             }
           },
           "unswnb15": {
@@ -223,27 +228,27 @@
             "n_mutations_meeting_target": 0,
             "target_hit_rate": 0.0,
             "clean_baseline_detection_rate": 0.9969,
-            "clean_adversarial_detection_rate": 0.9975,
-            "mean_recovery_delta_pp": 0.23,
+            "clean_adversarial_detection_rate": 0.9962,
+            "mean_recovery_delta_pp": 0.232,
             "median_recovery_delta_pp": 0.0,
             "best_mutation_by_recovery": {
               "mutation": "mimic_timing",
-              "recovery_delta_pp": 1.08
+              "recovery_delta_pp": 1.06
             },
             "worst_mutation_by_recovery": {
               "mutation": "mimic_packet_size",
-              "recovery_delta_pp": -0.03
+              "recovery_delta_pp": 0.0
             }
           }
         },
         "overall": {
           "n_mutations_evaluated_total": 13,
-          "n_mutations_meeting_target_total": 2,
-          "target_hit_rate_overall": 0.153846,
+          "n_mutations_meeting_target_total": 1,
+          "target_hit_rate_overall": 0.076923,
           "mean_clean_baseline_detection_rate": 0.9974,
-          "mean_clean_adversarial_detection_rate": 0.9981,
-          "mean_recovery_delta_pp": 4.7881,
-          "median_recovery_delta_pp": 0.7
+          "mean_clean_adversarial_detection_rate": 0.9974,
+          "mean_recovery_delta_pp": 2.8188,
+          "median_recovery_delta_pp": 0.232
         }
       },
       "adv_training_clean": {
@@ -264,19 +269,18 @@
         }
       },
       "retrained_adversarial": {
-        "n_accuracy_entries": 15,
-        "overall_mean_accuracy": 0.917335,
+        "n_accuracy_entries": 12,
+        "overall_mean_accuracy": 0.942988,
         "dataset_mean_accuracy": {
-          "cicids2017": 0.955183,
-          "nslkdd": 0.950561,
-          "unswnb15": 0.846261
+          "cicids2017": 0.964353,
+          "nslkdd": 0.98622,
+          "unswnb15": 0.878391
         },
         "model_mean_accuracy": {
-          "lstm": 0.826037,
-          "majority_voting": 0.960303,
-          "mlp": 0.88014,
-          "random_forest": 0.964303,
-          "xgboost": 0.955893
+          "majority_voting": 0.961774,
+          "mlp": 0.883652,
+          "random_forest": 0.966295,
+          "xgboost": 0.960231
         }
       },
       "missing_files": []
@@ -371,19 +375,19 @@
             "n_attack_samples": 63882,
             "n_mutations_evaluated": 7,
             "n_mutations_skipped": 0,
-            "n_mutations_meeting_target": 2,
-            "target_hit_rate": 0.285714,
+            "n_mutations_meeting_target": 1,
+            "target_hit_rate": 0.142857,
             "clean_baseline_detection_rate": 0.9979,
-            "clean_adversarial_detection_rate": 0.9977,
-            "mean_recovery_delta_pp": 14.2571,
-            "median_recovery_delta_pp": 5.28,
+            "clean_adversarial_detection_rate": 0.9993,
+            "mean_recovery_delta_pp": 8.64,
+            "median_recovery_delta_pp": 3.05,
             "best_mutation_by_recovery": {
-              "mutation": "inject_decoy_flows",
-              "recovery_delta_pp": 54.59
+              "mutation": "mimic_packet_size",
+              "recovery_delta_pp": 36.36
             },
             "worst_mutation_by_recovery": {
-              "mutation": "mimic_timing",
-              "recovery_delta_pp": -0.88
+              "mutation": "inject_decoy_flows",
+              "recovery_delta_pp": -0.0
             }
           },
           "nslkdd": {
@@ -395,16 +399,16 @@
             "n_mutations_meeting_target": 0,
             "target_hit_rate": 0.0,
             "clean_baseline_detection_rate": 0.9974,
-            "clean_adversarial_detection_rate": 0.9977,
-            "mean_recovery_delta_pp": 0.63,
-            "median_recovery_delta_pp": 0.63,
+            "clean_adversarial_detection_rate": 0.9985,
+            "mean_recovery_delta_pp": 2.56,
+            "median_recovery_delta_pp": 2.56,
             "best_mutation_by_recovery": {
               "mutation": "mimic_timing",
-              "recovery_delta_pp": 0.63
+              "recovery_delta_pp": 2.56
             },
             "worst_mutation_by_recovery": {
               "mutation": "mimic_timing",
-              "recovery_delta_pp": 0.63
+              "recovery_delta_pp": 2.56
             }
           },
           "unswnb15": {
@@ -413,15 +417,15 @@
             "n_attack_samples": 12175,
             "n_mutations_evaluated": 5,
             "n_mutations_skipped": 2,
-            "n_mutations_meeting_target": 0,
-            "target_hit_rate": 0.0,
+            "n_mutations_meeting_target": 1,
+            "target_hit_rate": 0.2,
             "clean_baseline_detection_rate": 0.9969,
             "clean_adversarial_detection_rate": 0.9966,
-            "mean_recovery_delta_pp": 0.224,
-            "median_recovery_delta_pp": 0.0,
+            "mean_recovery_delta_pp": 6.9,
+            "median_recovery_delta_pp": 0.1,
             "best_mutation_by_recovery": {
-              "mutation": "mimic_timing",
-              "recovery_delta_pp": 1.03
+              "mutation": "shift_ack_timing",
+              "recovery_delta_pp": 33.33
             },
             "worst_mutation_by_recovery": {
               "mutation": "mimic_packet_size",
@@ -434,9 +438,9 @@
           "n_mutations_meeting_target_total": 2,
           "target_hit_rate_overall": 0.153846,
           "mean_clean_baseline_detection_rate": 0.9974,
-          "mean_clean_adversarial_detection_rate": 0.997333,
-          "mean_recovery_delta_pp": 5.037,
-          "median_recovery_delta_pp": 0.63
+          "mean_clean_adversarial_detection_rate": 0.998133,
+          "mean_recovery_delta_pp": 6.0333,
+          "median_recovery_delta_pp": 6.9
         }
       },
       "adv_training_clean": {
@@ -457,19 +461,17 @@
         }
       },
       "retrained_adversarial": {
-        "n_accuracy_entries": 15,
-        "overall_mean_accuracy": 0.916109,
+        "n_accuracy_entries": 8,
+        "overall_mean_accuracy": 0.97311,
         "dataset_mean_accuracy": {
-          "cicids2017": 0.955323,
-          "nslkdd": 0.95075,
-          "unswnb15": 0.842255
+          "cicids2017": 0.95861,
+          "nslkdd": 0.987611
         },
         "model_mean_accuracy": {
-          "lstm": 0.827592,
-          "majority_voting": 0.958775,
-          "mlp": 0.874196,
-          "random_forest": 0.96409,
-          "xgboost": 0.955893
+          "majority_voting": 0.996895,
+          "mlp": 0.901568,
+          "random_forest": 0.996845,
+          "xgboost": 0.997133
         }
       },
       "missing_files": []
@@ -564,19 +566,19 @@
             "n_attack_samples": 63882,
             "n_mutations_evaluated": 7,
             "n_mutations_skipped": 0,
-            "n_mutations_meeting_target": 3,
-            "target_hit_rate": 0.428571,
+            "n_mutations_meeting_target": 1,
+            "target_hit_rate": 0.142857,
             "clean_baseline_detection_rate": 0.9979,
-            "clean_adversarial_detection_rate": 0.9978,
-            "mean_recovery_delta_pp": 16.0571,
-            "median_recovery_delta_pp": 5.63,
+            "clean_adversarial_detection_rate": 0.9993,
+            "mean_recovery_delta_pp": 8.5657,
+            "median_recovery_delta_pp": 3.04,
             "best_mutation_by_recovery": {
               "mutation": "mimic_packet_size",
-              "recovery_delta_pp": 40.51
+              "recovery_delta_pp": 35.74
             },
             "worst_mutation_by_recovery": {
-              "mutation": "add_tcp_options",
-              "recovery_delta_pp": -0.01
+              "mutation": "inject_decoy_flows",
+              "recovery_delta_pp": -0.0
             }
           },
           "nslkdd": {
@@ -588,16 +590,16 @@
             "n_mutations_meeting_target": 0,
             "target_hit_rate": 0.0,
             "clean_baseline_detection_rate": 0.9974,
-            "clean_adversarial_detection_rate": 0.9981,
-            "mean_recovery_delta_pp": 3.77,
-            "median_recovery_delta_pp": 3.77,
+            "clean_adversarial_detection_rate": 0.9986,
+            "mean_recovery_delta_pp": 2.16,
+            "median_recovery_delta_pp": 2.16,
             "best_mutation_by_recovery": {
               "mutation": "mimic_timing",
-              "recovery_delta_pp": 3.77
+              "recovery_delta_pp": 2.16
             },
             "worst_mutation_by_recovery": {
               "mutation": "mimic_timing",
-              "recovery_delta_pp": 3.77
+              "recovery_delta_pp": 2.16
             }
           },
           "unswnb15": {
@@ -609,27 +611,27 @@
             "n_mutations_meeting_target": 1,
             "target_hit_rate": 0.2,
             "clean_baseline_detection_rate": 0.9969,
-            "clean_adversarial_detection_rate": 0.9956,
-            "mean_recovery_delta_pp": 6.916,
+            "clean_adversarial_detection_rate": 0.9974,
+            "mean_recovery_delta_pp": 6.886,
             "median_recovery_delta_pp": 0.1,
             "best_mutation_by_recovery": {
               "mutation": "shift_ack_timing",
               "recovery_delta_pp": 33.33
             },
             "worst_mutation_by_recovery": {
-              "mutation": "fragment_payload",
-              "recovery_delta_pp": 0.0
+              "mutation": "mimic_packet_size",
+              "recovery_delta_pp": -0.07
             }
           }
         },
         "overall": {
           "n_mutations_evaluated_total": 13,
-          "n_mutations_meeting_target_total": 4,
-          "target_hit_rate_overall": 0.307692,
+          "n_mutations_meeting_target_total": 2,
+          "target_hit_rate_overall": 0.153846,
           "mean_clean_baseline_detection_rate": 0.9974,
-          "mean_clean_adversarial_detection_rate": 0.997167,
-          "mean_recovery_delta_pp": 8.9144,
-          "median_recovery_delta_pp": 6.916
+          "mean_clean_adversarial_detection_rate": 0.998433,
+          "mean_recovery_delta_pp": 5.8706,
+          "median_recovery_delta_pp": 6.886
         }
       },
       "adv_training_clean": {
@@ -650,27 +652,26 @@
         }
       },
       "retrained_adversarial": {
-        "n_accuracy_entries": 15,
-        "overall_mean_accuracy": 0.914254,
+        "n_accuracy_entries": 12,
+        "overall_mean_accuracy": 0.940579,
         "dataset_mean_accuracy": {
-          "cicids2017": 0.92728,
-          "nslkdd": 0.964988,
-          "unswnb15": 0.850494
+          "cicids2017": 0.955428,
+          "nslkdd": 0.987274,
+          "unswnb15": 0.879034
         },
         "model_mean_accuracy": {
-          "lstm": 0.847481,
-          "majority_voting": 0.961673,
-          "mlp": 0.837017,
-          "random_forest": 0.965711,
-          "xgboost": 0.959388
+          "majority_voting": 0.964042,
+          "mlp": 0.871466,
+          "random_forest": 0.966379,
+          "xgboost": 0.960427
         }
       },
       "missing_files": []
     }
   },
   "team_average": {
-    "n_metric_keys_all_owners": 492,
-    "n_metric_keys_missing_owners": 0,
+    "n_metric_keys_all_owners": 485,
+    "n_metric_keys_missing_owners": 4,
     "metrics_all_owners": {
       "adv_training_clean.accuracy_drop_pp.cicids2017.lstm": {
         "average": 0.730883,
@@ -2437,38 +2438,38 @@
         "n_owners_present": 3
       },
       "defense.clean.adversarial_detection_rate.cicids2017": {
-        "average": 0.9983,
+        "average": 0.9988,
         "values_by_owner": {
-          "alyssa": 0.9977,
-          "jessy": 0.9978,
-          "shad": 0.9994
+          "alyssa": 0.9993,
+          "jessy": 0.9993,
+          "shad": 0.9978
         },
         "n_owners_present": 3
       },
       "defense.clean.adversarial_detection_rate.nslkdd": {
-        "average": 0.997733,
+        "average": 0.998433,
         "values_by_owner": {
-          "alyssa": 0.9977,
-          "jessy": 0.9981,
-          "shad": 0.9974
+          "alyssa": 0.9985,
+          "jessy": 0.9986,
+          "shad": 0.9982
         },
         "n_owners_present": 3
       },
       "defense.clean.adversarial_detection_rate.overall": {
-        "average": 0.997533,
+        "average": 0.997989,
         "values_by_owner": {
-          "alyssa": 0.997333,
-          "jessy": 0.997167,
-          "shad": 0.9981
+          "alyssa": 0.998133,
+          "jessy": 0.998433,
+          "shad": 0.9974
         },
         "n_owners_present": 3
       },
       "defense.clean.adversarial_detection_rate.unswnb15": {
-        "average": 0.996567,
+        "average": 0.996733,
         "values_by_owner": {
           "alyssa": 0.9966,
-          "jessy": 0.9956,
-          "shad": 0.9975
+          "jessy": 0.9974,
+          "shad": 0.9962
         },
         "n_owners_present": 3
       },
@@ -2509,200 +2510,200 @@
         "n_owners_present": 3
       },
       "defense.mean_recovery_delta_pp.overall": {
-        "average": 6.2465,
+        "average": 4.907556,
         "values_by_owner": {
-          "alyssa": 5.037033,
-          "jessy": 8.914367,
-          "shad": 4.7881
+          "alyssa": 6.033333,
+          "jessy": 5.870567,
+          "shad": 2.818767
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.cicids2017.add_tcp_options": {
-        "average": 0.998667,
+        "average": 0.998833,
         "values_by_owner": {
-          "alyssa": 0.9986,
-          "jessy": 0.9987,
+          "alyssa": 0.9989,
+          "jessy": 0.9989,
           "shad": 0.9987
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.cicids2017.dilute_scan_pattern": {
-        "average": 0.981167,
+        "average": 0.979033,
         "values_by_owner": {
-          "alyssa": 0.9686,
-          "jessy": 0.9979,
-          "shad": 0.977
+          "alyssa": 0.979,
+          "jessy": 0.9791,
+          "shad": 0.979
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.cicids2017.fragment_payload": {
-        "average": 0.998667,
+        "average": 0.998833,
         "values_by_owner": {
-          "alyssa": 0.9986,
-          "jessy": 0.9987,
+          "alyssa": 0.9989,
+          "jessy": 0.9989,
           "shad": 0.9987
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.cicids2017.inject_decoy_flows": {
-        "average": 0.9451,
+        "average": 0.903667,
         "values_by_owner": {
-          "alyssa": 0.9554,
-          "jessy": 0.9343,
-          "shad": 0.9456
+          "alyssa": 0.9037,
+          "jessy": 0.9037,
+          "shad": 0.9036
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.cicids2017.mimic_packet_size": {
-        "average": 0.9886,
+        "average": 0.9906,
         "values_by_owner": {
-          "alyssa": 0.9871,
-          "jessy": 0.999,
-          "shad": 0.9797
+          "alyssa": 0.9919,
+          "jessy": 0.9909,
+          "shad": 0.989
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.cicids2017.mimic_timing": {
-        "average": 0.9914,
+        "average": 0.9938,
         "values_by_owner": {
-          "alyssa": 0.9874,
-          "jessy": 0.9953,
-          "shad": 0.9915
+          "alyssa": 0.994,
+          "jessy": 0.994,
+          "shad": 0.9934
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.cicids2017.shift_ack_timing": {
-        "average": 0.998467,
+        "average": 0.9988,
         "values_by_owner": {
-          "alyssa": 0.9983,
-          "jessy": 0.9987,
-          "shad": 0.9984
+          "alyssa": 0.9988,
+          "jessy": 0.9989,
+          "shad": 0.9987
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.nslkdd.mimic_timing": {
-        "average": 0.984833,
+        "average": 0.984767,
         "values_by_owner": {
-          "alyssa": 0.9797,
-          "jessy": 0.995,
-          "shad": 0.9798
+          "alyssa": 0.9897,
+          "jessy": 0.9878,
+          "shad": 0.9768
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.unswnb15.add_tcp_options": {
-        "average": 0.974267,
+        "average": 0.974633,
         "values_by_owner": {
-          "alyssa": 0.9739,
-          "jessy": 0.9747,
-          "shad": 0.9742
+          "alyssa": 0.9746,
+          "jessy": 0.9746,
+          "shad": 0.9747
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.unswnb15.fragment_payload": {
-        "average": 0.974267,
+        "average": 0.974633,
         "values_by_owner": {
-          "alyssa": 0.9739,
-          "jessy": 0.9747,
-          "shad": 0.9742
+          "alyssa": 0.9746,
+          "jessy": 0.9746,
+          "shad": 0.9747
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.unswnb15.mimic_packet_size": {
-        "average": 0.975,
+        "average": 0.975233,
         "values_by_owner": {
-          "alyssa": 0.9745,
-          "jessy": 0.9759,
-          "shad": 0.9746
+          "alyssa": 0.9753,
+          "jessy": 0.9749,
+          "shad": 0.9755
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.unswnb15.mimic_timing": {
-        "average": 0.975167,
+        "average": 0.9755,
         "values_by_owner": {
-          "alyssa": 0.9747,
-          "jessy": 0.9759,
-          "shad": 0.9749
+          "alyssa": 0.9755,
+          "jessy": 0.9753,
+          "shad": 0.9757
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_accuracy.unswnb15.shift_ack_timing": {
-        "average": 0.974233,
+        "average": 0.974633,
         "values_by_owner": {
-          "alyssa": 0.9738,
-          "jessy": 0.9747,
-          "shad": 0.9742
+          "alyssa": 0.9746,
+          "jessy": 0.9746,
+          "shad": 0.9747
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.cicids2017.add_tcp_options": {
-        "average": 0.999533,
+        "average": 0.9998,
         "values_by_owner": {
-          "alyssa": 0.9993,
-          "jessy": 0.9997,
-          "shad": 0.9996
+          "alyssa": 0.9998,
+          "jessy": 0.9998,
+          "shad": 0.9998
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.cicids2017.dilute_scan_pattern": {
-        "average": 0.8614,
+        "average": 0.843867,
         "values_by_owner": {
-          "alyssa": 0.7636,
-          "jessy": 0.9922,
-          "shad": 0.8284
+          "alyssa": 0.8429,
+          "jessy": 0.8441,
+          "shad": 0.8446
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.cicids2017.fragment_payload": {
-        "average": 0.999233,
+        "average": 0.9998,
         "values_by_owner": {
-          "alyssa": 0.999,
-          "jessy": 0.9996,
-          "shad": 0.9991
+          "alyssa": 0.9998,
+          "jessy": 0.9998,
+          "shad": 0.9998
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.cicids2017.inject_decoy_flows": {
-        "average": 0.4363,
+        "average": 0.0,
         "values_by_owner": {
-          "alyssa": 0.5459,
-          "jessy": 0.322,
-          "shad": 0.441
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.cicids2017.mimic_packet_size": {
-        "average": 0.9385,
+        "average": 0.950133,
         "values_by_owner": {
-          "alyssa": 0.9294,
-          "jessy": 0.9996,
-          "shad": 0.8865
+          "alyssa": 0.9581,
+          "jessy": 0.9519,
+          "shad": 0.9404
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.cicids2017.mimic_timing": {
-        "average": 0.955167,
+        "average": 0.9691,
         "values_by_owner": {
-          "alyssa": 0.9313,
-          "jessy": 0.9777,
-          "shad": 0.9565
+          "alyssa": 0.9705,
+          "jessy": 0.9704,
+          "shad": 0.9664
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.cicids2017.shift_ack_timing": {
-        "average": 0.996467,
+        "average": 0.9995,
         "values_by_owner": {
-          "alyssa": 0.9954,
-          "jessy": 0.9989,
-          "shad": 0.9951
+          "alyssa": 0.9995,
+          "jessy": 0.9995,
+          "shad": 0.9995
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.nslkdd.mimic_timing": {
-        "average": 0.978667,
+        "average": 0.976967,
         "values_by_owner": {
-          "alyssa": 0.968,
-          "jessy": 0.9993,
-          "shad": 0.9687
+          "alyssa": 0.9872,
+          "jessy": 0.9833,
+          "shad": 0.9604
         },
         "n_owners_present": 3
       },
@@ -2725,47 +2726,47 @@
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.unswnb15.mimic_packet_size": {
-        "average": 0.9993,
+        "average": 0.9989,
         "values_by_owner": {
           "alyssa": 0.9991,
-          "jessy": 0.9999,
-          "shad": 0.9989
+          "jessy": 0.9984,
+          "shad": 0.9992
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.unswnb15.mimic_timing": {
-        "average": 0.999833,
+        "average": 0.9999,
         "values_by_owner": {
-          "alyssa": 0.9995,
-          "jessy": 1.0,
-          "shad": 1.0
+          "alyssa": 1.0,
+          "jessy": 0.9999,
+          "shad": 0.9998
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate.unswnb15.shift_ack_timing": {
-        "average": 0.7778,
+        "average": 0.8889,
         "values_by_owner": {
-          "alyssa": 0.6667,
+          "alyssa": 1.0,
           "jessy": 1.0,
           "shad": 0.6667
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.add_tcp_options.mlp": {
-        "average": 0.999567,
+        "average": 0.9993,
         "values_by_owner": {
-          "alyssa": 0.9992,
+          "alyssa": 0.9994,
           "jessy": 0.9995,
-          "shad": 1.0
+          "shad": 0.999
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.add_tcp_options.random_forest": {
-        "average": 0.999333,
+        "average": 0.9996,
         "values_by_owner": {
-          "alyssa": 0.9993,
-          "jessy": 0.9995,
-          "shad": 0.9992
+          "alyssa": 0.9996,
+          "jessy": 0.9996,
+          "shad": 0.9996
         },
         "n_owners_present": 3
       },
@@ -2779,200 +2780,200 @@
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.dilute_scan_pattern.mlp": {
-        "average": 0.982067,
+        "average": 0.985067,
         "values_by_owner": {
-          "alyssa": 0.9707,
-          "jessy": 0.9999,
-          "shad": 0.9756
+          "alyssa": 0.9946,
+          "jessy": 0.999,
+          "shad": 0.9616
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.dilute_scan_pattern.random_forest": {
-        "average": 0.784433,
+        "average": 0.6953,
         "values_by_owner": {
-          "alyssa": 0.6882,
-          "jessy": 0.9763,
-          "shad": 0.6888
+          "alyssa": 0.697,
+          "jessy": 0.6974,
+          "shad": 0.6915
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.dilute_scan_pattern.xgboost": {
-        "average": 0.905867,
+        "average": 0.852533,
         "values_by_owner": {
-          "alyssa": 0.859,
-          "jessy": 0.9996,
-          "shad": 0.859
+          "alyssa": 0.8525,
+          "jessy": 0.8526,
+          "shad": 0.8525
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.fragment_payload.mlp": {
-        "average": 0.999933,
+        "average": 0.9999,
         "values_by_owner": {
           "alyssa": 1.0,
-          "jessy": 1.0,
-          "shad": 0.9998
+          "jessy": 0.9998,
+          "shad": 0.9999
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.fragment_payload.random_forest": {
-        "average": 0.9991,
+        "average": 0.999633,
         "values_by_owner": {
-          "alyssa": 0.9989,
-          "jessy": 0.9995,
-          "shad": 0.9989
+          "alyssa": 0.9996,
+          "jessy": 0.9997,
+          "shad": 0.9996
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.fragment_payload.xgboost": {
-        "average": 1.0,
+        "average": 0.999967,
         "values_by_owner": {
           "alyssa": 1.0,
-          "jessy": 1.0,
+          "jessy": 0.9999,
           "shad": 1.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.inject_decoy_flows.mlp": {
-        "average": 0.618167,
+        "average": 0.403367,
         "values_by_owner": {
-          "alyssa": 0.6848,
-          "jessy": 0.633,
-          "shad": 0.5367
+          "alyssa": 0.4108,
+          "jessy": 0.449,
+          "shad": 0.3503
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.inject_decoy_flows.random_forest": {
-        "average": 0.453567,
+        "average": 0.0,
         "values_by_owner": {
-          "alyssa": 0.6132,
-          "jessy": 0.1843,
-          "shad": 0.5632
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.inject_decoy_flows.xgboost": {
-        "average": 0.875067,
+        "average": 3.3e-05,
         "values_by_owner": {
-          "alyssa": 0.9425,
-          "jessy": 0.7402,
-          "shad": 0.9425
+          "alyssa": 0.0,
+          "jessy": 0.0001,
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_packet_size.mlp": {
-        "average": 0.9976,
+        "average": 0.983033,
         "values_by_owner": {
-          "alyssa": 0.9968,
-          "jessy": 0.9982,
-          "shad": 0.9978
+          "alyssa": 0.9783,
+          "jessy": 0.9831,
+          "shad": 0.9877
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_packet_size.random_forest": {
-        "average": 0.771367,
+        "average": 0.6277,
         "values_by_owner": {
-          "alyssa": 0.6812,
-          "jessy": 0.9995,
-          "shad": 0.6334
+          "alyssa": 0.6342,
+          "jessy": 0.6304,
+          "shad": 0.6185
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_packet_size.xgboost": {
-        "average": 0.9956,
+        "average": 0.965433,
         "values_by_owner": {
-          "alyssa": 0.9934,
-          "jessy": 1.0,
-          "shad": 0.9934
+          "alyssa": 0.9673,
+          "jessy": 0.9617,
+          "shad": 0.9673
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_timing.mlp": {
-        "average": 0.995967,
+        "average": 0.9921,
         "values_by_owner": {
-          "alyssa": 0.9948,
-          "jessy": 0.9982,
-          "shad": 0.9949
+          "alyssa": 0.9963,
+          "jessy": 0.9948,
+          "shad": 0.9852
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_timing.random_forest": {
-        "average": 0.794767,
+        "average": 0.9067,
         "values_by_owner": {
-          "alyssa": 0.8783,
-          "jessy": 0.6755,
-          "shad": 0.8305
+          "alyssa": 0.9401,
+          "jessy": 0.9184,
+          "shad": 0.8616
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_timing.xgboost": {
-        "average": 0.988433,
+        "average": 0.976933,
         "values_by_owner": {
-          "alyssa": 0.9836,
-          "jessy": 0.9981,
-          "shad": 0.9836
+          "alyssa": 0.9768,
+          "jessy": 0.9772,
+          "shad": 0.9768
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.shift_ack_timing.mlp": {
         "average": 0.9963,
         "values_by_owner": {
-          "alyssa": 0.9942,
-          "jessy": 1.0,
+          "alyssa": 0.9956,
+          "jessy": 0.9986,
           "shad": 0.9947
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.shift_ack_timing.random_forest": {
-        "average": 0.998033,
+        "average": 0.9996,
         "values_by_owner": {
-          "alyssa": 0.9976,
-          "jessy": 0.9988,
-          "shad": 0.9977
+          "alyssa": 0.9996,
+          "jessy": 0.9996,
+          "shad": 0.9996
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.cicids2017.shift_ack_timing.xgboost": {
-        "average": 0.9998,
+        "average": 0.9997,
         "values_by_owner": {
-          "alyssa": 0.9999,
-          "jessy": 0.9996,
-          "shad": 0.9999
+          "alyssa": 0.9997,
+          "jessy": 0.9997,
+          "shad": 0.9997
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.nslkdd.mimic_timing.mlp": {
-        "average": 0.949,
+        "average": 0.845033,
         "values_by_owner": {
-          "alyssa": 0.9291,
-          "jessy": 0.9993,
-          "shad": 0.9186
+          "alyssa": 0.6675,
+          "jessy": 0.9678,
+          "shad": 0.8998
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.nslkdd.mimic_timing.random_forest": {
-        "average": 0.964567,
+        "average": 0.918433,
         "values_by_owner": {
-          "alyssa": 0.9476,
-          "jessy": 0.9983,
-          "shad": 0.9478
+          "alyssa": 0.9201,
+          "jessy": 0.9201,
+          "shad": 0.9151
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.nslkdd.mimic_timing.xgboost": {
-        "average": 0.999533,
+        "average": 0.9994,
         "values_by_owner": {
-          "alyssa": 0.9993,
-          "jessy": 1.0,
-          "shad": 0.9993
+          "alyssa": 0.9994,
+          "jessy": 0.9994,
+          "shad": 0.9994
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.unswnb15.add_tcp_options.mlp": {
-        "average": 0.637867,
+        "average": 0.380567,
         "values_by_owner": {
-          "alyssa": 1.0,
-          "jessy": 0.7796,
-          "shad": 0.134
+          "alyssa": 0.0133,
+          "jessy": 0.1397,
+          "shad": 0.9887
         },
         "n_owners_present": 3
       },
@@ -2995,11 +2996,11 @@
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.unswnb15.fragment_payload.mlp": {
-        "average": 0.666667,
+        "average": 0.333333,
         "values_by_owner": {
-          "alyssa": 1.0,
-          "jessy": 1.0,
-          "shad": 0.0
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 1.0
         },
         "n_owners_present": 3
       },
@@ -3022,47 +3023,47 @@
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_packet_size.mlp": {
-        "average": 0.999467,
+        "average": 0.813067,
         "values_by_owner": {
-          "alyssa": 0.9999,
-          "jessy": 0.9994,
-          "shad": 0.9991
+          "alyssa": 0.9998,
+          "jessy": 0.4397,
+          "shad": 0.9997
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_packet_size.random_forest": {
-        "average": 0.990333,
+        "average": 0.9782,
         "values_by_owner": {
-          "alyssa": 0.9863,
-          "jessy": 0.9993,
-          "shad": 0.9854
+          "alyssa": 0.9782,
+          "jessy": 0.9782,
+          "shad": 0.9782
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_packet_size.xgboost": {
-        "average": 0.999467,
+        "average": 0.999133,
         "values_by_owner": {
           "alyssa": 0.9992,
-          "jessy": 1.0,
+          "jessy": 0.999,
           "shad": 0.9992
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_timing.mlp": {
-        "average": 0.712267,
+        "average": 0.999933,
         "values_by_owner": {
-          "alyssa": 0.4351,
+          "alyssa": 1.0,
           "jessy": 0.9998,
-          "shad": 0.7019
+          "shad": 1.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_timing.random_forest": {
-        "average": 0.9991,
+        "average": 0.9155,
         "values_by_owner": {
-          "alyssa": 0.9988,
-          "jessy": 1.0,
-          "shad": 0.9985
+          "alyssa": 0.9868,
+          "jessy": 0.9868,
+          "shad": 0.7729
         },
         "n_owners_present": 3
       },
@@ -3076,20 +3077,20 @@
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.mlp": {
-        "average": 1.0,
+        "average": 0.666667,
         "values_by_owner": {
           "alyssa": 1.0,
           "jessy": 1.0,
-          "shad": 1.0
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.random_forest": {
-        "average": 0.444433,
+        "average": 0.8889,
         "values_by_owner": {
-          "alyssa": 0.3333,
+          "alyssa": 1.0,
           "jessy": 1.0,
-          "shad": 0.0
+          "shad": 0.6667
         },
         "n_owners_present": 3
       },
@@ -3103,353 +3104,353 @@
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_f1.cicids2017.add_tcp_options": {
-        "average": 0.996133,
+        "average": 0.9965,
         "values_by_owner": {
-          "alyssa": 0.9958,
-          "jessy": 0.9963,
-          "shad": 0.9963
+          "alyssa": 0.9966,
+          "jessy": 0.9967,
+          "shad": 0.9962
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_f1.cicids2017.dilute_scan_pattern": {
-        "average": 0.939767,
+        "average": 0.9342,
         "values_by_owner": {
-          "alyssa": 0.8982,
-          "jessy": 0.9937,
-          "shad": 0.9274
+          "alyssa": 0.934,
+          "jessy": 0.9345,
+          "shad": 0.9341
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_f1.cicids2017.fragment_payload": {
-        "average": 0.9961,
+        "average": 0.9965,
         "values_by_owner": {
-          "alyssa": 0.9958,
-          "jessy": 0.9963,
+          "alyssa": 0.9966,
+          "jessy": 0.9967,
           "shad": 0.9962
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_f1.cicids2017.inject_decoy_flows": {
-        "average": 0.8061,
+        "average": 0.6042,
         "values_by_owner": {
-          "alyssa": 0.849,
-          "jessy": 0.7599,
-          "shad": 0.8094
+          "alyssa": 0.6046,
+          "jessy": 0.6046,
+          "shad": 0.6034
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_f1.cicids2017.mimic_packet_size": {
-        "average": 0.964667,
+        "average": 0.971533,
         "values_by_owner": {
-          "alyssa": 0.9604,
-          "jessy": 0.9972,
-          "shad": 0.9364
+          "alyssa": 0.9756,
+          "jessy": 0.9724,
+          "shad": 0.9666
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_f1.cicids2017.mimic_timing": {
-        "average": 0.973967,
+        "average": 0.9814,
         "values_by_owner": {
-          "alyssa": 0.9614,
-          "jessy": 0.9861,
-          "shad": 0.9744
+          "alyssa": 0.982,
+          "jessy": 0.982,
+          "shad": 0.9802
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_f1.cicids2017.shift_ack_timing": {
-        "average": 0.995533,
+        "average": 0.996433,
         "values_by_owner": {
-          "alyssa": 0.9951,
-          "jessy": 0.9961,
-          "shad": 0.9954
+          "alyssa": 0.9966,
+          "jessy": 0.9966,
+          "shad": 0.9961
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_f1.nslkdd.mimic_timing": {
-        "average": 0.984067,
+        "average": 0.984033,
         "values_by_owner": {
-          "alyssa": 0.9786,
-          "jessy": 0.9948,
-          "shad": 0.9788
+          "alyssa": 0.9893,
+          "jessy": 0.9873,
+          "shad": 0.9755
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_f1.unswnb15.add_tcp_options": {
-        "average": 0.9536,
-        "values_by_owner": {
-          "alyssa": 0.9529,
-          "jessy": 0.9543,
-          "shad": 0.9536
-        },
-        "n_owners_present": 3
-      },
-      "defense.mutation.adversarial_f1.unswnb15.fragment_payload": {
-        "average": 0.9536,
-        "values_by_owner": {
-          "alyssa": 0.9529,
-          "jessy": 0.9543,
-          "shad": 0.9536
-        },
-        "n_owners_present": 3
-      },
-      "defense.mutation.adversarial_f1.unswnb15.mimic_packet_size": {
-        "average": 0.954967,
+        "average": 0.954233,
         "values_by_owner": {
           "alyssa": 0.9542,
-          "jessy": 0.9564,
+          "jessy": 0.9542,
           "shad": 0.9543
         },
         "n_owners_present": 3
       },
-      "defense.mutation.adversarial_f1.unswnb15.mimic_timing": {
-        "average": 0.955233,
+      "defense.mutation.adversarial_f1.unswnb15.fragment_payload": {
+        "average": 0.954233,
         "values_by_owner": {
-          "alyssa": 0.9544,
-          "jessy": 0.9565,
-          "shad": 0.9548
+          "alyssa": 0.9542,
+          "jessy": 0.9542,
+          "shad": 0.9543
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.unswnb15.mimic_packet_size": {
+        "average": 0.9553,
+        "values_by_owner": {
+          "alyssa": 0.9554,
+          "jessy": 0.9547,
+          "shad": 0.9558
+        },
+        "n_owners_present": 3
+      },
+      "defense.mutation.adversarial_f1.unswnb15.mimic_timing": {
+        "average": 0.9558,
+        "values_by_owner": {
+          "alyssa": 0.9559,
+          "jessy": 0.9554,
+          "shad": 0.9561
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_f1.unswnb15.shift_ack_timing": {
-        "average": 0.953533,
+        "average": 0.9542,
         "values_by_owner": {
-          "alyssa": 0.9528,
-          "jessy": 0.9543,
-          "shad": 0.9535
+          "alyssa": 0.9542,
+          "jessy": 0.9542,
+          "shad": 0.9542
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.cicids2017.add_tcp_options": {
-        "average": 0.993967,
+        "average": 0.994233,
         "values_by_owner": {
           "alyssa": 0.994,
-          "jessy": 0.9947,
-          "shad": 0.9932
+          "jessy": 0.9941,
+          "shad": 0.9946
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.cicids2017.dilute_scan_pattern": {
-        "average": 0.9932,
+        "average": 0.993467,
         "values_by_owner": {
-          "alyssa": 0.9927,
-          "jessy": 0.9947,
-          "shad": 0.9922
+          "alyssa": 0.9932,
+          "jessy": 0.9933,
+          "shad": 0.9939
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.cicids2017.fragment_payload": {
-        "average": 0.993967,
+        "average": 0.994233,
         "values_by_owner": {
           "alyssa": 0.994,
-          "jessy": 0.9947,
-          "shad": 0.9932
+          "jessy": 0.9941,
+          "shad": 0.9946
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.cicids2017.inject_decoy_flows": {
-        "average": 0.991167,
+        "average": 0.986867,
         "values_by_owner": {
-          "alyssa": 0.9919,
-          "jessy": 0.9915,
-          "shad": 0.9901
+          "alyssa": 0.9863,
+          "jessy": 0.9866,
+          "shad": 0.9877
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.cicids2017.mimic_packet_size": {
-        "average": 0.993533,
+        "average": 0.993933,
         "values_by_owner": {
-          "alyssa": 0.9936,
-          "jessy": 0.9947,
-          "shad": 0.9923
+          "alyssa": 0.9937,
+          "jessy": 0.9938,
+          "shad": 0.9943
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.cicids2017.mimic_timing": {
-        "average": 0.9937,
+        "average": 0.994033,
         "values_by_owner": {
-          "alyssa": 0.9936,
-          "jessy": 0.9946,
-          "shad": 0.9929
+          "alyssa": 0.9938,
+          "jessy": 0.9939,
+          "shad": 0.9944
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.cicids2017.shift_ack_timing": {
-        "average": 0.993967,
+        "average": 0.994233,
         "values_by_owner": {
           "alyssa": 0.994,
-          "jessy": 0.9947,
-          "shad": 0.9932
+          "jessy": 0.9941,
+          "shad": 0.9946
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.nslkdd.mimic_timing": {
-        "average": 0.989633,
+        "average": 0.9913,
         "values_by_owner": {
-          "alyssa": 0.9895,
-          "jessy": 0.9903,
-          "shad": 0.9891
+          "alyssa": 0.9914,
+          "jessy": 0.9913,
+          "shad": 0.9912
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.unswnb15.add_tcp_options": {
-        "average": 0.9142,
+        "average": 0.915133,
         "values_by_owner": {
-          "alyssa": 0.9129,
-          "jessy": 0.9163,
-          "shad": 0.9134
+          "alyssa": 0.9152,
+          "jessy": 0.9145,
+          "shad": 0.9157
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.unswnb15.fragment_payload": {
-        "average": 0.9142,
+        "average": 0.915133,
         "values_by_owner": {
-          "alyssa": 0.9129,
-          "jessy": 0.9163,
-          "shad": 0.9134
+          "alyssa": 0.9152,
+          "jessy": 0.9145,
+          "shad": 0.9157
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.unswnb15.mimic_packet_size": {
-        "average": 0.9144,
+        "average": 0.915333,
         "values_by_owner": {
-          "alyssa": 0.9131,
-          "jessy": 0.9166,
-          "shad": 0.9135
+          "alyssa": 0.9154,
+          "jessy": 0.9146,
+          "shad": 0.916
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.unswnb15.mimic_timing": {
-        "average": 0.914433,
+        "average": 0.9154,
         "values_by_owner": {
-          "alyssa": 0.9131,
-          "jessy": 0.9166,
-          "shad": 0.9136
+          "alyssa": 0.9155,
+          "jessy": 0.9147,
+          "shad": 0.916
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_precision.unswnb15.shift_ack_timing": {
-        "average": 0.9142,
+        "average": 0.915133,
         "values_by_owner": {
-          "alyssa": 0.9129,
-          "jessy": 0.9163,
-          "shad": 0.9134
+          "alyssa": 0.9152,
+          "jessy": 0.9145,
+          "shad": 0.9157
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.cicids2017.add_tcp_options": {
-        "average": 0.998267,
+        "average": 0.9988,
         "values_by_owner": {
-          "alyssa": 0.9977,
-          "jessy": 0.9978,
-          "shad": 0.9993
+          "alyssa": 0.9993,
+          "jessy": 0.9993,
+          "shad": 0.9978
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.cicids2017.dilute_scan_pattern": {
-        "average": 0.894433,
+        "average": 0.881633,
         "values_by_owner": {
-          "alyssa": 0.8202,
-          "jessy": 0.9926,
-          "shad": 0.8705
+          "alyssa": 0.8815,
+          "jessy": 0.8823,
+          "shad": 0.8811
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.cicids2017.fragment_payload": {
-        "average": 0.998133,
+        "average": 0.9988,
         "values_by_owner": {
-          "alyssa": 0.9975,
-          "jessy": 0.9978,
-          "shad": 0.9991
+          "alyssa": 0.9993,
+          "jessy": 0.9993,
+          "shad": 0.9978
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.cicids2017.inject_decoy_flows": {
-        "average": 0.680833,
+        "average": 0.4354,
         "values_by_owner": {
-          "alyssa": 0.7421,
-          "jessy": 0.616,
-          "shad": 0.6844
+          "alyssa": 0.4359,
+          "jessy": 0.4359,
+          "shad": 0.4344
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.cicids2017.mimic_packet_size": {
-        "average": 0.9385,
+        "average": 0.950133,
         "values_by_owner": {
-          "alyssa": 0.9294,
-          "jessy": 0.9996,
-          "shad": 0.8865
+          "alyssa": 0.9581,
+          "jessy": 0.9519,
+          "shad": 0.9404
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.cicids2017.mimic_timing": {
-        "average": 0.955167,
+        "average": 0.9691,
         "values_by_owner": {
-          "alyssa": 0.9313,
-          "jessy": 0.9777,
-          "shad": 0.9565
+          "alyssa": 0.9705,
+          "jessy": 0.9704,
+          "shad": 0.9664
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.cicids2017.shift_ack_timing": {
-        "average": 0.997033,
+        "average": 0.9987,
         "values_by_owner": {
-          "alyssa": 0.9961,
-          "jessy": 0.9975,
-          "shad": 0.9975
+          "alyssa": 0.9992,
+          "jessy": 0.9992,
+          "shad": 0.9977
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.nslkdd.mimic_timing": {
-        "average": 0.978667,
+        "average": 0.976967,
         "values_by_owner": {
-          "alyssa": 0.968,
-          "jessy": 0.9993,
-          "shad": 0.9687
+          "alyssa": 0.9872,
+          "jessy": 0.9833,
+          "shad": 0.9604
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.unswnb15.add_tcp_options": {
-        "average": 0.996567,
+        "average": 0.996733,
         "values_by_owner": {
           "alyssa": 0.9966,
-          "jessy": 0.9956,
-          "shad": 0.9975
+          "jessy": 0.9974,
+          "shad": 0.9962
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.unswnb15.fragment_payload": {
-        "average": 0.996567,
+        "average": 0.996733,
         "values_by_owner": {
           "alyssa": 0.9966,
-          "jessy": 0.9956,
-          "shad": 0.9975
+          "jessy": 0.9974,
+          "shad": 0.9962
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.unswnb15.mimic_packet_size": {
-        "average": 0.9993,
+        "average": 0.9989,
         "values_by_owner": {
           "alyssa": 0.9991,
-          "jessy": 0.9999,
-          "shad": 0.9989
+          "jessy": 0.9984,
+          "shad": 0.9992
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.unswnb15.mimic_timing": {
-        "average": 0.999833,
+        "average": 0.9999,
         "values_by_owner": {
-          "alyssa": 0.9995,
-          "jessy": 1.0,
-          "shad": 1.0
+          "alyssa": 1.0,
+          "jessy": 0.9999,
+          "shad": 0.9998
         },
         "n_owners_present": 3
       },
       "defense.mutation.adversarial_recall.unswnb15.shift_ack_timing": {
-        "average": 0.9965,
+        "average": 0.9967,
         "values_by_owner": {
-          "alyssa": 0.9965,
-          "jessy": 0.9956,
-          "shad": 0.9974
+          "alyssa": 0.9966,
+          "jessy": 0.9974,
+          "shad": 0.9961
         },
         "n_owners_present": 3
       },
@@ -4390,74 +4391,74 @@
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.cicids2017.add_tcp_options": {
-        "average": -0.026667,
+        "average": 0.0,
         "values_by_owner": {
-          "alyssa": -0.05,
-          "jessy": -0.01,
-          "shad": -0.02
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.cicids2017.dilute_scan_pattern": {
-        "average": 17.03,
+        "average": 15.273333,
         "values_by_owner": {
-          "alyssa": 7.25,
-          "jessy": 30.11,
-          "shad": 13.73
+          "alyssa": 15.18,
+          "jessy": 15.29,
+          "shad": 15.35
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.cicids2017.fragment_payload": {
-        "average": 0.15,
+        "average": 0.206667,
         "values_by_owner": {
-          "alyssa": 0.12,
-          "jessy": 0.19,
-          "shad": 0.14
+          "alyssa": 0.2,
+          "jessy": 0.21,
+          "shad": 0.21
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.cicids2017.inject_decoy_flows": {
-        "average": 43.626667,
+        "average": 0.0,
         "values_by_owner": {
-          "alyssa": 54.59,
-          "jessy": 32.2,
-          "shad": 44.09
+          "alyssa": -0.0,
+          "jessy": -0.0,
+          "shad": -0.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.cicids2017.mimic_packet_size": {
-        "average": 34.4,
+        "average": 35.563333,
         "values_by_owner": {
-          "alyssa": 33.49,
-          "jessy": 40.51,
-          "shad": 29.2
+          "alyssa": 36.36,
+          "jessy": 35.74,
+          "shad": 34.59
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.cicids2017.mimic_timing": {
-        "average": 1.513333,
+        "average": 2.91,
         "values_by_owner": {
-          "alyssa": -0.88,
-          "jessy": 3.77,
-          "shad": 1.65
+          "alyssa": 3.05,
+          "jessy": 3.04,
+          "shad": 2.64
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.cicids2017.shift_ack_timing": {
-        "average": 5.386667,
+        "average": 5.686667,
         "values_by_owner": {
-          "alyssa": 5.28,
-          "jessy": 5.63,
-          "shad": 5.25
+          "alyssa": 5.69,
+          "jessy": 5.68,
+          "shad": 5.69
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.nslkdd.mimic_timing": {
-        "average": 1.7,
+        "average": 1.53,
         "values_by_owner": {
-          "alyssa": 0.63,
-          "jessy": 3.77,
-          "shad": 0.7
+          "alyssa": 2.56,
+          "jessy": 2.16,
+          "shad": -0.13
         },
         "n_owners_present": 3
       },
@@ -4480,47 +4481,47 @@
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.unswnb15.mimic_packet_size": {
-        "average": 0.01,
+        "average": -0.026667,
         "values_by_owner": {
           "alyssa": -0.01,
-          "jessy": 0.07,
-          "shad": -0.03
+          "jessy": -0.07,
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.unswnb15.mimic_timing": {
-        "average": 1.063333,
+        "average": 1.07,
         "values_by_owner": {
-          "alyssa": 1.03,
-          "jessy": 1.08,
-          "shad": 1.08
+          "alyssa": 1.08,
+          "jessy": 1.07,
+          "shad": 1.06
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp.unswnb15.shift_ack_timing": {
-        "average": 11.11,
+        "average": 22.22,
         "values_by_owner": {
-          "alyssa": 0.0,
+          "alyssa": 33.33,
           "jessy": 33.33,
           "shad": 0.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.add_tcp_options.mlp": {
-        "average": 0.216667,
+        "average": 0.19,
         "values_by_owner": {
-          "alyssa": 0.18,
+          "alyssa": 0.2,
           "jessy": 0.21,
-          "shad": 0.26
+          "shad": 0.16
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.add_tcp_options.random_forest": {
-        "average": -0.016667,
+        "average": 0.01,
         "values_by_owner": {
-          "alyssa": -0.02,
-          "jessy": 0.0,
-          "shad": -0.03
+          "alyssa": 0.01,
+          "jessy": 0.01,
+          "shad": 0.01
         },
         "n_owners_present": 3
       },
@@ -4534,200 +4535,200 @@
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.dilute_scan_pattern.mlp": {
-        "average": 98.206667,
+        "average": 98.506667,
         "values_by_owner": {
-          "alyssa": 97.07,
-          "jessy": 99.99,
-          "shad": 97.56
+          "alyssa": 99.46,
+          "jessy": 99.9,
+          "shad": 96.16
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.dilute_scan_pattern.random_forest": {
-        "average": 9.173333,
+        "average": 0.26,
         "values_by_owner": {
-          "alyssa": -0.45,
-          "jessy": 28.36,
-          "shad": -0.39
+          "alyssa": 0.43,
+          "jessy": 0.47,
+          "shad": -0.12
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.dilute_scan_pattern.xgboost": {
-        "average": 4.686667,
+        "average": -0.646667,
         "values_by_owner": {
-          "alyssa": 0.0,
-          "jessy": 14.06,
-          "shad": 0.0
+          "alyssa": -0.65,
+          "jessy": -0.64,
+          "shad": -0.65
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.fragment_payload.mlp": {
-        "average": 99.993333,
+        "average": 99.99,
         "values_by_owner": {
           "alyssa": 100.0,
-          "jessy": 100.0,
-          "shad": 99.98
+          "jessy": 99.98,
+          "shad": 99.99
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.fragment_payload.random_forest": {
-        "average": 0.05,
+        "average": 0.103333,
         "values_by_owner": {
-          "alyssa": 0.03,
-          "jessy": 0.09,
-          "shad": 0.03
+          "alyssa": 0.1,
+          "jessy": 0.11,
+          "shad": 0.1
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.fragment_payload.xgboost": {
-        "average": 0.04,
+        "average": 0.036667,
         "values_by_owner": {
           "alyssa": 0.04,
-          "jessy": 0.04,
+          "jessy": 0.03,
           "shad": 0.04
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.inject_decoy_flows.mlp": {
-        "average": 15.256667,
+        "average": -6.223333,
         "values_by_owner": {
-          "alyssa": 21.92,
-          "jessy": 16.74,
-          "shad": 7.11
+          "alyssa": -5.48,
+          "jessy": -1.66,
+          "shad": -11.53
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.inject_decoy_flows.random_forest": {
-        "average": 45.356667,
+        "average": 0.0,
         "values_by_owner": {
-          "alyssa": 61.32,
-          "jessy": 18.43,
-          "shad": 56.32
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.inject_decoy_flows.xgboost": {
-        "average": 87.476667,
+        "average": -0.026667,
         "values_by_owner": {
-          "alyssa": 94.22,
-          "jessy": 73.99,
-          "shad": 94.22
+          "alyssa": -0.03,
+          "jessy": -0.02,
+          "shad": -0.03
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_packet_size.mlp": {
-        "average": 99.76,
+        "average": 98.303333,
         "values_by_owner": {
-          "alyssa": 99.68,
-          "jessy": 99.82,
-          "shad": 99.78
+          "alyssa": 97.83,
+          "jessy": 98.31,
+          "shad": 98.77
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_packet_size.random_forest": {
-        "average": 14.246667,
+        "average": -0.12,
         "values_by_owner": {
-          "alyssa": 5.23,
-          "jessy": 37.06,
-          "shad": 0.45
+          "alyssa": 0.53,
+          "jessy": 0.15,
+          "shad": -1.04
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_packet_size.xgboost": {
-        "average": 3.73,
+        "average": 0.713333,
         "values_by_owner": {
-          "alyssa": 3.51,
-          "jessy": 4.17,
-          "shad": 3.51
+          "alyssa": 0.9,
+          "jessy": 0.34,
+          "shad": 0.9
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_timing.mlp": {
-        "average": 4.416667,
+        "average": 4.03,
         "values_by_owner": {
-          "alyssa": 4.3,
-          "jessy": 4.64,
-          "shad": 4.31
+          "alyssa": 4.45,
+          "jessy": 4.3,
+          "shad": 3.34
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_timing.random_forest": {
-        "average": -2.013333,
+        "average": 9.18,
         "values_by_owner": {
-          "alyssa": 6.34,
-          "jessy": -13.94,
-          "shad": 1.56
+          "alyssa": 12.52,
+          "jessy": 10.35,
+          "shad": 4.67
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_timing.xgboost": {
-        "average": 4.113333,
+        "average": 2.963333,
         "values_by_owner": {
-          "alyssa": 3.63,
-          "jessy": 5.08,
-          "shad": 3.63
+          "alyssa": 2.95,
+          "jessy": 2.99,
+          "shad": 2.95
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.shift_ack_timing.mlp": {
         "average": 3.54,
         "values_by_owner": {
-          "alyssa": 3.33,
-          "jessy": 3.91,
+          "alyssa": 3.47,
+          "jessy": 3.77,
           "shad": 3.38
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.shift_ack_timing.random_forest": {
-        "average": 9.613333,
+        "average": 9.77,
         "values_by_owner": {
-          "alyssa": 9.57,
-          "jessy": 9.69,
-          "shad": 9.58
+          "alyssa": 9.77,
+          "jessy": 9.77,
+          "shad": 9.77
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.cicids2017.shift_ack_timing.xgboost": {
-        "average": 4.44,
+        "average": 4.43,
         "values_by_owner": {
-          "alyssa": 4.45,
-          "jessy": 4.42,
-          "shad": 4.45
+          "alyssa": 4.43,
+          "jessy": 4.43,
+          "shad": 4.43
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.nslkdd.mimic_timing.mlp": {
-        "average": 4.15,
+        "average": -6.246667,
         "values_by_owner": {
-          "alyssa": 2.16,
-          "jessy": 9.18,
-          "shad": 1.11
+          "alyssa": -24.0,
+          "jessy": 6.03,
+          "shad": -0.77
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.nslkdd.mimic_timing.random_forest": {
-        "average": 3.436667,
+        "average": -1.176667,
         "values_by_owner": {
-          "alyssa": 1.74,
-          "jessy": 6.81,
-          "shad": 1.76
+          "alyssa": -1.01,
+          "jessy": -1.01,
+          "shad": -1.51
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.nslkdd.mimic_timing.xgboost": {
-        "average": 0.873333,
+        "average": 0.86,
         "values_by_owner": {
-          "alyssa": 0.85,
-          "jessy": 0.92,
-          "shad": 0.85
+          "alyssa": 0.86,
+          "jessy": 0.86,
+          "shad": 0.86
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.unswnb15.add_tcp_options.mlp": {
-        "average": 52.186667,
+        "average": 26.456667,
         "values_by_owner": {
-          "alyssa": 88.4,
-          "jessy": 66.36,
-          "shad": 1.8
+          "alyssa": -10.27,
+          "jessy": 2.37,
+          "shad": 87.27
         },
         "n_owners_present": 3
       },
@@ -4750,11 +4751,11 @@
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.unswnb15.fragment_payload.mlp": {
-        "average": 66.666667,
+        "average": 33.333333,
         "values_by_owner": {
-          "alyssa": 100.0,
-          "jessy": 100.0,
-          "shad": 0.0
+          "alyssa": 0.0,
+          "jessy": 0.0,
+          "shad": 100.0
         },
         "n_owners_present": 3
       },
@@ -4777,47 +4778,47 @@
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_packet_size.mlp": {
-        "average": -0.043333,
+        "average": -18.683333,
         "values_by_owner": {
-          "alyssa": 0.0,
-          "jessy": -0.05,
-          "shad": -0.08
+          "alyssa": -0.01,
+          "jessy": -56.02,
+          "shad": -0.02
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_packet_size.random_forest": {
-        "average": 1.603333,
+        "average": 0.39,
         "values_by_owner": {
-          "alyssa": 1.2,
-          "jessy": 2.5,
-          "shad": 1.11
+          "alyssa": 0.39,
+          "jessy": 0.39,
+          "shad": 0.39
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_packet_size.xgboost": {
-        "average": 0.066667,
+        "average": 0.033333,
         "values_by_owner": {
           "alyssa": 0.04,
-          "jessy": 0.12,
+          "jessy": 0.02,
           "shad": 0.04
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_timing.mlp": {
-        "average": -28.243333,
+        "average": 0.523333,
         "values_by_owner": {
-          "alyssa": -55.96,
+          "alyssa": 0.53,
           "jessy": 0.51,
-          "shad": -29.28
+          "shad": 0.53
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_timing.random_forest": {
-        "average": 7.93,
+        "average": -0.43,
         "values_by_owner": {
-          "alyssa": 7.9,
-          "jessy": 8.02,
-          "shad": 7.87
+          "alyssa": 6.7,
+          "jessy": 6.7,
+          "shad": -14.69
         },
         "n_owners_present": 3
       },
@@ -4831,20 +4832,20 @@
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.mlp": {
-        "average": 100.0,
+        "average": 66.666667,
         "values_by_owner": {
           "alyssa": 100.0,
           "jessy": 100.0,
-          "shad": 100.0
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
       "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.random_forest": {
-        "average": -22.226667,
+        "average": 22.22,
         "values_by_owner": {
-          "alyssa": -33.34,
+          "alyssa": 33.33,
           "jessy": 33.33,
-          "shad": -66.67
+          "shad": 0.0
         },
         "n_owners_present": 3
       },
@@ -4894,11 +4895,11 @@
         "n_owners_present": 3
       },
       "defense.n_mutations_meeting_target.cicids2017": {
-        "average": 2.333333,
+        "average": 1.0,
         "values_by_owner": {
-          "alyssa": 2.0,
-          "jessy": 3.0,
-          "shad": 2.0
+          "alyssa": 1.0,
+          "jessy": 1.0,
+          "shad": 1.0
         },
         "n_owners_present": 3
       },
@@ -4912,29 +4913,29 @@
         "n_owners_present": 3
       },
       "defense.n_mutations_meeting_target.overall": {
-        "average": 2.666667,
+        "average": 1.666667,
         "values_by_owner": {
           "alyssa": 2.0,
-          "jessy": 4.0,
-          "shad": 2.0
+          "jessy": 2.0,
+          "shad": 1.0
         },
         "n_owners_present": 3
       },
       "defense.n_mutations_meeting_target.unswnb15": {
-        "average": 0.333333,
+        "average": 0.666667,
         "values_by_owner": {
-          "alyssa": 0.0,
+          "alyssa": 1.0,
           "jessy": 1.0,
           "shad": 0.0
         },
         "n_owners_present": 3
       },
       "defense.target_hit_rate.cicids2017": {
-        "average": 0.333333,
+        "average": 0.142857,
         "values_by_owner": {
-          "alyssa": 0.285714,
-          "jessy": 0.428571,
-          "shad": 0.285714
+          "alyssa": 0.142857,
+          "jessy": 0.142857,
+          "shad": 0.142857
         },
         "n_owners_present": 3
       },
@@ -4948,171 +4949,157 @@
         "n_owners_present": 3
       },
       "defense.target_hit_rate.overall": {
-        "average": 0.205128,
+        "average": 0.128205,
         "values_by_owner": {
           "alyssa": 0.153846,
-          "jessy": 0.307692,
-          "shad": 0.153846
+          "jessy": 0.153846,
+          "shad": 0.076923
         },
         "n_owners_present": 3
       },
       "defense.target_hit_rate.unswnb15": {
-        "average": 0.066667,
+        "average": 0.133333,
         "values_by_owner": {
-          "alyssa": 0.0,
+          "alyssa": 0.2,
           "jessy": 0.2,
           "shad": 0.0
         },
         "n_owners_present": 3
       },
-      "retrained_adversarial.accuracy.cicids2017.lstm": {
-        "average": 0.93284,
-        "values_by_owner": {
-          "alyssa": 0.934675,
-          "jessy": 0.933834,
-          "shad": 0.93001
-        },
-        "n_owners_present": 3
-      },
       "retrained_adversarial.accuracy.cicids2017.majority_voting": {
-        "average": 0.997687,
+        "average": 0.998529,
         "values_by_owner": {
-          "alyssa": 0.997331,
-          "jessy": 0.997788,
-          "shad": 0.997944
+          "alyssa": 0.998549,
+          "jessy": 0.998544,
+          "shad": 0.998493
         },
         "n_owners_present": 3
       },
       "retrained_adversarial.accuracy.cicids2017.mlp": {
-        "average": 0.80245,
+        "average": 0.842493,
         "values_by_owner": {
-          "alyssa": 0.848026,
-          "jessy": 0.707951,
-          "shad": 0.851372
+          "alyssa": 0.839045,
+          "jessy": 0.826332,
+          "shad": 0.862103
         },
         "n_owners_present": 3
       },
       "retrained_adversarial.accuracy.cicids2017.random_forest": {
-        "average": 0.998221,
+        "average": 0.998219,
         "values_by_owner": {
-          "alyssa": 0.998213,
-          "jessy": 0.998232,
-          "shad": 0.998219
+          "alyssa": 0.998224,
+          "jessy": 0.998237,
+          "shad": 0.998195
         },
         "n_owners_present": 3
       },
       "retrained_adversarial.accuracy.cicids2017.xgboost": {
-        "average": 0.998447,
+        "average": 0.998613,
         "values_by_owner": {
-          "alyssa": 0.998372,
-          "jessy": 0.998597,
-          "shad": 0.998372
-        },
-        "n_owners_present": 3
-      },
-      "retrained_adversarial.accuracy.nslkdd.lstm": {
-        "average": 0.833393,
-        "values_by_owner": {
-          "alyssa": 0.813224,
-          "jessy": 0.873732,
-          "shad": 0.813224
+          "alyssa": 0.99862,
+          "jessy": 0.998599,
+          "shad": 0.99862
         },
         "n_owners_present": 3
       },
       "retrained_adversarial.accuracy.nslkdd.majority_voting": {
-        "average": 0.993132,
+        "average": 0.995272,
         "values_by_owner": {
-          "alyssa": 0.992459,
-          "jessy": 0.994165,
-          "shad": 0.992773
+          "alyssa": 0.995242,
+          "jessy": 0.995377,
+          "shad": 0.995197
         },
         "n_owners_present": 3
       },
       "retrained_adversarial.accuracy.nslkdd.mlp": {
-        "average": 0.963177,
+        "average": 0.961681,
         "values_by_owner": {
-          "alyssa": 0.961756,
-          "jessy": 0.967277,
-          "shad": 0.960499
+          "alyssa": 0.96409,
+          "jessy": 0.962609,
+          "shad": 0.958345
         },
         "n_owners_present": 3
       },
       "retrained_adversarial.accuracy.nslkdd.random_forest": {
-        "average": 0.99415,
+        "average": 0.995541,
         "values_by_owner": {
-          "alyssa": 0.993806,
-          "jessy": 0.994838,
-          "shad": 0.993806
+          "alyssa": 0.995466,
+          "jessy": 0.995466,
+          "shad": 0.995691
         },
         "n_owners_present": 3
       },
       "retrained_adversarial.accuracy.nslkdd.xgboost": {
-        "average": 0.993312,
+        "average": 0.995646,
         "values_by_owner": {
-          "alyssa": 0.992504,
-          "jessy": 0.994928,
-          "shad": 0.992504
-        },
-        "n_owners_present": 3
-      },
-      "retrained_adversarial.accuracy.unswnb15.lstm": {
-        "average": 0.734878,
-        "values_by_owner": {
-          "alyssa": 0.734878,
-          "jessy": 0.734878,
-          "shad": 0.734878
-        },
-        "n_owners_present": 3
-      },
-      "retrained_adversarial.accuracy.unswnb15.majority_voting": {
-        "average": 0.889932,
-        "values_by_owner": {
-          "alyssa": 0.886535,
-          "jessy": 0.893067,
-          "shad": 0.890193
-        },
-        "n_owners_present": 3
-      },
-      "retrained_adversarial.accuracy.unswnb15.mlp": {
-        "average": 0.825727,
-        "values_by_owner": {
-          "alyssa": 0.812808,
-          "jessy": 0.835823,
-          "shad": 0.82855
-        },
-        "n_owners_present": 3
-      },
-      "retrained_adversarial.accuracy.unswnb15.random_forest": {
-        "average": 0.901733,
-        "values_by_owner": {
-          "alyssa": 0.900253,
-          "jessy": 0.904063,
-          "shad": 0.900884
-        },
-        "n_owners_present": 3
-      },
-      "retrained_adversarial.accuracy.unswnb15.xgboost": {
-        "average": 0.879415,
-        "values_by_owner": {
-          "alyssa": 0.876802,
-          "jessy": 0.884641,
-          "shad": 0.876802
+          "alyssa": 0.995646,
+          "jessy": 0.995646,
+          "shad": 0.995646
         },
         "n_owners_present": 3
       }
     },
-    "metrics_missing_owners": {}
+    "metrics_missing_owners": {
+      "retrained_adversarial.accuracy.unswnb15.majority_voting": {
+        "average": 0.894918,
+        "values_by_owner": {
+          "jessy": 0.898206,
+          "shad": 0.89163
+        },
+        "n_owners_present": 2
+      },
+      "retrained_adversarial.accuracy.unswnb15.mlp": {
+        "average": 0.827984,
+        "values_by_owner": {
+          "jessy": 0.825458,
+          "shad": 0.83051
+        },
+        "n_owners_present": 2
+      },
+      "retrained_adversarial.accuracy.unswnb15.random_forest": {
+        "average": 0.905217,
+        "values_by_owner": {
+          "jessy": 0.905435,
+          "shad": 0.904999
+        },
+        "n_owners_present": 2
+      },
+      "retrained_adversarial.accuracy.unswnb15.xgboost": {
+        "average": 0.886731,
+        "values_by_owner": {
+          "jessy": 0.887036,
+          "shad": 0.886426
+        },
+        "n_owners_present": 2
+      }
+    }
   },
   "skew_analysis": {
-    "n_warnings": 36,
+    "n_warnings": 23,
     "warning_counts_by_owner": {
-      "jessy": 32,
-      "shad": 4
+      "alyssa": 2,
+      "jessy": 8,
+      "shad": 13
     },
     "warnings": [
       {
         "severity": "high",
         "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.fragment_payload.mlp",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 100.0,
+        "team_median": 0.0,
+        "absolute_deviation": 100.0,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": 100.0,
+          "alyssa": 0.0,
+          "jessy": 0.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.mlp",
         "owner_with_max_deviation": "shad",
         "owner_value": 0.0,
         "team_median": 100.0,
@@ -5127,60 +5114,60 @@
       },
       {
         "severity": "high",
-        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.random_forest",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 33.33,
-        "team_median": -33.34,
-        "absolute_deviation": 66.67,
-        "threshold": 15.0,
-        "values_by_owner": {
-          "shad": -66.67,
-          "alyssa": -33.34,
-          "jessy": 33.33
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "high",
         "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.add_tcp_options.mlp",
         "owner_with_max_deviation": "shad",
-        "owner_value": 1.8,
-        "team_median": 66.36,
-        "absolute_deviation": 64.56,
+        "owner_value": 87.27,
+        "team_median": 2.37,
+        "absolute_deviation": 84.9,
         "threshold": 15.0,
         "values_by_owner": {
-          "shad": 1.8,
-          "alyssa": 88.4,
-          "jessy": 66.36
+          "shad": 87.27,
+          "alyssa": -10.27,
+          "jessy": 2.37
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
       {
         "severity": "high",
-        "metric": "defense.mutation.recovery_delta_pp_per_model.cicids2017.inject_decoy_flows.random_forest",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_packet_size.mlp",
         "owner_with_max_deviation": "jessy",
-        "owner_value": 18.43,
-        "team_median": 56.32,
-        "absolute_deviation": 37.89,
+        "owner_value": -56.02,
+        "team_median": -0.02,
+        "absolute_deviation": 56.0,
         "threshold": 15.0,
         "values_by_owner": {
-          "shad": 56.32,
-          "alyssa": 61.32,
-          "jessy": 18.43
+          "shad": -0.02,
+          "alyssa": -0.01,
+          "jessy": -56.02
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
       {
         "severity": "high",
         "metric": "defense.mutation.recovery_delta_pp.unswnb15.shift_ack_timing",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 33.33,
-        "team_median": 0.0,
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.0,
+        "team_median": 33.33,
         "absolute_deviation": 33.33,
         "threshold": 15.0,
         "values_by_owner": {
           "shad": 0.0,
-          "alyssa": 0.0,
+          "alyssa": 33.33,
+          "jessy": 33.33
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.shift_ack_timing.random_forest",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.0,
+        "team_median": 33.33,
+        "absolute_deviation": 33.33,
+        "threshold": 15.0,
+        "values_by_owner": {
+          "shad": 0.0,
+          "alyssa": 33.33,
           "jessy": 33.33
         },
         "note": "One owner differs substantially from the team median for this metric."
@@ -5197,21 +5184,6 @@
           "shad": -33.33,
           "alyssa": -33.33,
           "jessy": 0.0
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "high",
-        "metric": "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_packet_size.random_forest",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 37.06,
-        "team_median": 5.23,
-        "absolute_deviation": 31.83,
-        "threshold": 15.0,
-        "values_by_owner": {
-          "shad": 0.45,
-          "alyssa": 5.23,
-          "jessy": 37.06
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
@@ -5234,6 +5206,21 @@
         "severity": "high",
         "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.fragment_payload.mlp",
         "owner_with_max_deviation": "shad",
+        "owner_value": 1.0,
+        "team_median": 0.0,
+        "absolute_deviation": 1.0,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 1.0,
+          "alyssa": 0.0,
+          "jessy": 0.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.mlp",
+        "owner_with_max_deviation": "shad",
         "owner_value": 0.0,
         "team_median": 1.0,
         "absolute_deviation": 1.0,
@@ -5247,60 +5234,60 @@
       },
       {
         "severity": "high",
-        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.random_forest",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 1.0,
-        "team_median": 0.3333,
-        "absolute_deviation": 0.6667,
-        "threshold": 0.1,
-        "values_by_owner": {
-          "shad": 0.0,
-          "alyssa": 0.3333,
-          "jessy": 1.0
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "high",
         "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.add_tcp_options.mlp",
         "owner_with_max_deviation": "shad",
-        "owner_value": 0.134,
-        "team_median": 0.7796,
-        "absolute_deviation": 0.6456,
+        "owner_value": 0.9887,
+        "team_median": 0.1397,
+        "absolute_deviation": 0.849,
         "threshold": 0.1,
         "values_by_owner": {
-          "shad": 0.134,
-          "alyssa": 1.0,
-          "jessy": 0.7796
+          "shad": 0.9887,
+          "alyssa": 0.0133,
+          "jessy": 0.1397
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
       {
         "severity": "high",
-        "metric": "defense.mutation.adversarial_detection_rate_per_model.cicids2017.inject_decoy_flows.random_forest",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_packet_size.mlp",
         "owner_with_max_deviation": "jessy",
-        "owner_value": 0.1843,
-        "team_median": 0.5632,
-        "absolute_deviation": 0.3789,
+        "owner_value": 0.4397,
+        "team_median": 0.9997,
+        "absolute_deviation": 0.56,
         "threshold": 0.1,
         "values_by_owner": {
-          "shad": 0.5632,
-          "alyssa": 0.6132,
-          "jessy": 0.1843
+          "shad": 0.9997,
+          "alyssa": 0.9998,
+          "jessy": 0.4397
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
       {
         "severity": "high",
         "metric": "defense.mutation.adversarial_detection_rate.unswnb15.shift_ack_timing",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 1.0,
-        "team_median": 0.6667,
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.6667,
+        "team_median": 1.0,
         "absolute_deviation": 0.3333,
         "threshold": 0.1,
         "values_by_owner": {
           "shad": 0.6667,
-          "alyssa": 0.6667,
+          "alyssa": 1.0,
+          "jessy": 1.0
+        },
+        "note": "One owner differs substantially from the team median for this metric."
+      },
+      {
+        "severity": "high",
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.shift_ack_timing.random_forest",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.6667,
+        "team_median": 1.0,
+        "absolute_deviation": 0.3333,
+        "threshold": 0.1,
+        "values_by_owner": {
+          "shad": 0.6667,
+          "alyssa": 1.0,
           "jessy": 1.0
         },
         "note": "One owner differs substantially from the team median for this metric."
@@ -5322,61 +5309,31 @@
       },
       {
         "severity": "high",
-        "metric": "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_packet_size.random_forest",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.9995,
-        "team_median": 0.6812,
-        "absolute_deviation": 0.3183,
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.nslkdd.mimic_timing.mlp",
+        "owner_with_max_deviation": "alyssa",
+        "owner_value": 0.6675,
+        "team_median": 0.8998,
+        "absolute_deviation": 0.2323,
         "threshold": 0.1,
         "values_by_owner": {
-          "shad": 0.6334,
-          "alyssa": 0.6812,
-          "jessy": 0.9995
+          "shad": 0.8998,
+          "alyssa": 0.6675,
+          "jessy": 0.9678
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
       {
         "severity": "high",
-        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_timing.mlp",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.9998,
-        "team_median": 0.7019,
-        "absolute_deviation": 0.2979,
+        "metric": "defense.mutation.adversarial_detection_rate_per_model.unswnb15.mimic_timing.random_forest",
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.7729,
+        "team_median": 0.9868,
+        "absolute_deviation": 0.2139,
         "threshold": 0.1,
         "values_by_owner": {
-          "shad": 0.7019,
-          "alyssa": 0.4351,
-          "jessy": 0.9998
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "high",
-        "metric": "defense.mutation.adversarial_detection_rate_per_model.cicids2017.dilute_scan_pattern.random_forest",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.9763,
-        "team_median": 0.6888,
-        "absolute_deviation": 0.2875,
-        "threshold": 0.1,
-        "values_by_owner": {
-          "shad": 0.6888,
-          "alyssa": 0.6882,
-          "jessy": 0.9763
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "high",
-        "metric": "defense.mutation.adversarial_detection_rate_per_model.cicids2017.inject_decoy_flows.xgboost",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.7402,
-        "team_median": 0.9425,
-        "absolute_deviation": 0.2023,
-        "threshold": 0.1,
-        "values_by_owner": {
-          "shad": 0.9425,
-          "alyssa": 0.9425,
-          "jessy": 0.7402
+          "shad": 0.7729,
+          "alyssa": 0.9868,
+          "jessy": 0.9868
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
@@ -5396,107 +5353,32 @@
         "note": "One owner differs substantially from the team median for this metric."
       },
       {
-        "severity": "high",
-        "metric": "retrained_adversarial.accuracy.cicids2017.mlp",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.707951,
-        "team_median": 0.848026,
-        "absolute_deviation": 0.140075,
-        "threshold": 0.05,
-        "values_by_owner": {
-          "shad": 0.851372,
-          "alyssa": 0.848026,
-          "jessy": 0.707951
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
         "severity": "medium",
-        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_timing.mlp",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.51,
-        "team_median": -29.28,
-        "absolute_deviation": 29.79,
+        "metric": "defense.mutation.recovery_delta_pp_per_model.nslkdd.mimic_timing.mlp",
+        "owner_with_max_deviation": "alyssa",
+        "owner_value": -24.0,
+        "team_median": -0.77,
+        "absolute_deviation": 23.23,
         "threshold": 15.0,
         "values_by_owner": {
-          "shad": -29.28,
-          "alyssa": -55.96,
-          "jessy": 0.51
+          "shad": -0.77,
+          "alyssa": -24.0,
+          "jessy": 6.03
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
       {
         "severity": "medium",
-        "metric": "defense.mutation.recovery_delta_pp_per_model.cicids2017.dilute_scan_pattern.random_forest",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 28.36,
-        "team_median": -0.39,
-        "absolute_deviation": 28.75,
+        "metric": "defense.mutation.recovery_delta_pp_per_model.unswnb15.mimic_timing.random_forest",
+        "owner_with_max_deviation": "shad",
+        "owner_value": -14.69,
+        "team_median": 6.7,
+        "absolute_deviation": 21.39,
         "threshold": 15.0,
         "values_by_owner": {
-          "shad": -0.39,
-          "alyssa": -0.45,
-          "jessy": 28.36
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "defense.mutation.recovery_delta_pp_per_model.cicids2017.inject_decoy_flows.xgboost",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 73.99,
-        "team_median": 94.22,
-        "absolute_deviation": 20.23,
-        "threshold": 15.0,
-        "values_by_owner": {
-          "shad": 94.22,
-          "alyssa": 94.22,
-          "jessy": 73.99
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "defense.mutation.recovery_delta_pp.cicids2017.dilute_scan_pattern",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 30.11,
-        "team_median": 13.73,
-        "absolute_deviation": 16.38,
-        "threshold": 15.0,
-        "values_by_owner": {
-          "shad": 13.73,
-          "alyssa": 7.25,
-          "jessy": 30.11
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "defense.mutation.recovery_delta_pp_per_model.cicids2017.mimic_timing.random_forest",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": -13.94,
-        "team_median": 1.56,
-        "absolute_deviation": 15.5,
-        "threshold": 15.0,
-        "values_by_owner": {
-          "shad": 1.56,
-          "alyssa": 6.34,
-          "jessy": -13.94
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "defense.n_mutations_meeting_target.overall",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 4.0,
-        "team_median": 2.0,
-        "absolute_deviation": 2.0,
-        "threshold": 2.0,
-        "values_by_owner": {
-          "shad": 2.0,
-          "alyssa": 2.0,
-          "jessy": 4.0
+          "shad": -14.69,
+          "alyssa": 6.7,
+          "jessy": 6.7
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
@@ -5518,105 +5400,15 @@
       {
         "severity": "medium",
         "metric": "defense.target_hit_rate.unswnb15",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.2,
-        "team_median": 0.0,
+        "owner_with_max_deviation": "shad",
+        "owner_value": 0.0,
+        "team_median": 0.2,
         "absolute_deviation": 0.2,
         "threshold": 0.15,
         "values_by_owner": {
           "shad": 0.0,
-          "alyssa": 0.0,
+          "alyssa": 0.2,
           "jessy": 0.2
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "defense.mutation.adversarial_detection_rate.cicids2017.dilute_scan_pattern",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.9922,
-        "team_median": 0.8284,
-        "absolute_deviation": 0.1638,
-        "threshold": 0.1,
-        "values_by_owner": {
-          "shad": 0.8284,
-          "alyssa": 0.7636,
-          "jessy": 0.9922
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "defense.mutation.adversarial_detection_rate_per_model.cicids2017.mimic_timing.random_forest",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.6755,
-        "team_median": 0.8305,
-        "absolute_deviation": 0.155,
-        "threshold": 0.1,
-        "values_by_owner": {
-          "shad": 0.8305,
-          "alyssa": 0.8783,
-          "jessy": 0.6755
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "defense.target_hit_rate.overall",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.307692,
-        "team_median": 0.153846,
-        "absolute_deviation": 0.153846,
-        "threshold": 0.15,
-        "values_by_owner": {
-          "shad": 0.153846,
-          "alyssa": 0.153846,
-          "jessy": 0.307692
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "defense.mutation.adversarial_detection_rate_per_model.cicids2017.dilute_scan_pattern.xgboost",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.9996,
-        "team_median": 0.859,
-        "absolute_deviation": 0.1406,
-        "threshold": 0.1,
-        "values_by_owner": {
-          "shad": 0.859,
-          "alyssa": 0.859,
-          "jessy": 0.9996
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "defense.mutation.adversarial_recall.cicids2017.dilute_scan_pattern",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.9926,
-        "team_median": 0.8705,
-        "absolute_deviation": 0.1221,
-        "threshold": 0.1,
-        "values_by_owner": {
-          "shad": 0.8705,
-          "alyssa": 0.8202,
-          "jessy": 0.9926
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "defense.mutation.adversarial_detection_rate.cicids2017.inject_decoy_flows",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.322,
-        "team_median": 0.441,
-        "absolute_deviation": 0.119,
-        "threshold": 0.1,
-        "values_by_owner": {
-          "shad": 0.441,
-          "alyssa": 0.5459,
-          "jessy": 0.322
         },
         "note": "One owner differs substantially from the team median for this metric."
       },
@@ -5632,21 +5424,6 @@
           "shad": 0.834719,
           "alyssa": 0.770676,
           "jessy": 0.912117
-        },
-        "note": "One owner differs substantially from the team median for this metric."
-      },
-      {
-        "severity": "medium",
-        "metric": "retrained_adversarial.accuracy.nslkdd.lstm",
-        "owner_with_max_deviation": "jessy",
-        "owner_value": 0.873732,
-        "team_median": 0.813224,
-        "absolute_deviation": 0.060508,
-        "threshold": 0.05,
-        "values_by_owner": {
-          "shad": 0.813224,
-          "alyssa": 0.813224,
-          "jessy": 0.873732
         },
         "note": "One owner differs substantially from the team median for this metric."
       }
