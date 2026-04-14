@@ -385,14 +385,14 @@ def evaluate_dataset(dataset: str, args) -> dict:
                 model_name, dilute_baseline[model_name], pert_pred, valid_mask, benign_id
             )
     
-    # NSL-KDD is structurally incompatible with Attack A mutations —
+    # NSL-KDD is structurally incompatible with Attack A mutations -
     # both functions reference CICIDS2017-specific feature indices that
     # require at least 67 features. NSL-KDD has 40. Add a note so the
     # 0% results are not misread as meaningful evasion results.
     if dataset == "nslkdd":
         incompatible_note = (
             "Attack A mutations reference CICIDS2017-specific feature indices "
-            "(minimum 67 features required). NSL-KDD has 40 features — "
+            "(minimum 67 features required). NSL-KDD has 40 features - "
             "mutations are structurally incompatible with this dataset."
         )
         inject_metrics["compatibility_note"] = incompatible_note

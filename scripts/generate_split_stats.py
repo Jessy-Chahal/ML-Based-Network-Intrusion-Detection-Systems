@@ -9,18 +9,18 @@ SPLITS_DIR = Path("./data/splits")
 
 IMBALANCE_WARNINGS = {
     "cicids2017": [
-        "BENIGN is 80.3% — use class_weight='balanced' in all models",
+        "BENIGN is 80.3% - use class_weight='balanced' in all models",
         "Heartbleed(11), SQLi(21), Infiltration(36) too sparse for reliable evaluation",
-        "PortScan, Bot, DoS Hulk have known labeling/stat errors — interpret carefully",
-        "Flow Duration has min=-13 (CICFlowMeter artifact) — clip to 0 in attack design",
+        "PortScan, Bot, DoS Hulk have known labeling/stat errors - interpret carefully",
+        "Flow Duration has min=-13 (CICFlowMeter artifact) - clip to 0 in attack design",
     ],
     "nslkdd": [
-        "R2L=0.79%, U2R=0.04% — report per-class F1, not overall accuracy",
+        "R2L=0.79%, U2R=0.04% - report per-class F1, not overall accuracy",
         "DoS(36.46%) and Probe(9.25%) are the reliable attack targets",
         "num_outbound_cmds confirmed constant and dropped (42 → 41 → 38 features after encoding)",
     ],
     "unswnb15": [
-        "Normal is 80% — use class_weight='balanced' in all models",
+        "Normal is 80% - use class_weight='balanced' in all models",
         "Worms(0.05%), Fuzzers(0.09%), Analysis(0.10%) too sparse after dedup",
         "31.64% duplicates removed (141,742 rows)",
     ],

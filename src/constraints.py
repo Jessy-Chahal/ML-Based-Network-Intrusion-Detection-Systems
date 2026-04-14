@@ -143,7 +143,7 @@ class ConstraintValidator(ABC):
         min_length = CICIDSFeatures.max_index() + 1
         if original.shape[0] < min_length:
             raise ValueError(
-                f"Feature vector length {original.shape[0]} is too short — "
+                f"Feature vector length {original.shape[0]} is too short - "
                 f"expected at least {min_length} features to cover all "
                 f"CICIDSFeatures indices"
             )
@@ -190,7 +190,7 @@ class ConstraintValidator(ABC):
             perturbed: 2D array of shape (n_samples, n_features).
 
         Returns:
-            Boolean array of shape (n_samples,) — True where valid.
+            Boolean array of shape (n_samples,) - True where valid.
         """
         return np.array([
             self.validate(orig, pert)
@@ -218,7 +218,7 @@ class TCPConstraintValidator(ConstraintValidator):
     - Flow duration is non-negative
     - Derived rate features are consistent with byte and duration values
 
-    See docs/constraint_spec.md — Constraint Type 1: Protocol Validity.
+    See docs/constraint_spec.md - Constraint Type 1: Protocol Validity.
     """
 
     MIN_PKT_BYTES = 20      # Min IP header size (bytes)
@@ -276,7 +276,7 @@ class TCPConstraintValidator(ConstraintValidator):
         if p[f.SYN_FLAG_CNT] > 0 and p[f.FIN_FLAG_CNT] > 0:
             violations.append(
                 f"syn_flag_cnt={p[f.SYN_FLAG_CNT]:.0f} and "
-                f"fin_flag_cnt={p[f.FIN_FLAG_CNT]:.0f} are both non-zero — "
+                f"fin_flag_cnt={p[f.FIN_FLAG_CNT]:.0f} are both non-zero - "
                 f"SYN+FIN cannot co-occur in any TCP flow"
             )
 
@@ -295,7 +295,7 @@ class TCPConstraintValidator(ConstraintValidator):
             if p[idx] > total_pkts:
                 violations.append(
                     f"{name}={p[idx]:.1f} exceeds total_pkts={total_pkts:.1f} "
-                    f"— flag count cannot exceed packet count"
+                    f"- flag count cannot exceed packet count"
                 )
 
         # Flow duration must be non-negative
@@ -328,7 +328,7 @@ class TCPConstraintValidator(ConstraintValidator):
                     f"flow_byts_s={actual_rate:.2f} inconsistent with "
                     f"computed rate={expected_rate:.2f} "
                     f"(total_bytes={total_bytes:.1f}, duration={duration:.1f}us) "
-                    f"— update flow_byts_s after modifying byte counts or duration"
+                    f"- update flow_byts_s after modifying byte counts or duration"
                 )
 
         return violations
@@ -351,12 +351,12 @@ class DNSConstraintValidator(ConstraintValidator):
     - Flow duration does not exceed the standard DNS resolver timeout
     - Forward packet count is within normal DNS query/response range
 
-    See docs/constraint_spec.md — Constraint Type 1: Protocol Validity.
+    See docs/constraint_spec.md - Constraint Type 1: Protocol Validity.
     """
 
     DNS_PORT = 53
     MAX_DNS_PAYLOAD_BYTES = 4096        # EDNS0 max for both query and response
-    MAX_DNS_DURATION_US = 5_000_000   # 5 seconds — standard resolver timeout
+    MAX_DNS_DURATION_US = 5_000_000   # 5 seconds - standard resolver timeout
     MAX_DNS_FWD_PKTS = 10          # More than ~10 query packets per flow is anomalous
 
     def validate(self, original: np.ndarray, perturbed: np.ndarray) -> bool:
@@ -374,7 +374,7 @@ class DNSConstraintValidator(ConstraintValidator):
         # All remaining checks are only meaningful for DNS flows
         if p[f.DEST_PORT] != self.DNS_PORT:
             violations.append(
-                f"dest_port={p[f.DEST_PORT]:.0f} is not DNS port 53 — "
+                f"dest_port={p[f.DEST_PORT]:.0f} is not DNS port 53 - "
                 f"DNSConstraintValidator only applies to DNS flows"
             )
             return violations
@@ -408,7 +408,7 @@ class DNSConstraintValidator(ConstraintValidator):
         # A high forward packet count suggests tunneling or amplification behavior
         if fwd_pkts > self.MAX_DNS_FWD_PKTS:
             violations.append(
-                f"tot_fwd_pkts={fwd_pkts:.0f} > {self.MAX_DNS_FWD_PKTS} — "
+                f"tot_fwd_pkts={fwd_pkts:.0f} > {self.MAX_DNS_FWD_PKTS} - "
                 f"normal DNS flows have 1-2 query packets per exchange"
             )
 
@@ -433,7 +433,7 @@ class FunctionalConstraintValidator(ConstraintValidator):
 
     Thresholds are defined per attack class. The attack_class parameter selects which thresholds apply at instantiation time.
 
-    See docs/constraint_spec.md — Constraint Type 2: Functional Preservation.
+    See docs/constraint_spec.md - Constraint Type 2: Functional Preservation.
     """
 
     THRESHOLDS = {
@@ -488,7 +488,7 @@ class FunctionalConstraintValidator(ConstraintValidator):
                 if ratio < threshold:
                     violations.append(
                         f"packet rate (recomputed) degraded to {ratio*100:.1f}% of original "
-                        f"({pert_rate:.2f} vs {orig_rate:.2f} pkts/s) — "
+                        f"({pert_rate:.2f} vs {orig_rate:.2f} pkts/s) - "
                         f"functional preservation threshold for "
                         f"'{self.attack_class}' is {threshold*100:.0f}%"
                     )
@@ -502,7 +502,7 @@ class FunctionalConstraintValidator(ConstraintValidator):
                 if ratio > threshold:
                     violations.append(
                         f"flow_duration expanded to {ratio:.2f}x original "
-                        f"({pert_dur:.0f}us vs {orig_dur:.0f}us) — "
+                        f"({pert_dur:.0f}us vs {orig_dur:.0f}us) - "
                         f"functional preservation threshold for "
                         f"'{self.attack_class}' is {threshold:.1f}x max"
                     )
@@ -518,7 +518,7 @@ class PlausibilityConstraintValidator(ConstraintValidator):
     Validates that a perturbed flow does not exhibit patterns that would be flagged by simple rule-based or threshold detectors, 
     independent of any ML classifier.
 
-    See docs/constraint_spec.md — Constraint Type 3: Behavioral Plausibility.
+    See docs/constraint_spec.md - Constraint Type 3: Behavioral Plausibility.
     """
 
     MAX_IAT_MEAN_US = get_env_int("MAX_IAT_MEAN_US")
@@ -544,14 +544,14 @@ class PlausibilityConstraintValidator(ConstraintValidator):
         if iat_mean > self.MAX_IAT_MEAN_US:
             violations.append(
                 f"flow_iat_mean={iat_mean:.0f}us ({iat_mean/1e6:.1f}s) > "
-                f"max {self.MAX_IAT_MEAN_US/1e6:.0f}s — "
+                f"max {self.MAX_IAT_MEAN_US/1e6:.0f}s - "
                 f"flows with IAT above firewall timeout threshold are anomalous"
             )
 
         pkt_rate = p[f.FLOW_PKTS_S]
         if pkt_rate > self.MAX_FLOW_PKTS_S:
             violations.append(
-                f"flow_pkts_s={pkt_rate:.0f} > {self.MAX_FLOW_PKTS_S:.0f} — "
+                f"flow_pkts_s={pkt_rate:.0f} > {self.MAX_FLOW_PKTS_S:.0f} - "
                 f"exceeds physical NIC limit; rate-based detectors would flag this"
             )
 
@@ -563,13 +563,13 @@ class PlausibilityConstraintValidator(ConstraintValidator):
             if avg_pkt_size < self.MIN_AVG_PKT_BYTES:
                 violations.append(
                     f"avg_pkt_size={avg_pkt_size:.1f} bytes < "
-                    f"minimum {self.MIN_AVG_PKT_BYTES} bytes — "
+                    f"minimum {self.MIN_AVG_PKT_BYTES} bytes - "
                     f"sub-IP-header-sized packets are implausible"
                 )
             if avg_pkt_size > self.MAX_AVG_PKT_BYTES:
                 violations.append(
                     f"avg_pkt_size={avg_pkt_size:.1f} bytes > "
-                    f"MTU {self.MAX_AVG_PKT_BYTES} bytes — "
+                    f"MTU {self.MAX_AVG_PKT_BYTES} bytes - "
                     f"flows with jumbo-frame-sized packets are anomalous "
                     f"on standard Ethernet"
                 )

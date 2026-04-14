@@ -15,10 +15,10 @@ Each public function in this module:
 
 Functional preservation thresholds are defined in
 docs/functional_preservation.md. Samples that fail the FP threshold are
-rejected — the perturbation has degraded the attack below operational utility.
+rejected - the perturbation has degraded the attack below operational utility.
 
 Feasibility note: inject_decoy_flows requires the attacker to generate
-additional outbound traffic from their own host — no source address spoofing
+additional outbound traffic from their own host - no source address spoofing
 is needed. dilute_scan_pattern adds timing delays, which the attacker
 controls directly via socket-level rate limiting.
 """
@@ -65,9 +65,9 @@ def compute_fp_score(
 
     Returns:
         Dict with keys:
-            attack_type      — the attack class used for threshold selection
-            pkt_rate_ratio   — perturbed_rate / original_rate (0.0–∞)
-            passes_threshold — True if ratio meets the minimum threshold
+            attack_type      - the attack class used for threshold selection
+            pkt_rate_ratio   - perturbed_rate / original_rate (0.0–∞)
+            passes_threshold - True if ratio meets the minimum threshold
     """
     def _rate(s: np.ndarray) -> float:
         total_pkts = s[F.TOT_FWD_PKTS] + s[F.TOT_BWD_PKTS]
@@ -108,7 +108,7 @@ def _validate(
     PlausibilityConstraintValidator is intentionally skipped for 'portscan'
     attack type. PortScan flows in CICIDS2017 are SYN-probe flows with
     near-zero payloads, which are structurally below the 20-byte average
-    packet size minimum — this is a property of the flow type, not a
+    packet size minimum - this is a property of the flow type, not a
     violation introduced by the perturbation.
     """
     validators = [FunctionalConstraintValidator(attack_class=attack_type)]
@@ -148,14 +148,14 @@ def inject_decoy_flows(
 
     Higher k moves the blended vector further toward the benign distribution.
     The attacker generates additional outbound traffic (HTTP GETs, DNS queries)
-    from their own host alongside the attack — no spoofing required.
+    from their own host alongside the attack - no spoofing required.
 
     Args:
         malicious_sample: Feature vector of the attack flow (1D array).
         benign_pool:      2D array of BENIGN class samples from X_train,
                           shape (n_benign, n_features).
         k:                Number of decoy flows to inject. Must be >= 1.
-        attack_type:      'dos' or 'portscan' — selects FP threshold.
+        attack_type:      'dos' or 'portscan' - selects FP threshold.
         rng:              Optional random generator for reproducibility.
 
     Returns:
@@ -186,16 +186,16 @@ def dilute_scan_pattern(
     """
     Dilute a PortScan flow's burst signature using two chained mutations:
 
-        1. shift_inter_arrival_time — slows probe timing to break the burst
+        1. shift_inter_arrival_time - slows probe timing to break the burst
            pattern. cover_traffic_rate is mapped to a millisecond delay:
            each unit of cover_traffic_rate adds 50ms of IAT shift.
 
-        2. add_padding_packets — injects cover packets (ACK-only, 40 bytes)
+        2. add_padding_packets - injects cover packets (ACK-only, 40 bytes)
            to simulate interleaved HTTP/DNS traffic alongside the probes.
            The number of padding packets is proportional to cover_traffic_rate
            and the original forward packet count.
 
-    The scan still sends the same probe packets — the mutations only add
+    The scan still sends the same probe packets - the mutations only add
     delays and padding traffic around them. Port coverage is preserved
     as long as the FP threshold (pkt_rate_ratio >= 0.60) is met.
 

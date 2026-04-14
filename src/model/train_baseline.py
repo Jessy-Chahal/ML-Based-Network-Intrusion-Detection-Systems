@@ -212,15 +212,15 @@ def run_one_dataset(dataset_name, split_stats):
     all_metrics = {}
     preds_for_vote = []
 
-    # --- Random Forest ---
-    print(f"\n--- Random Forest (n_estimators=100, class_weight=balanced) ---")
+    ### Random Forest ###
+    print(f"\n### Random Forest (n_estimators=100, class_weight=balanced) ###")
     rf_model, rf_metrics = train_rf(X_train, y_train, X_val, y_val, label_map)
     all_metrics["random_forest"] = rf_metrics
     preds_for_vote.append(rf_model.predict(X_val))
     print(f"  Validation accuracy: {rf_metrics['accuracy']:.4f}")
     joblib.dump(rf_model, MODELS_DIR / f"rf_{dataset_name}.pkl")
 
-    # --- XGBoost ---
+    ### XGBoost ###
     print(f"\n--- XGBoost (default params, sample_weight=balanced) ---")
     xgb_model, xgb_metrics = train_xgb(X_train, y_train, X_val, y_val, label_map)
     all_metrics["xgboost"] = xgb_metrics
@@ -228,7 +228,7 @@ def run_one_dataset(dataset_name, split_stats):
     print(f"  Validation accuracy: {xgb_metrics['accuracy']:.4f}")
     joblib.dump(xgb_model, MODELS_DIR / f"xgb_{dataset_name}.pkl")
 
-    # --- MLP (scaled features) ---
+    ### MLP (scaled features) ###
     print("\n--- Scaling for MLP ---")
     scaler = StandardScaler()
     X_train_s = scaler.fit_transform(X_train)
@@ -244,7 +244,7 @@ def run_one_dataset(dataset_name, split_stats):
     print(f"  Validation accuracy: {mlp_metrics['accuracy']:.4f}")
     mlp_model.save(MODELS_DIR / f"mlp_{dataset_name}.h5", save_format="h5")
 
-    # --- Majority voting ensemble ---
+    ### Majority voting ensemble ###
     print("\n--- Majority voting ensemble ---")
     ensemble_pred = majority_vote(preds_for_vote)
     all_metrics["majority_voting"] = compute_metrics(y_val, ensemble_pred, label_map)
@@ -300,9 +300,9 @@ def main():
             json.dump(combined, f, indent=2)
         print(f"\nCombined metrics (all datasets) saved to {summary_path}")
 
-    # Progress Report 1 summary (≥90% target)
+    # Summary
     print("\n" + "=" * 60)
-    print("Progress Report 1 — Validation accuracy (target ≥90%)")
+    print("Validation accuracy (target ≥90%)")
     print("=" * 60)
     for d in datasets_to_run:
         path = RESULTS_DIR / f"baseline_metrics_{d}.json"

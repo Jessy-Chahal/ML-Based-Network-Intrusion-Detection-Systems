@@ -32,7 +32,7 @@ def test_label_map_files_exist():
 
 def test_split_stats_json_exists():
     assert (SPLITS_DIR / "split_stats.json").exists(), \
-        "split_stats.json missing — run scripts/generate_split_stats.py"
+        "split_stats.json missing - run scripts/generate_split_stats.py"
 
 
 # ── Required keys ──────────────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ def test_stratification_preserved(dataset):
 def test_minimum_feature_count(dataset):
     name, data, _ = dataset
     n = data["X_train"].shape[1]
-    assert n >= 20, f"{name}: only {n} features after cleaning — unexpectedly low"
+    assert n >= 20, f"{name}: only {n} features after cleaning - unexpectedly low"
 
 def test_minimum_training_samples(dataset):
     name, data, _ = dataset

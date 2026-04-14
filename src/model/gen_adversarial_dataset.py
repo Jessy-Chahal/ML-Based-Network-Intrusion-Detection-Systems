@@ -10,7 +10,7 @@ For each dataset:
 
 Performance: inject_decoy_flows, dilute_scan_pattern, and protocol_exploitation
 already run their own constraint validation. Do not re-run TCPConstraintValidator
-on every sample — that duplicated work and made full CICIDS runs orders of
+on every sample - that duplicated work and made full CICIDS runs orders of
 magnitude slower than the old proxy pipeline.
 """
 
@@ -180,7 +180,7 @@ def build_cicids_adversarial(
     Attack B: mimic_timing / mimic_packet_size alternating (profile from training benign).
     Attack C: fragment_payload, add_tcp_options, shift_ack_timing (unchanged).
 
-    Validity: trust feature_obfuscation and protocol_exploitation validators only — no extra TCP pass.
+    Validity: trust feature_obfuscation and protocol_exploitation validators only - no extra TCP pass.
     """
     if len(benign_pool) == 0:
         raise RuntimeError("CICIDS adversarial generation requires a non-empty benign_pool.")
