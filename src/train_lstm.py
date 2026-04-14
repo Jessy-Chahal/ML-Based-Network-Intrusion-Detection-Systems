@@ -16,6 +16,7 @@ import argparse
 import json
 from pathlib import Path
 from datetime import datetime, timezone
+import sys
 
 import numpy as np
 import tensorflow as tf
@@ -24,27 +25,41 @@ from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils.class_weight import compute_class_weight
 
+# Allow both:
+# - python -m src.train_lstm
+# - python src/train_lstm.py
+if __package__ is None or __package__ == "":
+    repo_root = Path(__file__).resolve().parents[1]
+    if str(repo_root) not in sys.path:
+        sys.path.insert(0, str(repo_root))
+
+from src.dotenv_utils import get_env_float, get_env_int, get_env_optional_float
+
+SEED = get_env_int("SEED")
+LSTM_LEARNING_RATE = get_env_float("LSTM_LEARNING_RATE")
+LSTM_EPOCHS = get_env_int("LSTM_EPOCHS")
+LSTM_WARMUP_EPOCHS = get_env_int("LSTM_WARMUP_EPOCHS")
+LSTM_BATCH_SIZE = get_env_int("LSTM_BATCH_SIZE")
+LSTM_PATIENCE = get_env_int("LSTM_PATIENCE")
+LSTM_CLASS_WEIGHT_ALPHA = get_env_float("LSTM_CLASS_WEIGHT_ALPHA")
+LSTM_MAX_CLASS_WEIGHT = get_env_optional_float("LSTM_MAX_CLASS_WEIGHT")
+LSTM_UNITS_1 = get_env_int("LSTM_UNITS_1")
+LSTM_UNITS_2 = get_env_int("LSTM_UNITS_2")
+LSTM_DENSE_UNITS = get_env_int("LSTM_DENSE_UNITS")
+LSTM_DROPOUT = get_env_float("LSTM_DROPOUT")
+
 SPLITS_DIR = Path("data/splits")
 MODELS_DIR = Path("models")
 RESULTS_DIR = Path("results")
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
-# Reproducible default settings (edit here to change baseline run behavior).
+# Reproducible default settings (override via `.env` / environment variables).
 DATASET_NAMES = ["cicids2017", "nslkdd", "unswnb15"]
 DEFAULT_DATASET = "cicids2017"
 MODEL_FILENAME_TEMPLATE = "lstm_{dataset}.h5"
 SCALER_FILENAME_TEMPLATE = "scaler_lstm_{dataset}.pkl"
 METRICS_FILENAME_TEMPLATE = "lstm_baseline_metrics_{dataset}.json"
-
-DEFAULT_LEARNING_RATE = 8e-4
-DEFAULT_EPOCHS = 4
-DEFAULT_WARMUP_EPOCHS = 2
-DEFAULT_BATCH_SIZE = 8192
-DEFAULT_PATIENCE = 2
-DEFAULT_SEED = 42
-DEFAULT_CLASS_WEIGHT_ALPHA = 0.05
-DEFAULT_MAX_CLASS_WEIGHT = 20.0
 
 
 def load_dataset(dataset_name: str):
@@ -76,17 +91,17 @@ def build_model(n_features: int, n_classes: int) -> tf.keras.Model:
     model = tf.keras.Sequential(
         [
             tf.keras.layers.Input(shape=(n_features, 1)),
-            tf.keras.layers.LSTM(64, return_sequences=True),
-            tf.keras.layers.Dropout(0.25),
-            tf.keras.layers.LSTM(32),
-            tf.keras.layers.Dropout(0.25),
-            tf.keras.layers.Dense(64, activation="relu"),
-            tf.keras.layers.Dropout(0.25),
+            tf.keras.layers.LSTM(LSTM_UNITS_1, return_sequences=True),
+            tf.keras.layers.Dropout(LSTM_DROPOUT),
+            tf.keras.layers.LSTM(LSTM_UNITS_2),
+            tf.keras.layers.Dropout(LSTM_DROPOUT),
+            tf.keras.layers.Dense(LSTM_DENSE_UNITS, activation="relu"),
+            tf.keras.layers.Dropout(LSTM_DROPOUT),
             tf.keras.layers.Dense(n_classes, activation="softmax"),
         ]
     )
     model.compile(
-        optimizer=tf.keras.optimizers.Adam(learning_rate=DEFAULT_LEARNING_RATE),
+        optimizer=tf.keras.optimizers.Adam(learning_rate=LSTM_LEARNING_RATE),
         loss="sparse_categorical_crossentropy",
         metrics=["accuracy"],
     )
@@ -133,26 +148,26 @@ def main():
         default=DEFAULT_DATASET,
         help="Dataset split to train/evaluate on.",
     )
-    parser.add_argument("--epochs", type=int, default=DEFAULT_EPOCHS)
+    parser.add_argument("--epochs", type=int, default=LSTM_EPOCHS)
     parser.add_argument(
         "--warmup-epochs",
         type=int,
-        default=DEFAULT_WARMUP_EPOCHS,
+        default=LSTM_WARMUP_EPOCHS,
         help="Initial epochs without class weights to stabilize optimization.",
     )
-    parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE)
-    parser.add_argument("--patience", type=int, default=DEFAULT_PATIENCE)
-    parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
+    parser.add_argument("--batch-size", type=int, default=LSTM_BATCH_SIZE)
+    parser.add_argument("--patience", type=int, default=LSTM_PATIENCE)
+    parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument(
         "--max-class-weight",
         type=float,
-        default=DEFAULT_MAX_CLASS_WEIGHT,
+        default=LSTM_MAX_CLASS_WEIGHT,
         help="Cap for balanced class weights to avoid instability from ultra-rare labels.",
     )
     parser.add_argument(
         "--class-weight-alpha",
         type=float,
-        default=DEFAULT_CLASS_WEIGHT_ALPHA,
+        default=LSTM_CLASS_WEIGHT_ALPHA,
         help="Interpolation toward balanced weights: 0=uniform, 1=fully balanced.",
     )
     args = parser.parse_args()

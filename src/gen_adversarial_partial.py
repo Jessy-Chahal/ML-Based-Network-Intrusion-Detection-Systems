@@ -40,6 +40,8 @@ if __package__ is None or __package__ == "":
     if str(repo_root) not in sys.path:
         sys.path.insert(0, str(repo_root))
 
+from src.dotenv_utils import get_env_float, get_env_int
+
 from src.attacks.behavioral_mimicry import mimic_packet_size, mimic_timing
 from src.attacks.feature_obfuscation import dilute_scan_pattern, inject_decoy_flows
 from src.attacks.protocol_exploitation import (
@@ -53,8 +55,15 @@ from src.mutations import blend_with_benign
 # ── constants ────────────────────────────────────────────────────────────────
 
 SECONDS_TO_MICROSECONDS = 1_000_000.0
-INJECT_DECOY_K = 5
-DILUTE_COVER_TRAFFIC_RATE = 1.0
+INJECT_DECOY_K = get_env_int("ADV_INJECT_DECOY_K")
+DILUTE_COVER_TRAFFIC_RATE = get_env_float("ADV_DILUTE_COVER_TRAFFIC_RATE")
+ADV_BLEND_WITH_BENIGN_K_SAMPLES = get_env_int("ADV_BLEND_WITH_BENIGN_K_SAMPLES")
+ADV_GENERIC_ATTACK_C_FEATURE_FRAC = get_env_float("ADV_GENERIC_ATTACK_C_FEATURE_FRAC")
+ADV_GENERIC_ATTACK_C_SCALE_MIN = get_env_float("ADV_GENERIC_ATTACK_C_SCALE_MIN")
+ADV_GENERIC_ATTACK_C_SCALE_MAX = get_env_float("ADV_GENERIC_ATTACK_C_SCALE_MAX")
+ADV_CLEAN_RATIO = get_env_float("ADV_CLEAN_RATIO")
+ADV_GENERATION_SEED = get_env_int("ADV_GENERATION_SEED")
+PROTOCOL_N_FRAGMENTS = get_env_int("PROTOCOL_N_FRAGMENTS")
 
 SPLITS_DIR = Path("data/splits")
 OUT_DIR = Path("data/adversarial")
@@ -222,7 +231,10 @@ def perturb_attack_a_generic(
         lid = int(y_attack[idx])
         pert = _safe_attack_call(
             lambda s, bp=benign_pool: blend_with_benign(
-                s, benign_pool=bp, k_samples=3, random_number_generator=rng
+                s,
+                benign_pool=bp,
+                k_samples=ADV_BLEND_WITH_BENIGN_K_SAMPLES,
+                random_number_generator=rng,
             ),
             sample,
         )
@@ -275,7 +287,7 @@ def perturb_attack_c_cicids(
         1.0, 2000.0,
     ))
     protocol_fns = [
-        lambda s: fragment_payload(s, n_fragments=4),
+        lambda s: fragment_payload(s, n_fragments=PROTOCOL_N_FRAGMENTS),
         add_tcp_options,
         lambda s: shift_ack_timing(s, target_iat_ms=target_iat_ms),
     ]
@@ -299,9 +311,13 @@ def perturb_attack_c_cicids(
 def _generic_attack_c_sample(sample: np.ndarray, rng: np.random.Generator) -> np.ndarray:
     x = sample.astype(np.float32, copy=True)
     n_features = x.shape[0]
-    k = max(1, int(0.08 * n_features))
+    k = max(1, int(ADV_GENERIC_ATTACK_C_FEATURE_FRAC * n_features))
     idx = rng.choice(n_features, size=k, replace=False)
-    x[idx] = x[idx] * rng.uniform(0.75, 0.98, size=k).astype(np.float32)
+    x[idx] = x[idx] * rng.uniform(
+        ADV_GENERIC_ATTACK_C_SCALE_MIN,
+        ADV_GENERIC_ATTACK_C_SCALE_MAX,
+        size=k,
+    ).astype(np.float32)
     return x
 
 
@@ -333,7 +349,9 @@ def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> di
     X_train, y_train, label_map = load_split(dataset)
     benign_id = find_benign_label_id(label_map)
 
-    clean_idx, remain_idx = stratified_clean_split(y_train, clean_ratio=0.70, rng=rng)
+    clean_idx, remain_idx = stratified_clean_split(
+        y_train, clean_ratio=ADV_CLEAN_RATIO, rng=rng
+    )
     attack_idx = remain_idx[y_train[remain_idx] != benign_id]
 
     X_clean = X_train[clean_idx]
@@ -425,7 +443,7 @@ def main():
     parser.add_argument(
         "--seed",
         type=int,
-        default=42,
+        default=ADV_GENERATION_SEED,
         help="Random seed for reproducibility (default: 42).",
     )
     args = parser.parse_args()
