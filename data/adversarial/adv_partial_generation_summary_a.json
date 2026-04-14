@@ -1,0 +1,38 @@
+{
+  "cicids2017": {
+    "dataset": "cicids2017",
+    "attack": "a",
+    "output_path": "data/adversarial/adv_train_cicids_attack_a_only.npz",
+    "n_clean": 1235952,
+    "n_attack_candidates": 89439,
+    "n_adv_generated": 68871,
+    "n_final": 1304823,
+    "feature_dim": 70,
+    "n_train_total": 1765653,
+    "clean_ratio_actual": 0.699997
+  },
+  "nslkdd": {
+    "dataset": "nslkdd",
+    "attack": "a",
+    "output_path": "data/adversarial/adv_train_nslkdd_attack_a_only.npz",
+    "n_clean": 72770,
+    "n_attack_candidates": 15009,
+    "n_adv_generated": 15009,
+    "n_final": 87779,
+    "feature_dim": 40,
+    "n_train_total": 103961,
+    "clean_ratio_actual": 0.699974
+  },
+  "unswnb15": {
+    "dataset": "unswnb15",
+    "attack": "a",
+    "output_path": "data/adversarial/adv_train_unswnb15_attack_a_only.npz",
+    "n_clean": 150020,
+    "n_attack_candidates": 17050,
+    "n_adv_generated": 17050,
+    "n_final": 167070,
+    "feature_dim": 67,
+    "n_train_total": 214321,
+    "clean_ratio_actual": 0.699978
+  }
+}
