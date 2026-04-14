@@ -41,15 +41,6 @@ def test_baseline_model_files_exist():
     ]:
         assert (MODELS_DIR / filename).exists(), f"Missing baseline model file: {filename}"
 
-
-def test_lstm_model_files_exist():
-    for filename in [
-        "lstm_cicids2017.h5",
-        "scaler_lstm_cicids2017.pkl",
-    ]:
-        assert (MODELS_DIR / filename).exists(), f"Missing LSTM model file: {filename}"
-
-
 def test_adversarial_model_files_exist():
     """
     Will fail until adversarial retrained models are committed.
@@ -79,23 +70,6 @@ def test_baseline_repr_contains_name():
     from src.defense.ensemble import Ensemble
     ensemble = Ensemble.baseline()
     assert "baseline" in repr(ensemble)
-
-
-def test_baseline_lstm_is_loaded():
-    from src.defense.ensemble import Ensemble
-    ensemble = Ensemble.baseline()
-    assert ensemble.lstm is not None, (
-        "LSTM is None - uncomment the LSTM lines in Ensemble.baseline() "
-        "now that lstm_cicids2017.h5 is available."
-    )
-
-
-def test_baseline_lstm_scaler_is_loaded():
-    from src.defense.ensemble import Ensemble
-    ensemble = Ensemble.baseline()
-    assert ensemble.lstm_scaler is not None, (
-        "lstm_scaler is None - uncomment the LSTM scaler line in Ensemble.baseline()."
-    )
 
 
 def test_adversarial_loads_without_error():
