@@ -47,10 +47,17 @@ RESULTS_DIR = Path("results")
 RESULTS_PATH = RESULTS_DIR / "attack_c_metrics_all_datasets.json"
 
 DATASETS = ["cicids2017", "nslkdd", "unswnb15"]
+
+# Only CICIDS2017 has validators scoped to its feature schema
 CONSTRAINT_VALIDATION_DATASETS = {"cicids2017"}
+
+# Benign label names across datasets
 BENIGN_LABEL_CANDIDATES = {"BENIGN", "Normal", "normal"}
 
 
+###
+# Data loading
+###
 def load_dataset_data(dataset: str):
     npz_path = SPLITS_DIR / f"{dataset}.npz"
     label_path = SPLITS_DIR / f"{dataset}_label_map.npy"
@@ -76,6 +83,11 @@ def benign_label_id(label_map: dict[int, str], dataset: str) -> int:
 
 
 def compute_target_iat_ms(X_train: np.ndarray, y_train: np.ndarray, benign_id: int) -> float:
+    """
+    Compute the target IAT in milliseconds from the median benign IAT in training data.
+    Falls back to 50ms if no benign samples are found. 
+    Result is clipped to [1, 2000] ms.
+    """
     benign = X_train[y_train == benign_id]
     if len(benign) == 0:
         return 50.0
@@ -85,6 +97,9 @@ def compute_target_iat_ms(X_train: np.ndarray, y_train: np.ndarray, benign_id: i
     return float(np.clip(target_iat_ms, 1.0, 2000.0))
 
 
+###
+# Model loading and prediction
+###
 def load_models(dataset: str):
     rf = joblib.load(MODELS_DIR / f"rf_{dataset}.pkl")
     xgb = joblib.load(MODELS_DIR / f"xgb_{dataset}.pkl")
@@ -103,11 +118,21 @@ def predict_by_model(model_name: str, model_obj, X: np.ndarray, scaler=None) -> 
     return model_obj.predict(X).astype(np.int64)
 
 
+###
+# Metrics helpers
+###
 def apply_mutation_batch(
     X: np.ndarray,
     mutation: Callable[[np.ndarray], np.ndarray],
     validate_constraints: bool,
 ) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Apply the given mutation to every sample in X.
+
+    Constraint validation is only meaningful for CICIDS2017. 
+    For other datasets validate_constraints=False and all mutations are accepted
+    if the call succeeds without raising an exception.
+    """
     validator = TCPConstraintValidator() if validate_constraints else None
     mutated = np.zeros_like(X, dtype=np.float32)
     valid = np.zeros(len(X), dtype=bool)
@@ -154,11 +179,15 @@ def evaluate_mutation(
     }
 
 
+###
+# Per-dataset evaluation
+###
 def evaluate_dataset(dataset: str, args) -> dict:
     X_train, y_train, X_test, y_test, label_map = load_dataset_data(dataset)
     benign_id = benign_label_id(label_map, dataset)
     validate_constraints = dataset in CONSTRAINT_VALIDATION_DATASETS
 
+    # Attack samples drawn from test split only (don't touch training data)
     attack_mask = y_test != benign_id
     attack_indices = np.where(attack_mask)[0]
 
@@ -171,12 +200,15 @@ def evaluate_dataset(dataset: str, args) -> dict:
 
     X_attack = X_test[attack_indices]
 
+    # IAT target
+    # Use the provided value or compute from the benign median in training data
     iat_target_ms = (
         float(args.target_iat_ms)
         if args.target_iat_ms is not None
         else compute_target_iat_ms(X_train, y_train, benign_id)
     )
 
+    ### Models ###
     rf, xgb, scaler, mlp = load_models(dataset)
     models = {
         "random_forest": (rf, None),
@@ -190,12 +222,14 @@ def evaluate_dataset(dataset: str, args) -> dict:
             model_name, model_obj, X_attack, scaler=model_scaler
         )
 
+    ### Mutation setup ###
     mutation_specs = {
         "fragment_payload": lambda row: fragment_payload(row, args.n_fragments),
         "add_tcp_options": add_tcp_options,
         "shift_ack_timing": lambda row: shift_ack_timing(row, iat_target_ms),
     }
 
+    ### Constraint validation note ###
     if validate_constraints:
         constraint_note = "TCPConstraintValidator applied."
     else:
@@ -221,6 +255,7 @@ def evaluate_dataset(dataset: str, args) -> dict:
         "metrics": {},
     }
 
+    ### Mutations ###
     for mutation_name, mutation_fn in mutation_specs.items():
         mutated_X, valid_mask = apply_mutation_batch(
             X_attack, mutation_fn, validate_constraints=validate_constraints
@@ -255,6 +290,9 @@ def evaluate_dataset(dataset: str, args) -> dict:
     return dataset_output
 
 
+###
+# Main
+###
 def main():
     parser = argparse.ArgumentParser(description="Evaluate Attack C evasion metrics.")
     parser.add_argument(
