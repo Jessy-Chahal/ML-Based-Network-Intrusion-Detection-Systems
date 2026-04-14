@@ -117,49 +117,6 @@ def evaluate_dataset(dataset: str) -> dict:
     baseline_vote_preds.append(mlp_base_pred)
     retrained_vote_preds.append(mlp_pred)
 
-    # Optional LSTM (if adversarial retrained LSTM exists)
-    lstm_base_path = MODELS_DIR / f"lstm_{dataset}.h5"
-    lstm_base_scaler_path = MODELS_DIR / f"scaler_lstm_{dataset}.pkl"
-    lstm_path = MODELS_DIR / f"adv_lstm_{dataset}.h5"
-    lstm_scaler_path = MODELS_DIR / f"adv_scaler_lstm_{dataset}.pkl"
-    if (
-        lstm_base_path.exists()
-        and lstm_base_scaler_path.exists()
-        and lstm_path.exists()
-        and lstm_scaler_path.exists()
-    ):
-        lstm_base_scaler = joblib.load(lstm_base_scaler_path)
-        X_test_lstm_base = lstm_base_scaler.transform(X_test).astype(np.float32)[..., np.newaxis]
-        lstm_base_model = tf.keras.models.load_model(lstm_base_path, compile=False)
-        lstm_base_pred = np.argmax(lstm_base_model.predict(X_test_lstm_base, verbose=0), axis=1)
-        lstm_base_acc = float(accuracy_score(y_test, lstm_base_pred))
-
-        lstm_scaler = joblib.load(lstm_scaler_path)
-        X_test_lstm = lstm_scaler.transform(X_test).astype(np.float32)[..., np.newaxis]
-        lstm = tf.keras.models.load_model(lstm_path, compile=False)
-        lstm_pred = np.argmax(lstm.predict(X_test_lstm, verbose=0), axis=1)
-        lstm_acc = float(accuracy_score(y_test, lstm_pred))
-        report["lstm"] = {
-            "baseline_accuracy": lstm_base_acc,
-            "retrained_clean_test_accuracy": lstm_acc,
-            "accuracy_drop_pp": (lstm_base_acc - lstm_acc) * 100.0,
-            "within_3pp_target": (lstm_base_acc - lstm_acc) <= MAX_ALLOWED_DROP,
-            "baseline_model_path": str(lstm_base_path),
-            "baseline_scaler_path": str(lstm_base_scaler_path),
-            "model_path": str(lstm_path),
-            "scaler_path": str(lstm_scaler_path),
-        }
-    elif lstm_path.exists() and lstm_scaler_path.exists():
-        report["lstm"] = {
-            "baseline_accuracy": None,
-            "retrained_clean_test_accuracy": None,
-            "accuracy_drop_pp": None,
-            "within_3pp_target": None,
-            "model_path": str(lstm_path),
-            "scaler_path": str(lstm_scaler_path),
-            "baseline_note": "Baseline LSTM model/scaler not found in models/.",
-        }
-
     # Majority voting compared on the same model family as baseline scripts (RF+XGB+MLP).
     mv_base_pred = majority_vote(baseline_vote_preds)
     mv_pred = majority_vote(retrained_vote_preds)
@@ -177,7 +134,7 @@ def evaluate_dataset(dataset: str) -> dict:
     overall_pass = all(
         meta["within_3pp_target"]
         for name, meta in report.items()
-        if meta["within_3pp_target"] is not None and name != "lstm"
+        if meta["within_3pp_target"] is not None
     )
     return {
         "n_test_samples": int(len(y_test)),
@@ -199,7 +156,7 @@ def main() -> None:
     for dataset in DATASETS:
         out["datasets"][dataset] = evaluate_dataset(dataset)
 
-    # Global pass across datasets (ignoring optional LSTM when no baseline exists).
+    # Global pass across datasets
     out["overall_pass"] = all(
         out["datasets"][d]["overall_pass"] for d in DATASETS
     )

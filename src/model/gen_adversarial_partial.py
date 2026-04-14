@@ -22,7 +22,7 @@ A summary JSON is written alongside each file and to:
     data/adversarial/adv_partial_generation_summary_{a|b|c}.json
 
 These files are consumed by train_adversarial_partial.py to produce
-partially-trained adversarial models (adv_{a|b|c}_only_{rf,xgb,mlp,lstm}_{dataset}).
+partially-trained adversarial models (adv_{a|b|c}_only_{rf,xgb,mlp}_{dataset}).
 """
 
 from __future__ import annotations
@@ -52,7 +52,7 @@ from src.attacks.protocol_exploitation import (
 from src.constraints import CICIDSFeatures as F
 from src.mutations import blend_with_benign
 
-# ── constants ────────────────────────────────────────────────────────────────
+### Constants ###
 
 SECONDS_TO_MICROSECONDS = get_env_float("SECONDS_TO_MICROSECONDS")
 INJECT_DECOY_K = get_env_int("ADV_INJECT_DECOY_K")
@@ -78,7 +78,7 @@ DATASET_NAME_MAP = {
 ALL_DATASETS = ["cicids2017", "nslkdd", "unswnb15"]
 
 
-# ── data helpers (identical to gen_adversarial_dataset.py) ────────────────────
+### Data Helpers ###
 
 def load_split(dataset: str):
     npz_path = SPLITS_DIR / f"{dataset}.npz"
@@ -175,7 +175,7 @@ def _recompute_rates_after_packet_size(flow: np.ndarray) -> np.ndarray:
     return flow
 
 
-# ── per-attack-family perturb functions ──────────────────────────────────────
+### Per-attack-family perturb functions ###
 
 def perturb_attack_a_cicids(
     X_attack: np.ndarray,
@@ -332,7 +332,7 @@ def perturb_attack_c_generic(
     return np.stack(X_adv).astype(np.float32), np.asarray(y_adv, dtype=np.int64)
 
 
-# ── dataset builder ───────────────────────────────────────────────────────────
+### Dataset Builder ###
 
 def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> dict:
     """
@@ -365,7 +365,7 @@ def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> di
 
     print(f"  clean={len(X_clean)}, attack candidates={len(X_attack)}", flush=True)
 
-    # ── apply the chosen attack family to ALL attack samples ─────────────────
+    ### Apply the chosen attack family to all attack samples ###
     if attack == "a":
         if dataset == "cicids2017":
             X_adv, y_adv = perturb_attack_a_cicids(
@@ -389,7 +389,7 @@ def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> di
         else:
             X_adv, y_adv = perturb_attack_c_generic(X_attack, y_attack, rng)
 
-    # ── merge clean + adversarial and shuffle ────────────────────────────────
+    ### Merge clean + adversarial and shuffle ###
     source_id = np.concatenate([
         np.zeros(len(X_clean), dtype=np.int64),
         np.full(len(X_adv), {"a": 1, "b": 2, "c": 3}[attack], dtype=np.int64),
@@ -420,7 +420,7 @@ def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> di
     }
 
 
-# ── CLI ───────────────────────────────────────────────────────────────────────
+### CLI ###
 
 def main():
     parser = argparse.ArgumentParser(
