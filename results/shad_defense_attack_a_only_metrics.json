@@ -1,0 +1,532 @@
+{
+  "generated_at_utc": "2026-04-14T01:50:16.726625+00:00",
+  "defense_mode": "partial (attack A only)",
+  "datasets": [
+    {
+      "dataset": "cicids2017",
+      "n_attack_samples": 63882,
+      "target_recovery_pp": 25.0,
+      "clean_detection": {
+        "note": "Metrics on the unperturbed full test set (Binary: Attack vs. Benign). ",
+        "baseline": {
+          "accuracy": 0.9988,
+          "precision": 0.9948,
+          "recall": 0.9979,
+          "f1": 0.9964,
+          "detection_rate": 0.9979
+        },
+        "adversarial": {
+          "accuracy": 0.9987,
+          "precision": 0.9943,
+          "recall": 0.9978,
+          "f1": 0.996,
+          "detection_rate": 0.9978
+        }
+      },
+      "n_mutations_evaluated": 7,
+      "n_mutations_skipped": 0,
+      "n_mutations_meeting_target": 3,
+      "mutations": [
+        {
+          "mutation": "inject_decoy_flows",
+          "n_samples": 63882,
+          "n_mutation_success": 36008,
+          "recovery_delta_pp": 99.7,
+          "meets_25pp_target": true,
+          "baseline_metrics": {
+            "accuracy": 0.9036,
+            "precision": 0.9881,
+            "recall": 0.4345,
+            "f1": 0.6036,
+            "detection_rate": 0.0
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9984,
+            "precision": 0.9943,
+            "recall": 0.9964,
+            "f1": 0.9953,
+            "detection_rate": 0.997
+          },
+          "baseline_per_model": {
+            "random_forest": 0.0,
+            "xgboost": 0.0003,
+            "mlp": 0.4656
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9991,
+            "xgboost": 0.9998,
+            "mlp": 0.9728
+          }
+        },
+        {
+          "mutation": "dilute_scan_pattern",
+          "n_samples": 63882,
+          "n_mutation_success": 48159,
+          "recovery_delta_pp": 29.27,
+          "meets_25pp_target": true,
+          "baseline_metrics": {
+            "accuracy": 0.9595,
+            "precision": 0.9932,
+            "recall": 0.7656,
+            "f1": 0.8647,
+            "detection_rate": 0.6911
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9967,
+            "precision": 0.9942,
+            "recall": 0.9863,
+            "f1": 0.9902,
+            "detection_rate": 0.9839
+          },
+          "baseline_per_model": {
+            "random_forest": 0.6927,
+            "xgboost": 0.859,
+            "mlp": 0.0
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9756,
+            "xgboost": 0.9995,
+            "mlp": 0.9798
+          }
+        },
+        {
+          "mutation": "mimic_timing",
+          "n_samples": 63882,
+          "n_mutation_success": 63882,
+          "recovery_delta_pp": -1.4,
+          "meets_25pp_target": false,
+          "baseline_metrics": {
+            "accuracy": 0.989,
+            "precision": 0.9945,
+            "recall": 0.94,
+            "f1": 0.9665,
+            "detection_rate": 0.94
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9865,
+            "precision": 0.9938,
+            "recall": 0.926,
+            "f1": 0.9587,
+            "detection_rate": 0.926
+          },
+          "baseline_per_model": {
+            "random_forest": 0.8149,
+            "xgboost": 0.9473,
+            "mlp": 0.9518
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.4376,
+            "xgboost": 0.9469,
+            "mlp": 0.9926
+          }
+        },
+        {
+          "mutation": "mimic_packet_size",
+          "n_samples": 63882,
+          "n_mutation_success": 63882,
+          "recovery_delta_pp": 27.48,
+          "meets_25pp_target": true,
+          "baseline_metrics": {
+            "accuracy": 0.9307,
+            "precision": 0.9913,
+            "recall": 0.5945,
+            "f1": 0.7433,
+            "detection_rate": 0.5945
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.977,
+            "precision": 0.9934,
+            "recall": 0.8693,
+            "f1": 0.9272,
+            "detection_rate": 0.8693
+          },
+          "baseline_per_model": {
+            "random_forest": 0.6289,
+            "xgboost": 0.9583,
+            "mlp": 0.0
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.8645,
+            "xgboost": 0.9984,
+            "mlp": 0.9945
+          }
+        },
+        {
+          "mutation": "fragment_payload",
+          "n_samples": 63882,
+          "n_mutation_success": 25629,
+          "recovery_delta_pp": 0.12,
+          "meets_25pp_target": false,
+          "baseline_metrics": {
+            "accuracy": 0.9986,
+            "precision": 0.9948,
+            "recall": 0.9971,
+            "f1": 0.9959,
+            "detection_rate": 0.9977
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9986,
+            "precision": 0.9943,
+            "recall": 0.9975,
+            "f1": 0.9959,
+            "detection_rate": 0.9989
+          },
+          "baseline_per_model": {
+            "random_forest": 0.9986,
+            "xgboost": 0.9996,
+            "mlp": 0.0
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9987,
+            "xgboost": 0.9999,
+            "mlp": 0.9903
+          }
+        },
+        {
+          "mutation": "add_tcp_options",
+          "n_samples": 63882,
+          "n_mutation_success": 25630,
+          "recovery_delta_pp": -0.01,
+          "meets_25pp_target": false,
+          "baseline_metrics": {
+            "accuracy": 0.9988,
+            "precision": 0.9948,
+            "recall": 0.9979,
+            "f1": 0.9964,
+            "detection_rate": 0.9998
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9987,
+            "precision": 0.9943,
+            "recall": 0.9978,
+            "f1": 0.996,
+            "detection_rate": 0.9996
+          },
+          "baseline_per_model": {
+            "random_forest": 0.9995,
+            "xgboost": 1.0,
+            "mlp": 0.9974
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9994,
+            "xgboost": 0.9999,
+            "mlp": 0.9995
+          }
+        },
+        {
+          "mutation": "shift_ack_timing",
+          "n_samples": 63882,
+          "n_mutation_success": 25630,
+          "recovery_delta_pp": -3.9,
+          "meets_25pp_target": false,
+          "baseline_metrics": {
+            "accuracy": 0.9949,
+            "precision": 0.9947,
+            "recall": 0.975,
+            "f1": 0.9847,
+            "detection_rate": 0.9426
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9922,
+            "precision": 0.994,
+            "recall": 0.9593,
+            "f1": 0.9763,
+            "detection_rate": 0.9036
+          },
+          "baseline_per_model": {
+            "random_forest": 0.9019,
+            "xgboost": 0.9554,
+            "mlp": 0.9609
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.3993,
+            "xgboost": 0.9432,
+            "mlp": 0.9963
+          }
+        }
+      ]
+    },
+    {
+      "dataset": "nslkdd",
+      "n_attack_samples": 10719,
+      "target_recovery_pp": 25.0,
+      "clean_detection": {
+        "note": "Metrics on the unperturbed full test set (Binary: Attack vs. Benign). ",
+        "baseline": {
+          "accuracy": 0.9951,
+          "precision": 0.9924,
+          "recall": 0.9974,
+          "f1": 0.9949,
+          "detection_rate": 0.9974
+        },
+        "adversarial": {
+          "accuracy": 0.9939,
+          "precision": 0.991,
+          "recall": 0.9965,
+          "f1": 0.9937,
+          "detection_rate": 0.9965
+        }
+      },
+      "n_mutations_evaluated": 1,
+      "n_mutations_skipped": 6,
+      "n_mutations_meeting_target": 0,
+      "schema_note": "Mutations that ran on this dataset operate on CICIDS2017-equivalent positional feature indices. The perturbed index positions may carry different semantic meaning in this dataset's schema. Results test whether adversarial retraining provides general robustness to feature perturbations, not protocol-specific evasion.",
+      "mutations": [
+        {
+          "mutation": "inject_decoy_flows",
+          "skipped": true,
+          "reason": "Requires CICIDS2017-schema benign pool and constraint validators tied to CICIDS2017 feature indices."
+        },
+        {
+          "mutation": "dilute_scan_pattern",
+          "skipped": true,
+          "reason": "Requires CICIDS2017 feature semantics for cover-traffic insertion and constraint validators."
+        },
+        {
+          "mutation": "mimic_timing",
+          "n_samples": 10719,
+          "n_mutation_success": 10719,
+          "recovery_delta_pp": -2.36,
+          "meets_25pp_target": false,
+          "baseline_metrics": {
+            "accuracy": 0.9779,
+            "precision": 0.9921,
+            "recall": 0.9617,
+            "f1": 0.9766,
+            "detection_rate": 0.9617
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9658,
+            "precision": 0.9904,
+            "recall": 0.9381,
+            "f1": 0.9635,
+            "detection_rate": 0.9381
+          },
+          "baseline_per_model": {
+            "random_forest": 0.9302,
+            "xgboost": 0.9908,
+            "mlp": 0.9075
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.8916,
+            "xgboost": 0.9836,
+            "mlp": 0.7099
+          }
+        },
+        {
+          "mutation": "mimic_packet_size",
+          "skipped": true,
+          "reason": "Accesses feature indices 48 (PKT_SIZE_AVG), 52 (SUBFLOW_FWD_BYTS), 54 (SUBFLOW_BWD_BYTS) which exceed NSL-KDD dimensionality (40 features)."
+        },
+        {
+          "mutation": "fragment_payload",
+          "skipped": true,
+          "reason": "TCPConstraintValidator._check_inputs requires >=67 features; NSL-KDD has 40."
+        },
+        {
+          "mutation": "add_tcp_options",
+          "skipped": true,
+          "reason": "TCPConstraintValidator._check_inputs requires >=67 features; NSL-KDD has 40."
+        },
+        {
+          "mutation": "shift_ack_timing",
+          "skipped": true,
+          "reason": "TCPConstraintValidator._check_inputs requires >=67 features; NSL-KDD has 40."
+        }
+      ]
+    },
+    {
+      "dataset": "unswnb15",
+      "n_attack_samples": 12175,
+      "target_recovery_pp": 25.0,
+      "clean_detection": {
+        "note": "Metrics on the unperturbed full test set (Binary: Attack vs. Benign). ",
+        "baseline": {
+          "accuracy": 0.9747,
+          "precision": 0.9152,
+          "recall": 0.9969,
+          "f1": 0.9543,
+          "detection_rate": 0.9969
+        },
+        "adversarial": {
+          "accuracy": 0.9751,
+          "precision": 0.9165,
+          "recall": 0.9968,
+          "f1": 0.955,
+          "detection_rate": 0.9968
+        }
+      },
+      "n_mutations_evaluated": 5,
+      "n_mutations_skipped": 2,
+      "n_mutations_meeting_target": 1,
+      "schema_note": "Mutations that ran on this dataset operate on CICIDS2017-equivalent positional feature indices. The perturbed index positions may carry different semantic meaning in this dataset's schema. Results test whether adversarial retraining provides general robustness to feature perturbations, not protocol-specific evasion.",
+      "mutations": [
+        {
+          "mutation": "inject_decoy_flows",
+          "skipped": true,
+          "reason": "Requires a CICIDS2017-schema benign pool; UNSW-NB15 features at the same positional indices carry different semantics."
+        },
+        {
+          "mutation": "dilute_scan_pattern",
+          "skipped": true,
+          "reason": "Requires CICIDS2017 feature semantics for cover-traffic insertion."
+        },
+        {
+          "mutation": "mimic_timing",
+          "n_samples": 12175,
+          "n_mutation_success": 12175,
+          "recovery_delta_pp": 1.07,
+          "meets_25pp_target": false,
+          "baseline_metrics": {
+            "accuracy": 0.9727,
+            "precision": 0.9146,
+            "recall": 0.9892,
+            "f1": 0.9505,
+            "detection_rate": 0.9892
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9759,
+            "precision": 0.9168,
+            "recall": 0.9999,
+            "f1": 0.9565,
+            "detection_rate": 0.9999
+          },
+          "baseline_per_model": {
+            "random_forest": 0.9198,
+            "xgboost": 1.0,
+            "mlp": 0.9947
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.5317,
+            "xgboost": 1.0,
+            "mlp": 0.9998
+          }
+        },
+        {
+          "mutation": "mimic_packet_size",
+          "n_samples": 12175,
+          "n_mutation_success": 12175,
+          "recovery_delta_pp": -0.12,
+          "meets_25pp_target": false,
+          "baseline_metrics": {
+            "accuracy": 0.9753,
+            "precision": 0.9154,
+            "recall": 0.9992,
+            "f1": 0.9555,
+            "detection_rate": 0.9992
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9754,
+            "precision": 0.9166,
+            "recall": 0.9979,
+            "f1": 0.9556,
+            "detection_rate": 0.9979
+          },
+          "baseline_per_model": {
+            "random_forest": 0.9743,
+            "xgboost": 0.9988,
+            "mlp": 0.9999
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.9785,
+            "xgboost": 0.9989,
+            "mlp": 0.6524
+          }
+        },
+        {
+          "mutation": "fragment_payload",
+          "n_samples": 12175,
+          "n_mutation_success": 1,
+          "recovery_delta_pp": 0.0,
+          "meets_25pp_target": false,
+          "baseline_metrics": {
+            "accuracy": 0.9747,
+            "precision": 0.9152,
+            "recall": 0.9969,
+            "f1": 0.9543,
+            "detection_rate": 1.0
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9751,
+            "precision": 0.9165,
+            "recall": 0.9968,
+            "f1": 0.955,
+            "detection_rate": 1.0
+          },
+          "baseline_per_model": {
+            "random_forest": 1.0,
+            "xgboost": 1.0,
+            "mlp": 0.0
+          },
+          "adversarial_per_model": {
+            "random_forest": 1.0,
+            "xgboost": 1.0,
+            "mlp": 0.0
+          }
+        },
+        {
+          "mutation": "add_tcp_options",
+          "n_samples": 12175,
+          "n_mutation_success": 2999,
+          "recovery_delta_pp": 0.1,
+          "meets_25pp_target": false,
+          "baseline_metrics": {
+            "accuracy": 0.9746,
+            "precision": 0.9152,
+            "recall": 0.9966,
+            "f1": 0.9542,
+            "detection_rate": 0.999
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9751,
+            "precision": 0.9166,
+            "recall": 0.9969,
+            "f1": 0.955,
+            "detection_rate": 1.0
+          },
+          "baseline_per_model": {
+            "random_forest": 0.999,
+            "xgboost": 1.0,
+            "mlp": 0.116
+          },
+          "adversarial_per_model": {
+            "random_forest": 1.0,
+            "xgboost": 1.0,
+            "mlp": 0.1114
+          }
+        },
+        {
+          "mutation": "shift_ack_timing",
+          "n_samples": 12175,
+          "n_mutation_success": 3,
+          "recovery_delta_pp": 33.33,
+          "meets_25pp_target": true,
+          "baseline_metrics": {
+            "accuracy": 0.9747,
+            "precision": 0.9152,
+            "recall": 0.9968,
+            "f1": 0.9543,
+            "detection_rate": 0.6667
+          },
+          "adversarial_metrics": {
+            "accuracy": 0.9751,
+            "precision": 0.9166,
+            "recall": 0.9969,
+            "f1": 0.955,
+            "detection_rate": 1.0
+          },
+          "baseline_per_model": {
+            "random_forest": 0.6667,
+            "xgboost": 1.0,
+            "mlp": 0.0
+          },
+          "adversarial_per_model": {
+            "random_forest": 0.0,
+            "xgboost": 1.0,
+            "mlp": 1.0
+          }
+        }
+      ]
+    }
+  ]
+}
