@@ -97,6 +97,13 @@ tests/                       # pytest tests
 ```
 
 ---
+## Running the Project
+
+The project can be most easily run through the docker image found [here](https://drive.google.com/drive/folders/1KnOcGRnqUJwCtyPUR4IYc0v1WrXPPrZn?usp=sharing) (instructions included in zip).
+
+Otherwise, the steps below may be followed instead.
+
+---
 
 ## Setup
 
