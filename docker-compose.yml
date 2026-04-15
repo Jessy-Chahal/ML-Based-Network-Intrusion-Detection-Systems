@@ -1,0 +1,27 @@
+services:
+  nids:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nids-adv:latest
+    container_name: nids-adv-dev
+
+    # Mount the full repository so the professor sees the exact project
+    # directories (data/docs/models/notebooks/results/scripts/src/tests)
+    # and generated outputs persist on the host.
+    volumes:
+      - .:/workspace
+
+    # Environment variables
+    environment:
+      PYTHONUNBUFFERED: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+
+    # Ports
+    ports:
+      - "8888:8888"
+
+    working_dir: /workspace
+    init: true
+    stdin_open: true
+    tty: true
