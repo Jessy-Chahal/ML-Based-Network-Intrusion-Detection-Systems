@@ -340,8 +340,8 @@ def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> di
 
     Args:
         dataset: one of "cicids2017", "nslkdd", "unswnb15"
-        attack:  one of "a", "b", "c"
-        rng:     seeded RNG for reproducibility
+        attack: one of "a", "b", "c"
+        rng: seeded RNG for reproducibility
 
     Returns:
         summary dict with paths and sample counts
@@ -383,7 +383,7 @@ def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> di
             benign_profile = compute_benign_profile_from_data(X_train, y_train, benign_id)
         X_adv, y_adv = perturb_attack_b(X_attack, y_attack, benign_profile)
 
-    else:  # attack == "c"
+    else: # attack == "c"
         if dataset == "cicids2017":
             X_adv, y_adv = perturb_attack_c_cicids(X_attack, y_attack, benign_pool)
         else:

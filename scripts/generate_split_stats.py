@@ -28,8 +28,8 @@ IMBALANCE_WARNINGS = {
 
 RECOMMENDED_ATTACK_TARGETS = {
     "cicids2017": ["DoS Hulk", "PortScan", "DDoS"],
-    "nslkdd":     ["DoS", "Probe"],
-    "unswnb15":   ["DoS", "Exploits", "Reconnaissance"],
+    "nslkdd": ["DoS", "Probe"],
+    "unswnb15": ["DoS", "Exploits", "Reconnaissance"],
 }
 
 
@@ -61,14 +61,14 @@ def main():
         imbalance_ratio = round(max(train_counts) / max(min(train_counts), 1), 1)
 
         stats[name] = {
-            "total_rows":                 total,
-            "n_features":                 n_features,
-            "feature_names":              feat_names,
-            "split_sizes":                {s: int(len(data[f"y_{s}"])) for s in ["train", "val", "test"]},
-            "class_distribution":         dist,
-            "label_map":                  {str(k): v for k, v in lmap.items()},
-            "imbalance_ratio_train":      imbalance_ratio,
-            "imbalance_warnings":         IMBALANCE_WARNINGS.get(name, []),
+            "total_rows": total,
+            "n_features": n_features,
+            "feature_names": feat_names,
+            "split_sizes": {s: int(len(data[f"y_{s}"])) for s in ["train", "val", "test"]},
+            "class_distribution": dist,
+            "label_map": {str(k): v for k, v in lmap.items()},
+            "imbalance_ratio_train": imbalance_ratio,
+            "imbalance_warnings": IMBALANCE_WARNINGS.get(name, []),
             "recommended_attack_targets": RECOMMENDED_ATTACK_TARGETS.get(name, []),
         }
 

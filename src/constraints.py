@@ -154,7 +154,7 @@ class ConstraintValidator(ABC):
         Return True if the perturbed sample satisfies all constraints enforced by this validator.
 
         Args:
-            original:  The unmodified feature vector (1D numpy array)
+            original: The unmodified feature vector (1D numpy array)
             perturbed: The perturbed feature vector (1D numpy array)
 
         Returns:
@@ -171,7 +171,7 @@ class ConstraintValidator(ABC):
         Returns an empty list if no violations are found.
 
         Args:
-            original:  The unmodified feature vector (1D numpy array).
+            original: The unmodified feature vector (1D numpy array).
             perturbed: The perturbed feature vector (1D numpy array).
 
         Returns:
@@ -437,11 +437,11 @@ class FunctionalConstraintValidator(ConstraintValidator):
     """
 
     THRESHOLDS = {
-        "dos":        {"pkt_rate_min_ratio": 0.70},
-        "portscan":   {"pkt_rate_min_ratio": 0.60},
-        "c2":         {"duration_max_ratio": 2.0},
+        "dos": {"pkt_rate_min_ratio": 0.70},
+        "portscan": {"pkt_rate_min_ratio": 0.60},
+        "c2": {"duration_max_ratio": 2.0},
         "bruteforce": {"pkt_rate_min_ratio": 0.60},
-        "default":    {"pkt_rate_min_ratio": 0.50},
+        "default": {"pkt_rate_min_ratio": 0.50},
     }
 
     def __init__(self, attack_class: str = "default"):

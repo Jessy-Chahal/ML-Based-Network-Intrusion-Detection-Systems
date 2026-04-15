@@ -217,10 +217,10 @@ def compute_clean_metrics(
     f1 = f1_score(y_true_binary, preds_binary, zero_division=0)
     
     return {
-        "accuracy":       round(float(acc), 4),
-        "precision":      round(float(prec), 4),
-        "recall":         round(float(rec), 4),
-        "f1":             round(float(f1), 4),
+        "accuracy": round(float(acc), 4),
+        "precision": round(float(prec), 4),
+        "recall": round(float(rec), 4),
+        "f1": round(float(f1), 4),
         # Here recall equals the attack detection rate for attacks.
         "detection_rate": round(float(rec), 4),
     }
@@ -293,15 +293,15 @@ def evaluate_mutation(
     adversarial_per_model = detection_rate_per_model(adversarial, X_valid, y_valid, benign_id)
 
     return {
-        "mutation":                   mutation_name,
-        "n_samples":                  n_total,
-        "n_mutation_success":         n_valid,
-        "recovery_delta_pp":          round(delta_pp, 2),
-        "meets_25pp_target":          delta_pp >= 25.0,
-        "baseline_metrics":           baseline_metrics,
-        "adversarial_metrics":        adversarial_metrics,
-        "baseline_per_model":         baseline_per_model,
-        "adversarial_per_model":      adversarial_per_model,
+        "mutation": mutation_name,
+        "n_samples": n_total,
+        "n_mutation_success": n_valid,
+        "recovery_delta_pp": round(delta_pp, 2),
+        "meets_25pp_target": delta_pp >= 25.0,
+        "baseline_metrics": baseline_metrics,
+        "adversarial_metrics": adversarial_metrics,
+        "baseline_per_model": baseline_per_model,
+        "adversarial_per_model": adversarial_per_model,
     }
 
 
@@ -427,7 +427,7 @@ def evaluate_dataset(
         "target_recovery_pp": 25.0,
         "clean_detection": {
             "note": "Scores on the normal (unmutated) test set, attack vs benign.",
-            "baseline":    baseline_clean,
+            "baseline": baseline_clean,
             "adversarial": adversarial_clean,
         },
         "n_mutations_evaluated": len(evaluated),
