@@ -151,7 +151,3 @@ python src/defense/evaluate_defense.py
 python src/defense/evaluate_defense.py --attack a
 ```
 
-**Run tests:**
-```bash
-pytest
-```
