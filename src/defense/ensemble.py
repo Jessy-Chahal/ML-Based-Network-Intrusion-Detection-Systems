@@ -77,7 +77,7 @@ class Ensemble:
     ) -> "Ensemble":
         """dataset = cicids2017 | nslkdd | unswnb15; attack = a | b | c.
 
-        Expects adv_{attack}_only_* model files from your partial train pipeline.
+        Expects adv_{attack}_only_* model files from the partial train pipeline.
         """
         if attack not in ("a", "b", "c"):
             raise ValueError(f"attack must be 'a', 'b', or 'c', however got input {attack!r}")
