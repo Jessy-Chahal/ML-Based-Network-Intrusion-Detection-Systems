@@ -26,7 +26,7 @@ Bwd Avg Bytes/Bulk, Bwd Avg Packets/Bulk, Bwd Avg Bulk Rate
 
 ### Mutable features (safe to perturb independently)
 
-- Flow Duration — clip to [0, inf] (raw data has min=-13, CICFlowMeter bug)
+- Flow Duration - clip to [0, inf] (raw data has min=-13, CICFlowMeter bug)
 - Total Fwd Packets
 - Total Backward Packets
 - Total Length of Fwd Packets
@@ -37,16 +37,16 @@ Bwd Avg Bytes/Bulk, Bwd Avg Packets/Bulk, Bwd Avg Bulk Rate
 - Fwd Packet Length Max / Min / Mean / Std
 - Bwd Packet Length Max / Min / Mean / Std
 - Min / Max / Mean / Std Packet Length
-- Fwd PSH Flags — confirmed non-constant (retained in arrays)
+- Fwd PSH Flags - confirmed non-constant (retained in arrays)
 - FIN Flag Count / SYN Flag Count / RST Flag Count / PSH Flag Count
-- Init_Win_bytes_forward — bounds: [0, 65535]
-- Init_Win_bytes_backward — bounds: [0, 65535]
-- act_data_pkt_fwd — bounds: [0, Total Fwd Packets]
-- min_seg_size_forward — bounds: [20, inf]
+- Init_Win_bytes_forward - bounds: [0, 65535]
+- Init_Win_bytes_backward - bounds: [0, 65535]
+- act_data_pkt_fwd - bounds: [0, Total Fwd Packets]
+- min_seg_size_forward - bounds: [20, inf]
 - Active Mean / Std / Max / Min
 - Idle Mean / Std / Max / Min
 
-### Immutable features (derived — mutating independently violates physics)
+### Immutable features (derived - mutating independently violates physics)
 
 | Feature                    | Why                                   | Constraint                                        |
 | -------------------------- | ------------------------------------- | ------------------------------------------------- |
@@ -66,14 +66,14 @@ Bwd Avg Bytes/Bulk, Bwd Avg Packets/Bulk, Bwd Avg Bulk Rate
 | Feature           | Constraint                                                         |
 | ----------------- | ------------------------------------------------------------------ |
 | ACK Flag Count    | Must be ≥ SYN Flag Count in established connections                |
-| FIN + RST         | Mutually exclusive — both > 0 in same flow is invalid              |
+| FIN + RST         | Mutually exclusive - both > 0 in same flow is invalid              |
 | PSH Flag Count    | Only valid when payload bytes > 0                                  |
 | Fwd Header Length | 20 × Total_Fwd_Packets ≤ value ≤ 60 × Total_Fwd_Packets            |
 | SYN Flag Count    | Typically 1 per flow; > 1 indicates SYN flood (may be intentional) |
 
-### Class imbalance — attack target guidance
+### Class imbalance - attack target guidance
 
-- BENIGN is 80.3% — baseline models will be biased toward predicting BENIGN
+- BENIGN is 80.3% - baseline models will be biased toward predicting BENIGN
 - Recommended primary targets: DoS Hulk (231k), PortScan (158k), DDoS (128k)
 - Avoid as primary targets: Heartbleed (11), SQL Injection (21), Infiltration (36)
 - Interpret carefully: PortScan, Bot, DoS Hulk (known labeling/stat errors)
@@ -84,7 +84,7 @@ Bwd Avg Bytes/Bulk, Bwd Avg Packets/Bulk, Bwd Avg Bulk Rate
 
 ### Feature confirmed dropped (constant = always 0)
 
-num_outbound_cmds — confirmed constant, absent from .npz arrays (39 → 38 features)
+num_outbound_cmds - confirmed constant, absent from .npz arrays (39 → 38 features)
 
 ### Mutable features
 
@@ -101,10 +101,10 @@ land, wrong_fragment, urgent
 
 ### Immutable features
 
-- protocol_type, service, flag — categorical; changing breaks attack semantics
-- is_host_login, is_guest_login, logged_in — binary semantic flags
+- protocol_type, service, flag - categorical; changing breaks attack semantics
+- is_host_login, is_guest_login, logged_in - binary semantic flags
 
-### Class imbalance warning — CRITICAL
+### Class imbalance warning - CRITICAL
 
 R2L = 0.79%, U2R = 0.04% of total data.
 A model can score >99% accuracy while never predicting either class.
@@ -136,15 +136,15 @@ ct_dst_ltm, ct_src_ltm,
 ct_src_dport_ltm, ct_dst_sport_ltm, ct_dst_src_ltm,
 is_ftp_login, ct_ftp_cmd, ct_flw_http_mthd
 
-\*sttl/dttl are OS-level TTL values — mutable for feature-space attacks
+\*sttl/dttl are OS-level TTL values - mutable for feature-space attacks
 but physically unrealistic to change (document this limitation)
 
 ### Immutable features
 
-- proto, state, service — categorical protocol identifiers
-- is_sm_ips_ports — binary semantic flag (same src/dst IP:port)
-- stcpb, dtcpb — TCP base sequence numbers (OS fingerprint)
-- Sload, Dload — bits/sec (derived from sbytes/dbytes + dur)
+- proto, state, service - categorical protocol identifiers
+- is_sm_ips_ports - binary semantic flag (same src/dst IP:port)
+- stcpb, dtcpb - TCP base sequence numbers (OS fingerprint)
+- Sload, Dload - bits/sec (derived from sbytes/dbytes + dur)
 
 ### Class imbalance warning
 
@@ -155,5 +155,5 @@ Recommended attack targets: DoS (6.91%), Exploits (6.61%), Reconnaissance (3.74%
 ### Label structure note
 
 Integer labels 0–9 stored in separate Label.csv, joined on row index.
-All 10 labels mapped successfully — no unmapped values confirmed by EDA.
-31.64% duplicates remov
+All 10 labels mapped successfully - no unmapped values confirmed by EDA.
+31.64% duplicates removed.

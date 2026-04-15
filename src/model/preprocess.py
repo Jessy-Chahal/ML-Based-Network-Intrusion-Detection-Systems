@@ -71,11 +71,11 @@ def process_cicids2017():
 
     df = pd.concat(dfs, ignore_index=True)
 
-    # Strip leading/trailing whitespace from column names — known CICIDS2017 issue
+    # Strip leading/trailing whitespace from column names - known CICIDS2017 issue
     df.columns = df.columns.str.strip()
     print(f"  Total after concat: {df.shape}")
 
-    # Drop duplicates — CICFlowMeter artifacts, not real repeated flows
+    # Drop duplicates - CICFlowMeter artifacts, not real repeated flows
     before = len(df)
     df = df.drop_duplicates()
     print(f"  Dropped {before - len(df)} duplicate rows")
@@ -128,7 +128,7 @@ def process_nslkdd():
     df = pd.concat([train, test], ignore_index=True)
     print(f"  Loaded: {df.shape}")
 
-    # Drop difficulty column — not a feature
+    # Drop difficulty column - not a feature
     df = df.drop(columns=['difficulty'])
 
     # Encode categorical features
@@ -162,7 +162,7 @@ def process_nslkdd():
     # Any unmapped labels (rare variants not in training set) default to R2L
     unmapped = df['category'].isnull().sum()
     if unmapped:
-        print(f"  Warning: {unmapped} unmapped labels — defaulting to R2L")
+        print(f"  Warning: {unmapped} unmapped labels - defaulting to R2L")
         df['category'] = df['category'].fillna('R2L')
 
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()

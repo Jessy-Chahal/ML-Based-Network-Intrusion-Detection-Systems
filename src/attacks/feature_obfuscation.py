@@ -1,26 +1,11 @@
 """
-Category A: Feature Obfuscation Attacks.
+Category A: Feature Obfuscation Attacks
 
-Strategy: dilute or mask the anomalous statistics of a malicious flow by
-blending it with benign-looking decoy flows, adding cover traffic padding,
-or slowing the probe rate of a port scan. All perturbations are applied
-through the shared mutations API in src/mutations.py rather than directly
-modifying feature vectors.
+Dilute or mask the anomalous statistics of a malicious flow by blending it with benign decoys, 
+adding cover traffic, or slowing port scan probes.
 
-Each public function in this module:
-  1. Calls one or more mutations from src/mutations.py
-  2. Validates the result using the appropriate constraint validators
-  3. Returns the perturbed sample (or None if it fails validation) along
-     with a metadata dict containing the FP score and any violations
-
-Functional preservation thresholds are defined in
-docs/functional_preservation.md. Samples that fail the FP threshold are
-rejected — the perturbation has degraded the attack below operational utility.
-
-Feasibility note: inject_decoy_flows requires the attacker to generate
-additional outbound traffic from their own host — no source address spoofing
-is needed. dilute_scan_pattern adds timing delays, which the attacker
-controls directly via socket-level rate limiting.
+Each attack returns the perturbed sample (or None if it fails validation) along
+with a metadata dict containing the functional preservation score and any violations.
 """
 
 import numpy as np
@@ -52,22 +37,9 @@ def compute_fp_score(
     """
     Compute the functional preservation (FP) score for a perturbed sample.
 
-    Packet rate is recomputed from mutable base features (TOT_FWD_PKTS,
-    TOT_BWD_PKTS, FLOW_DURATION) rather than read from the stored FLOW_PKTS_S
-    field, which is an immutable derived feature that will not reflect
-    mutations to the base packet count or duration fields.
-
-    Args:
-        original:    Unmodified malicious feature vector.
-        perturbed:   Perturbed feature vector.
-        attack_type: One of 'portscan' or 'dos'. Selects the FP threshold
-                     defined in docs/functional_preservation.md.
-
-    Returns:
-        Dict with keys:
-            attack_type      — the attack class used for threshold selection
-            pkt_rate_ratio   — perturbed_rate / original_rate (0.0–∞)
-            passes_threshold — True if ratio meets the minimum threshold
+    Compares packet rate before and after perturbation. 
+    Rate is recomputed from base features (TOT_FWD_PKTS, TOT_BWD_PKTS, FLOW_DURATION). 
+    Returns a dict with the rate ratio and whether it meets the minimum threshold for the attack type.
     """
     def _rate(s: np.ndarray) -> float:
         total_pkts = s[F.TOT_FWD_PKTS] + s[F.TOT_BWD_PKTS]
@@ -103,13 +75,11 @@ def _validate(
     extra_metadata: dict,
 ) -> Tuple[Optional[np.ndarray], dict]:
     """
-    Run constraint validators against a perturbed sample.
+    Run constraint validators against a perturbed sample and return results.
 
-    PlausibilityConstraintValidator is intentionally skipped for 'portscan'
-    attack type. PortScan flows in CICIDS2017 are SYN-probe flows with
-    near-zero payloads, which are structurally below the 20-byte average
-    packet size minimum — this is a property of the flow type, not a
-    violation introduced by the perturbation.
+    Skips PlausibilityConstraintValidator for portscan flows, 
+    since their near-zero payloads fall below the minimum packet size threshold by design
+    (not as a result of the perturbation).
     """
     validators = [FunctionalConstraintValidator(attack_class=attack_type)]
     if attack_type != "portscan":
@@ -141,27 +111,13 @@ def inject_decoy_flows(
     rng: Optional[np.random.Generator] = None,
 ) -> Tuple[Optional[np.ndarray], dict]:
     """
-    Blend a malicious flow with k benign flows sampled from the BENIGN pool.
+    Blend a malicious flow with k benign flows to move it toward the benign distribution.
 
-    Delegates to mutations.inject_decoy_flows, which computes:
-        (1 / (k+1)) * malicious + (k / (k+1)) * mean(benign_sample)
+    Uses a weighted average: (1/(k+1)) * malicious + (k/(k+1)) * mean(benign_sample).
+    Higher k pushes the result further toward benign. 
+    The attacker generates additional outbound traffic alongside the attack (no spoofing needed).
 
-    Higher k moves the blended vector further toward the benign distribution.
-    The attacker generates additional outbound traffic (HTTP GETs, DNS queries)
-    from their own host alongside the attack — no spoofing required.
-
-    Args:
-        malicious_sample: Feature vector of the attack flow (1D array).
-        benign_pool:      2D array of BENIGN class samples from X_train,
-                          shape (n_benign, n_features).
-        k:                Number of decoy flows to inject. Must be >= 1.
-        attack_type:      'dos' or 'portscan' — selects FP threshold.
-        rng:              Optional random generator for reproducibility.
-
-    Returns:
-        Tuple of (perturbed_sample, metadata).
-        perturbed_sample is None if validation fails.
-        metadata contains fp_score, valid flag, and any violations.
+    Returns the perturbed sample and a metadata dict (or None if validation fails).
     """
     perturbed = blend_with_benign(
         malicious_sample, benign_pool,
@@ -184,32 +140,13 @@ def dilute_scan_pattern(
     rng: Optional[np.random.Generator] = None,
 ) -> Tuple[Optional[np.ndarray], dict]:
     """
-    Dilute a PortScan flow's burst signature using two chained mutations:
+    Dilute a port scan flow's burst signature using two chained mutations.
 
-        1. shift_inter_arrival_time — slows probe timing to break the burst
-           pattern. cover_traffic_rate is mapped to a millisecond delay:
-           each unit of cover_traffic_rate adds 50ms of IAT shift.
+    First slows probe timing by shifting inter-arrival time (50ms per unit of cover_traffic_rate), 
+    then injects ACK-only padding packets to simulate interleaved normal traffic. 
+    The actual probe packets are unchanged, only delays and cover traffic are added around them.
 
-        2. add_padding_packets — injects cover packets (ACK-only, 40 bytes)
-           to simulate interleaved HTTP/DNS traffic alongside the probes.
-           The number of padding packets is proportional to cover_traffic_rate
-           and the original forward packet count.
-
-    The scan still sends the same probe packets — the mutations only add
-    delays and padding traffic around them. Port coverage is preserved
-    as long as the FP threshold (pkt_rate_ratio >= 0.60) is met.
-
-    Args:
-        scan_sample:        Feature vector of a PortScan flow (1D array).
-        cover_traffic_rate: Dilution intensity in the range [0.0, 2.0].
-                            0.0 = no dilution. 2.0 = maximum dilution.
-        rng:                Optional random generator for reproducibility.
-
-    Returns:
-        Tuple of (perturbed_sample, metadata).
-        perturbed_sample is None if validation fails.
-        metadata contains fp_score, valid flag, violations, and the
-        computed delta_ms and n_padding_packets used.
+    Returns the perturbed sample and a metadata dict (None if validation fails).
     """
     if not (0.0 <= cover_traffic_rate <= 2.0):
         raise ValueError(
@@ -225,10 +162,10 @@ def dilute_scan_pattern(
     orig_fwd_pkts = int(scan_sample[F.TOT_FWD_PKTS])
     n_padding = max(1, int(orig_fwd_pkts * cover_traffic_rate * 0.5))
 
-    # Step 1: Slow the probe timing
+    # Slow the probe timing
     perturbed = delay_packets(scan_sample, delta_milliseconds=delta_ms, direction=Direction.FORWARD)
 
-    # Step 2: Inject cover padding packets
+    # Inject cover padding packets
     perturbed = add_padding(perturbed, number_of_packets=n_padding, direction=Direction.FORWARD, padding_bytes=40)
 
     return _validate(

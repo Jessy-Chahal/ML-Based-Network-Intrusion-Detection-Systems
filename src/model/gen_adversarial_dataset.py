@@ -1,17 +1,15 @@
 """
-Build adversarial training datasets for Sprint 3.
+Build adversarial training .npz dataset files.
 
 For each dataset:
-- Keep 70% stratified clean training data.
+- Use 70% stratified clean training data.
 - Generate adversarial samples from the remaining attack-only partition using
-  three attack families (A/B/C).
+  the three attack families (A/B/C).
 - Merge and save:
   data/adversarial/adv_train_{cicids,nslkdd,unswnb15}.npz
 
-Performance: inject_decoy_flows, dilute_scan_pattern, and protocol_exploitation
-already run their own constraint validation. Do not re-run TCPConstraintValidator
-on every sample — that duplicated work and made full CICIDS runs orders of
-magnitude slower than the old proxy pipeline.
+Performance: the attack helpers already check constraints.
+Does not run an extra TCP validator on every row (very slow on CICIDS).
 """
 
 from __future__ import annotations
@@ -102,7 +100,7 @@ def compute_benign_profile_from_data(
     iat_std_us = np.clip(benign[:, F.FLOW_IAT_STD], 0.0, None)
     total_pkts = benign[:, F.TOT_FWD_PKTS] + benign[:, F.TOT_BWD_PKTS]
     total_bytes = benign[:, F.TOT_LEN_FWD_PKTS] + benign[:, F.TOT_LEN_BWD_PKTS]
-    # Per-flow average packet size (bytes); avoid div-by-zero
+    # Average bytes per packet; skip flows with zero packets
     pkt_sizes = np.full(total_bytes.shape, np.nan, dtype=np.float64)
     np.divide(total_bytes, total_pkts, out=pkt_sizes, where=total_pkts > 0)
     pkt_sizes = pkt_sizes[~np.isnan(pkt_sizes)]
@@ -180,7 +178,7 @@ def build_cicids_adversarial(
     Attack B: mimic_timing / mimic_packet_size alternating (profile from training benign).
     Attack C: fragment_payload, add_tcp_options, shift_ack_timing (unchanged).
 
-    Validity: trust feature_obfuscation and protocol_exploitation validators only — no extra TCP pass.
+    Validity: trust feature_obfuscation and protocol_exploitation validators only (no extra TCP pass)
     """
     if len(benign_pool) == 0:
         raise RuntimeError("CICIDS adversarial generation requires a non-empty benign_pool.")

@@ -1,5 +1,5 @@
 """
-Build "partially trained" adversarial datasets — training data perturbed with
+Build "partially trained" adversarial datasets - training data perturbed with
 exactly ONE attack family (A, B, or C).
 
 Usage:
@@ -22,7 +22,7 @@ A summary JSON is written alongside each file and to:
     data/adversarial/adv_partial_generation_summary_{a|b|c}.json
 
 These files are consumed by train_adversarial_partial.py to produce
-partially-trained adversarial models (adv_{a|b|c}_only_{rf,xgb,mlp,lstm}_{dataset}).
+partially-trained adversarial models (adv_{a|b|c}_only_{rf,xgb,mlp}_{dataset}).
 """
 
 from __future__ import annotations
@@ -52,7 +52,7 @@ from src.attacks.protocol_exploitation import (
 from src.constraints import CICIDSFeatures as F
 from src.mutations import blend_with_benign
 
-# ── constants ────────────────────────────────────────────────────────────────
+### Constants ###
 
 SECONDS_TO_MICROSECONDS = get_env_float("SECONDS_TO_MICROSECONDS")
 INJECT_DECOY_K = get_env_int("ADV_INJECT_DECOY_K")
@@ -78,7 +78,7 @@ DATASET_NAME_MAP = {
 ALL_DATASETS = ["cicids2017", "nslkdd", "unswnb15"]
 
 
-# ── data helpers (identical to gen_adversarial_dataset.py) ────────────────────
+### Data Helpers ###
 
 def load_split(dataset: str):
     npz_path = SPLITS_DIR / f"{dataset}.npz"
@@ -175,7 +175,7 @@ def _recompute_rates_after_packet_size(flow: np.ndarray) -> np.ndarray:
     return flow
 
 
-# ── per-attack-family perturb functions ──────────────────────────────────────
+### Per-attack-family perturb functions ###
 
 def perturb_attack_a_cicids(
     X_attack: np.ndarray,
@@ -184,7 +184,7 @@ def perturb_attack_a_cicids(
     label_map: dict,
     rng: np.random.Generator,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Apply Attack A (feature obfuscation) to ALL samples — CICIDS variant."""
+    """Apply Attack A (feature obfuscation) to ALL samples - CICIDS variant."""
     benign_fp64 = benign_pool.astype(np.float64, copy=False)
     X_adv: list[np.ndarray] = []
     y_adv: list[int] = []
@@ -222,7 +222,7 @@ def perturb_attack_a_generic(
     benign_pool: np.ndarray,
     rng: np.random.Generator,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Apply Attack A (blend_with_benign) to ALL samples — generic variant."""
+    """Apply Attack A (blend_with_benign) to ALL samples - generic variant."""
     X_adv: list[np.ndarray] = []
     y_adv: list[int] = []
 
@@ -281,7 +281,7 @@ def perturb_attack_c_cicids(
     y_attack: np.ndarray,
     benign_pool: np.ndarray,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Apply Attack C (protocol exploitation) to ALL samples — CICIDS variant."""
+    """Apply Attack C (protocol exploitation) to ALL samples - CICIDS variant."""
     target_iat_ms = float(np.clip(
         float(np.median(np.clip(benign_pool[:, F.FLOW_IAT_MEAN], 0, None))) / 1000.0,
         1.0, 2000.0,
@@ -326,13 +326,13 @@ def perturb_attack_c_generic(
     y_attack: np.ndarray,
     rng: np.random.Generator,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Apply Attack C (generic feature scaling) to ALL samples — generic variant."""
+    """Apply Attack C (generic feature scaling) to ALL samples - generic variant."""
     X_adv = [_generic_attack_c_sample(X_attack[i], rng) for i in range(len(X_attack))]
     y_adv = y_attack.tolist()
     return np.stack(X_adv).astype(np.float32), np.asarray(y_adv, dtype=np.int64)
 
 
-# ── dataset builder ───────────────────────────────────────────────────────────
+### Dataset Builder ###
 
 def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> dict:
     """
@@ -340,8 +340,8 @@ def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> di
 
     Args:
         dataset: one of "cicids2017", "nslkdd", "unswnb15"
-        attack:  one of "a", "b", "c"
-        rng:     seeded RNG for reproducibility
+        attack: one of "a", "b", "c"
+        rng: seeded RNG for reproducibility
 
     Returns:
         summary dict with paths and sample counts
@@ -365,7 +365,7 @@ def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> di
 
     print(f"  clean={len(X_clean)}, attack candidates={len(X_attack)}", flush=True)
 
-    # ── apply the chosen attack family to ALL attack samples ─────────────────
+    ### Apply the chosen attack family to all attack samples ###
     if attack == "a":
         if dataset == "cicids2017":
             X_adv, y_adv = perturb_attack_a_cicids(
@@ -383,13 +383,13 @@ def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> di
             benign_profile = compute_benign_profile_from_data(X_train, y_train, benign_id)
         X_adv, y_adv = perturb_attack_b(X_attack, y_attack, benign_profile)
 
-    else:  # attack == "c"
+    else: # attack == "c"
         if dataset == "cicids2017":
             X_adv, y_adv = perturb_attack_c_cicids(X_attack, y_attack, benign_pool)
         else:
             X_adv, y_adv = perturb_attack_c_generic(X_attack, y_attack, rng)
 
-    # ── merge clean + adversarial and shuffle ────────────────────────────────
+    ### Merge clean + adversarial and shuffle ###
     source_id = np.concatenate([
         np.zeros(len(X_clean), dtype=np.int64),
         np.full(len(X_adv), {"a": 1, "b": 2, "c": 3}[attack], dtype=np.int64),
@@ -420,7 +420,7 @@ def build_for_dataset(dataset: str, attack: str, rng: np.random.Generator) -> di
     }
 
 
-# ── CLI ───────────────────────────────────────────────────────────────────────
+### CLI ###
 
 def main():
     parser = argparse.ArgumentParser(
