@@ -1,40 +1,15 @@
 """
-Defense evaluation script
+Measure how well adversarial retraining recovers detection after mutations.
 
-Evaluates an ensemble across all three datasets (CICIDS2017, NSL-KDD, UNSW-NB15).
-For each dataset the baseline and chosen adversarial model are loaded, 
-compatible mutations are applied to the attack subset of the test split, and recovery delta is reported.
+Runs baseline vs. defense ensemble on CICIDS2017, NSL-KDD, and UNSW-NB15.
 
-Default mode -- full adversarial ensemble (trained on all attack families):
+Examples:
     python src/defense/evaluate_defense.py
-
-Partial mode -- ensemble trained on a single attack family, tested against all mutations:
     python src/defense/evaluate_defense.py --attack a
-    python src/defense/evaluate_defense.py --attack b
-    python src/defense/evaluate_defense.py --attack c
-
-You can also restrict which datasets to run:
     python src/defense/evaluate_defense.py --attack a --datasets cicids2017 nslkdd
 
-Mutation compatibility per dataset
------------------------------------
-CICIDS2017 (70 features):
-    All 7 mutations are run.
-
-NSL-KDD (40 features):
-    Only mimic_timing is run.
-    All other mutations are structurally incompatible:
-      - mimic_packet_size accesses indices 48, 52, 54 which exceed the 40-feature NSL-KDD dimensionality.
-      - fragment_payload, add_tcp_options, and shift_ack_timing call TCPConstraintValidator, which requires >=67 features.
-      - inject_decoy_flows and dilute_scan_pattern depend on the CICIDS2017-schema benign pool and constraint validators.
-
-UNSW-NB15 (67 features):
-    mimic_timing, mimic_packet_size, fragment_payload, add_tcp_options, and shift_ack_timing are run.
-    inject_decoy_flows and dilute_scan_pattern are skipped because they require the CICIDS2017-schema benign pool.
-
-Output files:
-    default    -> results/defense_metrics.json
-    --attack a -> results/defense_attack_a_only_metrics.json
+Which mutations run depends on feature count and schema (see SKIPPED_MUTATIONS).
+Outputs: results/defense_metrics.json, or defense_attack_{a|b|c}_only_metrics.json.
 """
 
 from __future__ import annotations
@@ -88,14 +63,14 @@ def _results_path(attack: Optional[str]) -> Path:
         return RESULTS_DIR / f"defense_attack_{attack}_only_metrics.json"
     return RESULTS_DIR / "defense_metrics.json"
 
-# Normal/benign label name per dataset
+# Dataset-specific name for the benign class
 BENIGN_LABEL = {
     "cicids2017": "BENIGN",
     "nslkdd": "Normal",
     "unswnb15": "Normal",
 }
 
-# All mutation names in run order (used by CICIDS2017)
+# Mutations run in this order when the dataset supports them
 ALL_MUTATIONS = [
     "inject_decoy_flows",
     "dilute_scan_pattern",
@@ -106,48 +81,23 @@ ALL_MUTATIONS = [
     "shift_ack_timing",
 ]
 
-# Mutations to skip per dataset, with the reason stored as the dict value
+# Skip reasons for JSON / logs (short plain language)
 SKIPPED_MUTATIONS: dict[str, dict[str, str]] = {
     "nslkdd": {
-        "inject_decoy_flows": (
-            "Requires CICIDS2017-schema benign pool and constraint validators "
-            "tied to CICIDS2017 feature indices."
-        ),
-        "dilute_scan_pattern": (
-            "Requires CICIDS2017 feature semantics for cover-traffic insertion "
-            "and constraint validators."
-        ),
-        "mimic_packet_size": (
-            "Accesses feature indices 48 (PKT_SIZE_AVG), 52 (SUBFLOW_FWD_BYTS), "
-            "54 (SUBFLOW_BWD_BYTS) which exceed NSL-KDD dimensionality (40 features)."
-        ),
-        "fragment_payload": (
-            "TCPConstraintValidator._check_inputs requires >=67 features; "
-            "NSL-KDD has 40."
-        ),
-        "add_tcp_options": (
-            "TCPConstraintValidator._check_inputs requires >=67 features; "
-            "NSL-KDD has 40."
-        ),
-        "shift_ack_timing": (
-            "TCPConstraintValidator._check_inputs requires >=67 features; "
-            "NSL-KDD has 40."
-        ),
+        "inject_decoy_flows": "Built for CICIDS feature layout; NSL-KDD has 40 columns.",
+        "dilute_scan_pattern": "Same as decoy: expects CICIDS-style features.",
+        "mimic_packet_size": "Touches column indices past 40 (NSL-KDD width).",
+        "fragment_payload": "TCP checks need 67+ features; NSL-KDD has 40.",
+        "add_tcp_options": "TCP checks need 67+ features; NSL-KDD has 40.",
+        "shift_ack_timing": "TCP checks need 67+ features; NSL-KDD has 40.",
     },
     "unswnb15": {
-        "inject_decoy_flows": (
-            "Requires a CICIDS2017-schema benign pool; UNSW-NB15 features at "
-            "the same positional indices carry different semantics."
-        ),
-        "dilute_scan_pattern": (
-            "Requires CICIDS2017 feature semantics for cover-traffic insertion."
-        ),
+        "inject_decoy_flows": "Needs a CICIDS-shaped benign pool; UNSW columns differ.",
+        "dilute_scan_pattern": "Cover-traffic logic assumes CICIDS semantics.",
     },
     "cicids2017": {},
 }
 
-
-### Data loading ###
 
 def load_dataset(dataset: str):
     with np.load(SPLITS_DIR / f"{dataset}.npz", allow_pickle=True) as d:
@@ -169,8 +119,6 @@ def get_benign_id(label_map: dict, dataset: str) -> int:
     raise ValueError(f"Benign label '{target}' not found in label map for {dataset}")
 
 
-### Benign profile helpers ###
-
 def build_benign_profile(X_benign: np.ndarray) -> dict:
     iat_mean = np.clip(X_benign[:, F.FLOW_IAT_MEAN], 0, None)
     iat_std = np.clip(X_benign[:, F.FLOW_IAT_STD],  0, None)
@@ -190,8 +138,6 @@ def build_target_iat_ms(X_benign: np.ndarray) -> float:
     iat_us = np.clip(X_benign[:, F.FLOW_IAT_MEAN], 0, None)
     return float(np.clip(np.median(iat_us) / 1000.0, 1.0, 2000.0))
 
-
-### Mutation application ###
 
 def apply_mutation_batch(X: np.ndarray, mutate_fn) -> tuple[np.ndarray, np.ndarray]:
     mutated = np.array(X, dtype=np.float32)
@@ -214,17 +160,13 @@ def apply_mutation_batch(X: np.ndarray, mutate_fn) -> tuple[np.ndarray, np.ndarr
     return mutated, valid
 
 
-### Metrics ###
-
 def detection_rate_per_model(
     ensemble: Ensemble,
     X: np.ndarray,
     y_true: np.ndarray,
     benign_id: int,
 ) -> dict:
-    """
-    Returns the binary attack detection rate (TPR) per individual model inside the ensemble.
-    """
+    """Share of attack rows each model still flags as attack (not benign)."""
     votes = ensemble._get_votes(np.array(X, dtype=np.float64))
     voter_names = ["random_forest", "xgboost", "mlp"][:len(votes)]
 
@@ -263,10 +205,7 @@ def compute_clean_metrics(
     y_test: np.ndarray,
     benign_id: int,
 ) -> dict:
-    """
-    Computes overarching Accuracy, Precision, Recall, F1, and Detection Rate 
-    on the clean, unperturbed test dataset (binary: Attack vs Benign).
-    """
+    """Accuracy / precision / recall / F1 on the original test set (attack vs benign)."""
     preds = ensemble.predict(X_test.astype(np.float32))
     
     y_true_binary = (y_test != benign_id).astype(int)
@@ -282,7 +221,8 @@ def compute_clean_metrics(
         "precision":      round(float(prec), 4),
         "recall":         round(float(rec), 4),
         "f1":             round(float(f1), 4),
-        "detection_rate": round(float(rec), 4), # DR is identical to Recall in this binary setup
+        # Here recall equals the attack detection rate for attacks.
+        "detection_rate": round(float(rec), 4),
     }
 
 
@@ -299,7 +239,7 @@ def evaluate_mutation(
 ) -> dict:
     mutated, valid = apply_mutation_batch(X_attack, mutate_fn)
 
-    # Reconstruct the test set attacks, keeping failed mutations as originals
+    # Use mutated rows where it worked; otherwise keep the original attack row
     eval_X = np.where(valid[:, None], mutated, X_attack.astype(np.float32))
     
     X_valid = eval_X[valid]
@@ -321,16 +261,16 @@ def evaluate_mutation(
             "note": "No valid mutations produced - cannot compute metrics.",
         }
 
-    # 1. Detection Rate (Calculated specifically on successfully mutated samples)
+    # Detection rate only on rows where mutation succeeded
     baseline_dr = detection_rate(baseline, X_valid, y_valid, benign_id)
     adversarial_dr = detection_rate(adversarial, X_valid, y_valid, benign_id)
     delta_pp = (adversarial_dr - baseline_dr) * 100.0
 
-    # 2. Reconstruct the FULL test set (Benign + Mutated Attacks) for overarching binary metrics
+    # Full test set = benign + (mutated or original) attacks for overall scores
     X_full_test = np.vstack([X_benign_test, eval_X]).astype(np.float32)
     y_full_test = np.concatenate([y_benign_test, y_attack])
     
-    # Binarize labels for overarching metric calculations (Attack=1, Benign=0)
+    # Attack = 1, benign = 0
     y_true_binary = (y_full_test != benign_id).astype(int)
 
     def compute_full_metrics(ensemble, dr):
@@ -348,7 +288,7 @@ def evaluate_mutation(
     baseline_metrics = compute_full_metrics(baseline, baseline_dr)
     adversarial_metrics = compute_full_metrics(adversarial, adversarial_dr)
 
-    # 3. Model level performance
+    # Same detection rate, split per voter model
     baseline_per_model = detection_rate_per_model(baseline, X_valid, y_valid, benign_id)
     adversarial_per_model = detection_rate_per_model(adversarial, X_valid, y_valid, benign_id)
 
@@ -365,8 +305,6 @@ def evaluate_mutation(
     }
 
 
-### Per-dataset evaluation ###
-
 def evaluate_dataset(
     dataset: str, rng: np.random.Generator, attack: Optional[str] = None
 ) -> dict:
@@ -376,14 +314,13 @@ def evaluate_dataset(
     print(f"Dataset: {dataset}  |  Defense mode: {adv_label}")
     print(f"{'='*60}")
 
-    ### Data ###
     print("  Loading data...")
     X_train, y_train, X_test, y_test, label_map = load_dataset(dataset)
     benign_id = get_benign_id(label_map, dataset)
 
     X_benign_train = X_train[y_train == benign_id].astype(np.float64)
 
-    # Separate benign and attack portions of the test set
+    # Test split: benign vs attack
     benign_mask_test = y_test == benign_id
     X_benign_test = X_test[benign_mask_test].astype(np.float64)
     y_benign_test = y_test[benign_mask_test]
@@ -392,11 +329,9 @@ def evaluate_dataset(
     X_attack = X_test[attack_mask].astype(np.float64)
     y_attack = y_test[attack_mask]
 
-    ### Benign profile ###
     benign_profile = build_benign_profile(X_benign_train)
     target_iat_ms = build_target_iat_ms(X_benign_train)
 
-    ### Ensembles ###
     print("  Loading ensembles...")
     baseline_ens = Ensemble.baseline_for(dataset)
     if attack:
@@ -406,7 +341,6 @@ def evaluate_dataset(
     print(f"    Baseline   : {baseline_ens}")
     print(f"    Defense    : {adversarial_ens}")
 
-    ### Clean overarching metrics ###
     print("  Computing clean overall metrics...")
     baseline_clean = compute_clean_metrics(
         baseline_ens, X_test, y_test, benign_id
@@ -415,7 +349,6 @@ def evaluate_dataset(
         adversarial_ens, X_test, y_test, benign_id
     )
 
-    ### Build mutation callables ###
     all_mutation_fns = {
         "inject_decoy_flows": lambda s: inject_decoy_flows(
             s,
@@ -443,7 +376,6 @@ def evaluate_dataset(
 
     skip_map = SKIPPED_MUTATIONS.get(dataset, {})
 
-    ### Evaluate ###
     mutation_results = []
 
     for name in ALL_MUTATIONS:
@@ -478,16 +410,15 @@ def evaluate_dataset(
                 f"Meets 25pp target: {'Yes' if result['meets_25pp_target'] else 'No'}"
             )
 
-    ### Summary ###
     evaluated = [r for r in mutation_results if not r.get("skipped")]
     n_meeting = sum(1 for r in evaluated if r.get("meets_25pp_target"))
 
     schema_note = None
     if dataset != "cicids2017":
         schema_note = (
-            "Mutations that ran on this dataset operate on CICIDS2017-equivalent positional feature indices. "
-            "The perturbed index positions may carry different semantic meaning in this dataset's schema. "
-            "Results test whether adversarial retraining provides general robustness to feature perturbations, not protocol-specific evasion."
+            "We still use the same column indices as CICIDS; on NSL-KDD / UNSW those "
+            "columns may mean something else. This checks robustness to numeric "
+            "nudges, not real protocol tricks on that dataset."
         )
 
     return {
@@ -495,9 +426,7 @@ def evaluate_dataset(
         "n_attack_samples": int(attack_mask.sum()),
         "target_recovery_pp": 25.0,
         "clean_detection": {
-            "note": (
-                "Metrics on the unperturbed full test set (Binary: Attack vs. Benign). "
-            ),
+            "note": "Scores on the normal (unmutated) test set, attack vs benign.",
             "baseline":    baseline_clean,
             "adversarial": adversarial_clean,
         },
@@ -509,8 +438,6 @@ def evaluate_dataset(
     }
 
 
-### Main ###
-
 def main():
     parser = argparse.ArgumentParser(
         description="Evaluate NIDS defense ensembles against adversarial mutations."
@@ -518,9 +445,8 @@ def main():
     parser.add_argument(
         "--attack", type=str, choices=["a", "b", "c"], default=None,
         help=(
-            "Evaluate the partially-trained ensemble for this attack family "
-            "(a=feature obfuscation, b=behavioral mimicry, c=protocol exploitation). "
-            "Omit to evaluate the fully adversarially-trained ensemble (default)."
+            "Use models trained on one family only: a=obfuscation, b=mimicry, c=protocol. "
+            "Leave unset for the full adversarial ensemble."
         ),
     )
     parser.add_argument(

@@ -2,9 +2,9 @@
 Problem-space constraint validators for adversarial example generation.
 All perturbations must pass their relevant validator before being added to the adversarial dataset. 
 
-See docs/constraint_spec.md for the full plain-English specification that this code implements.
+The implementation details for this code are documented in docs/constraint_spec.md.
 
-These validators operate on aggregated CICFlowMeter flow statistics, not raw packets. 
+These validators operate on aggregated CICFlowMeter flow metrics, not raw packets. 
 They enforce structural consistency rules (counts, ratios, and derived features must be mutually consistent).
 
 Usage:
@@ -30,8 +30,8 @@ from src.dotenv_utils import get_env_int
 
 class CICIDSFeatures:
     """
-    Column indices for CICIDS2017 feature vectors (post-preprocessing).
-    Source of truth is the column order output by src/preprocess.py.
+    These indices correspond to the CICIDS2017 feature vector columns (post-preprocessing).
+    The ordering is defined by the src/preprocess.py script.
     """
     DEST_PORT = 0
     FLOW_DURATION = 1
