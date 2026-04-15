@@ -8,8 +8,8 @@ For each dataset:
 - Merge and save:
   data/adversarial/adv_train_{cicids,nslkdd,unswnb15}.npz
 
-Performance: the attack helpers already check constraints. We do not run an
-extra TCP validator on every row (that was very slow on CICIDS).
+Performance: the attack helpers already check constraints.
+Does not run an extra TCP validator on every row (very slow on CICIDS).
 """
 
 from __future__ import annotations
@@ -178,7 +178,7 @@ def build_cicids_adversarial(
     Attack B: mimic_timing / mimic_packet_size alternating (profile from training benign).
     Attack C: fragment_payload, add_tcp_options, shift_ack_timing (unchanged).
 
-    Validity: trust feature_obfuscation and protocol_exploitation validators only - no extra TCP pass.
+    Validity: trust feature_obfuscation and protocol_exploitation validators only (no extra TCP pass)
     """
     if len(benign_pool) == 0:
         raise RuntimeError("CICIDS adversarial generation requires a non-empty benign_pool.")
