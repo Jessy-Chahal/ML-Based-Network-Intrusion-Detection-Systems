@@ -56,9 +56,9 @@ BENIGN traffic makes up 80.3% of the dataset. Heartbleed (11 samples), SQL Injec
 
 The following classes have documented labeling errors in the original CICFlowMeter output and are retained as-is in the splits. Results for these classes should be interpreted carefully:
 
-- **PortScan** — some flows are mislabeled
-- **Bot** — some flows are mislabeled
-- **DoS Hulk** — known CICFlowMeter bug affecting flow statistics
+- **PortScan** - some flows are mislabeled
+- **Bot** - some flows are mislabeled
+- **DoS Hulk** - known CICFlowMeter bug affecting flow statistics
 
 
 ## NSL-KDD
@@ -81,7 +81,7 @@ The following classes have documented labeling errors in the original CICFlowMet
 
 **Categorical features:** `protocol_type`, `service`, and `flag` are string columns that are label-encoded in `preprocess.py`.
 
-**Non-feature column:** `difficulty` is present in the raw files but is not a network feature — it is dropped in `preprocess.py`.
+**Non-feature column:** `difficulty` is present in the raw files but is not a network feature - it is dropped in `preprocess.py`.
 
 ### Constant Features
 

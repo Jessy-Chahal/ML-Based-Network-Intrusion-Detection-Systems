@@ -282,7 +282,7 @@ def _extract_defense_metrics(
                     if val is not None:
                         metric_store[f"defense.mutation.{key_prefix}_{m_key}.{ds}.{mutation}"] = val
 
-            # Per-model detection rates — baseline
+            # Per-model detection rates - baseline
             for model, dr in m.get("baseline_per_model", {}).items():
                 val = _as_float(dr)
                 if val is not None:
@@ -290,7 +290,7 @@ def _extract_defense_metrics(
                         f"defense.mutation.baseline_detection_rate_per_model.{ds}.{mutation}.{model}"
                     ] = val
 
-            # Per-model detection rates — adversarial
+            # Per-model detection rates - adversarial
             for model, dr in m.get("adversarial_per_model", {}).items():
                 val = _as_float(dr)
                 if val is not None:

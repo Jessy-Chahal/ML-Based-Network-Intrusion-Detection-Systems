@@ -50,7 +50,7 @@ def get_nslkdd_feature_names(expected_n):
         "dst_host_serror_rate", "dst_host_srv_serror_rate",
         "dst_host_rerror_rate", "dst_host_srv_rerror_rate",
     ]
-    # num_outbound_cmds confirmed constant — dropped by preprocess.py
+    # num_outbound_cmds confirmed constant - dropped by preprocess.py
     feature_names = [c for c in all_cols if c != "num_outbound_cmds"]
 
     if len(feature_names) != expected_n:

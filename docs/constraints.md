@@ -27,7 +27,7 @@ satisfy DNS protocol structure constraints.
 
 - TCP flag combinations must be valid. Certain combinations cannot co-occur
   in a single packet (e.g., SYN+FIN). SYN+RST is not enforced at the flow
-  level — see `docs/constraint_thresholds.md` for rationale.
+  level - see `docs/constraint_thresholds.md` for rationale.
 - Header lengths must be consistent with the protocol. A TCP header cannot
   be shorter than `MIN_TCP_HEADER`. A flow's `fwd_header_length` must be a
   positive multiple of the reported packet count.
@@ -57,7 +57,7 @@ produce this record.
 **Definition:** The perturbed attack flow must still accomplish the attacker's
 objective. A DoS attack that has been perturbed to evade detection but no
 longer generates enough traffic to cause a service disruption is not a valid
-adversarial example — it has defeated itself.
+adversarial example - it has defeated itself.
 
 **Scope:** Applies per attack category. All threshold values are defined in
 `docs/constraint_thresholds.md`.
@@ -75,7 +75,7 @@ adversarial example — it has defeated itself.
 - **C2/Botnet flows:** The total flow duration cannot increase beyond
   `C2_DURATION_MAX_RATIO` of the original. For Bot flows specifically,
   `flow_iat_mean` cannot increase beyond `C2_IAT_MEAN_MAX_RATIO` of the
-  original — beaconing depends on regular inter-arrival timing.
+  original - beaconing depends on regular inter-arrival timing.
 - **Brute force attacks:** Credential attempt rate must remain at least
   `BRUTEFORCE_PKT_RATE_MIN_RATIO` of the original. Slower-than-threshold
   brute force may not complete within a session window.
@@ -119,7 +119,7 @@ traffic distribution. All threshold values are defined in
 
 **Example violation:** An obfuscation attack injects 10,000 decoy packets
 with a 0.001ms average inter-arrival time to dilute a port scan's feature
-vector. The resulting `flow_pkts_per_sec` exceeds `MAX_FLOW_PKTS_S` — far
+vector. The resulting `flow_pkts_per_sec` exceeds `MAX_FLOW_PKTS_S` - far
 above the physical limit of a single host NIC. Any rate-based anomaly
 detector or firewall with traffic shaping would immediately flag this. The
 perturbation fails the behavioral plausibility constraint.
@@ -136,7 +136,7 @@ gradients, and cannot observe how the model classifies specific samples.
 
 **Scope:** Applies to the perturbation generation process, not the output
 sample. This is a constraint on the attack algorithm, not on the features of
-the resulting flow. There are no numeric thresholds — enforcement is via
+the resulting flow. There are no numeric thresholds - enforcement is via
 code review and the `MutationRegistry`.
 
 **Rules:**
@@ -159,8 +159,8 @@ code review and the `MutationRegistry`.
 model's `predict_proba()` output to iteratively adjust features until the
 confidence score for the attack class drops below 0.5. This requires direct
 model access and violates the gray-box constraint. The same evasion achieved
-by modifying inter-arrival times to match a benign traffic profile — without
-any model queries — would be valid.
+by modifying inter-arrival times to match a benign traffic profile - without
+any model queries - would be valid.
 
 ---
 
