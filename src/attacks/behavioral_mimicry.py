@@ -1,8 +1,8 @@
 """
-Behavioral Mimicry Attacks
+Category B: Behavioral Mimicry Attacks
 
-These functions help camouflage malicious network flows by making their timing (IAT) 
-and packet sizes match the statistical profiles of normal (benign) traffic.
+Camouflage malicious network flows by making their timing (IAT) and 
+packet sizes match the statistical profiles of normal (benign) traffic.
 """
 
 import json
@@ -18,11 +18,17 @@ MINIMUM_HEADER_BYTES = get_env_int("MINIMUM_HEADER_BYTES")
 SECONDS_TO_MICROSECONDS = get_env_float("SECONDS_TO_MICROSECONDS")
 
 
-# Helper function
+### 
+# Helper functions
+###
 def _copy(sample: np.ndarray) -> np.ndarray:
     return sample.astype(np.float64).copy()
 
 def load_benign_profile(app_name: str) -> Dict:
+    """
+    Load the benign traffic profile for a named application from disk.
+    Raises ValueError if the application is not found in the profiles file.
+    """
     json_path = Path(__file__).resolve().parents[2] / "data" / "benign_profiles.json"
     
     with open(json_path, "r") as file:
@@ -33,7 +39,9 @@ def load_benign_profile(app_name: str) -> Dict:
         
     return data["applications"][app_name]
 
-
+###
+# Attack 1: Mimic timing
+###
 def mimic_timing(
     malicious_sample: np.ndarray,
     target_profile: Dict,
@@ -41,7 +49,10 @@ def mimic_timing(
     maximum_duration_ratio: float = 2.0,
 ) -> np.ndarray:
     """
-    IAT-based mimicry: rescale flow timing to minimize Wasserstein distance to target profile.
+    Rescale flow timing so the IAT distribution matches the target benign profile.
+
+    Adjusts mean and std IAT toward the target, subject to a max delay cap and a duration cap. 
+    Updates both overall and directional timing features, then recalculates byte and packet rates.
     """
     flow = _copy(malicious_sample)
 
@@ -110,10 +121,16 @@ def mimic_timing(
 
     return flow
 
-
+###
+# Attack 2: Mimic packet size
+###
 def mimic_packet_size(malicious_sample: np.ndarray, target_profile: Dict) -> np.ndarray:
     """
-    Packet-size distribution mimicry: shift flow packet-length distribution toward benign profile.
+    Shift the flow's packet size distribution toward the target benign profile.
+
+    Pads forward and backward byte counts so the per-direction mean reaches the target. 
+    Then recomputes flow-level size features. 
+    Only increases packet sizes, never decreases them.
     """
     flow = _copy(malicious_sample)
 
