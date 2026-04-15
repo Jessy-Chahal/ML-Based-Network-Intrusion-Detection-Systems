@@ -1,5 +1,5 @@
 """
-Build adversarial training .npz dataset files for Sprint 3.
+Build adversarial training .npz dataset files.
 
 For each dataset:
 - Use 70% stratified clean training data.
